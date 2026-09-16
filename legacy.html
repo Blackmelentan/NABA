@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Legacy of Sheku Bayoh — NABA</title>
+<meta name="description" content="The legacy of Sheku Bayoh: remembrance, justice, equality and positive change. NABA's work with the Sheku Bayoh Inquiry and Scotland's public services.">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#2E1F05">
+<meta name="msapplication-TileColor" content="#2E1F05">
+<meta name="msapplication-TileImage" content="assets/mstile-150.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Josefin+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<script>
+document.documentElement.classList.add('js');
+window.addEventListener('error', function(){
+  document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+});
+</script>
+
+<div class="progress-bar" id="progressBar"></div>
+<header class="site-header">
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span>Youth Hub is now live · Mentorship applications open</span>
+      <span>Edinburgh → Lagos Road Trip · 6 Nov 2027</span>
+      <span>70+ Community Businesses Listed</span>
+      <span>Youth Hub is now live · Mentorship applications open</span>
+      <span>Edinburgh → Lagos Road Trip · 6 Nov 2027</span>
+      <span>70+ Community Businesses Listed</span>
+    </div>
+  </div>
+  <div class="wrap">
+    <nav class="nav" aria-label="Primary">
+      <a class="brand" href="index.html" aria-label="NABA — home">
+        <span class="brand__badge"><img src="assets/new-naba-logo.png" alt="" width="68" height="68"></span>
+        <span class="brand__name"><b>National African &amp;</b><span>Black Association</span></span>
+      </a>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="directory.html">Community</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="volunteer.html">Volunteering & Partnerships</a></li>
+        <li><a href="cuisine.html">Cuisine</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li class="has-dropdown"><a href="youth-hub.html">More ▾</a>
+        <div class="dropdown">
+          <a href="youth-hub.html">Youth Hub (New)</a>
+          <a href="impact.html">Impact Tree</a>
+        </div></li>
+      </ul>
+      <div class="nav__actions">
+        <button class="icon-btn" id="searchBtn" aria-label="Search the site">🔍</button>
+        <button class="icon-btn" id="langBtn" aria-label="Change language">🌐</button>
+        <a class="icon-btn" href="login.html" id="accountBtn" aria-label="Account">👤</a>
+        <button class="nav__toggle" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><span></span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<a class="help-now-btn" href="contact.html" aria-label="Get help now">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+  Get Help Now
+</a>
+
+<div class="a11y-toolbar" aria-label="Accessibility controls">
+  <button id="a11yContrast" aria-label="Toggle high contrast" title="High contrast">◐</button>
+  <button id="a11yMinus" aria-label="Decrease text size" title="Smaller text">A−</button>
+  <button id="a11yPlus" aria-label="Increase text size" title="Larger text">A+</button>
+</div>
+
+<div class="modal-backdrop" id="langBackdrop">
+  <div class="lang-modal">
+    <h3>Select Language</h3>
+    <div class="lang-row active" data-lang="en"><span class="name">English <span class="native">English</span></span><span class="check"></span></div>
+    <div class="lang-row" data-lang="fr"><span class="name">Français <span class="native">Français</span></span><span class="check"></span></div>
+    <div class="lang-row" data-lang="es"><span class="name">Español <span class="native">Español</span></span><span class="check"></span></div>
+    <div class="lang-row" data-lang="ar"><span class="name">العربية <span class="native">العربية</span></span><span class="check"></span></div>
+    <div class="lang-row" data-lang="pt"><span class="name">Português <span class="native">Português</span></span><span class="check"></span></div>
+  </div>
+</div>
+
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-panel glass">
+    <input type="text" id="siteSearch" placeholder="Search NABA — directory, events, pages…" autocomplete="off">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<button class="back-top" id="backTop" aria-label="Back to top">↑</button>
+<div class="toast" id="toast"></div>
+
+<button class="assistant-launcher" id="assistantLauncher" aria-label="Ask NABA">💬</button>
+<div class="assistant-panel" id="assistantPanel">
+  <div class="assistant-head"><span>Ask NABA</span><button id="assistantClose" aria-label="Close">✕</button></div>
+  <div class="assistant-body" id="assistantBody"></div>
+  <div class="assistant-quick" id="assistantQuick"></div>
+  <form class="assistant-form" id="assistantForm">
+    <input type="text" id="assistantInput" placeholder="Ask a question..." autocomplete="off">
+    <button type="submit" aria-label="Send">&rarr;</button>
+  </form>
+</div>
+
+
+<main id="main">
+
+<section class="page-head">
+  <div class="wrap">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Legacy of Sheku Bayoh</div>
+    <p class="eyebrow">Our Legacy</p>
+    <h1 class="display outline-fill">The Legacy of Sheku Bayoh</h1>
+    <p>Remembrance, justice, equality and positive change.</p>
+  </div>
+</section>
+
+<section class="section--tight">
+  <div class="wrap">
+    <figure style="max-width:320px;margin:0 auto;text-align:center;">
+      <img src="assets/sheku-bayoh.jpg" alt="Sheku Bayoh" style="width:100%;border-radius:var(--radius-md);box-shadow:var(--shadow-md);">
+      <figcaption style="margin-top:14px;font-size:.85rem;color:var(--muted);">Sheku Bayoh, 1983–2015. Father, son, brother.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" style="background:var(--espresso);color:var(--cream);" aria-labelledby="our-legacy-h">
+  <div class="wrap">
+    <p class="eyebrow" style="color:var(--gold);">Rooted in heritage, built for belonging</p>
+    <h2 class="display" id="our-legacy-h" style="color:var(--cream);-webkit-text-stroke:0;">Our Legacy</h2>
+    <div class="prose reveal" style="max-width:74ch;opacity:.92;">
+      <p>NABA's own legacy cannot be separated from Sheku's. His death, and the years his family spent fighting for truth and accountability, are why NABA exists in its current form — not just to signpost services, but to push for a Scotland where public institutions are fair, safe, and genuinely accountable to the people who rely on them.</p>
+      <p>Every training session we deliver, every policy we help an institution review, and every family we stand beside carries that same intention forward. Our legacy is theirs: a community that organised, that refused to be silent, and that turned grief into a lasting demand for change.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="prose reveal">
+      <blockquote>&ldquo;Inclusivity is our strength.&rdquo;</blockquote>
+
+      <p>The legacy of Sheku Bayoh is one of remembrance, justice, equality and positive change.</p>
+
+      <p>Our organisation is dedicated to preserving Sheku's memory and supporting his family's vision that his legacy should help create a Scotland where everyone can access public services with dignity, fairness and respect. Where there is no room for injustice, discrimination or racism.</p>
+
+      <p>Sheku Bayoh was a 31-year-old father, son, brother and loved member of his family and community. His life was tragically cut short on 3 May 2015, following an incident in the street in Kirkcaldy involving officers of Police Scotland.</p>
+
+      <p>Sheku left behind his mother, sisters, two young sons and a close family who have spent years seeking answers, accountability and justice.</p>
+
+      <p>His story has had a profound impact on Scotland and has raised important questions about policing, race, equality, accountability and the treatment of communities by public institutions.</p>
+
+      <h2>The Sheku Bayoh Inquiry</h2>
+      <p>The Sheku Bayoh Inquiry was established to examine the circumstances surrounding Sheku's death and the subsequent response by the authorities.</p>
+      <p>The Inquiry's work includes examining:</p>
+      <ul>
+        <li>The immediate circumstances leading to the death of Sheku Bayoh.</li>
+        <li>How the police dealt with the aftermath of his death.</li>
+        <li>The subsequent investigation into his death.</li>
+        <li>Whether race was a factor in the circumstances surrounding his death and the response to it.</li>
+        <li>Any other matters considered relevant to the Inquiry's work.</li>
+      </ul>
+      <p>The Inquiry also has the ability to make recommendations aimed at helping to prevent deaths in similar circumstances in the future.</p>
+      <p>The Inquiry represents an important opportunity to examine not only what happened to Sheku, but also the wider systems, policies, practices and institutional cultures that may affect how people from different racial and ethnic backgrounds experience public services.</p>
+
+      <h2>From Remembrance to Change</h2>
+      <p>Sheku's legacy must extend beyond remembrance.</p>
+      <p>For his family, his memory is connected to a clear and powerful principle: everyone should be able to access public services without fear of discrimination, prejudice or injustice.</p>
+      <p>This means creating institutions that listen to communities, recognise inequality and are willing to examine their own policies and practices. It means ensuring that people are treated fairly when they interact with the police, NHS, social care, education, housing, local government and other public services. And it means ensuring that concerns raised by individuals and communities are taken seriously.</p>
+      <p>Our work seeks to turn these principles into meaningful action.</p>
+
+      <h2>Building Inclusive Public Services</h2>
+      <p>Our organisation works in partnership with institutions and communities to help create more inclusive, equitable and culturally aware public services. We support organisations to:</p>
+      <p><strong>Assess policies and practices</strong> — We work with institutions to examine how policies, procedures and organisational practices may affect different communities and whether unintended barriers or inequalities exist.</p>
+      <p><strong>Deliver cultural awareness and anti-racism training</strong> — We provide opportunities for organisations and professionals to develop a deeper understanding of cultural difference, racism, unconscious bias, discrimination and the experiences of minority ethnic communities. Our aim is not simply to provide training, but to encourage meaningful organisational change.</p>
+      <p><strong>Strengthen community engagement</strong> — Public services work best when they understand and listen to the communities they serve. We seek to create meaningful dialogue between public institutions and communities, ensuring that lived experience is recognised as an important part of developing better services.</p>
+      <p><strong>Promote equality and accountability</strong> — We believe that equality must be reflected not only in policies but in everyday decisions, professional practice and organisational culture. Institutions must be willing to listen, learn and take responsibility when communities raise concerns.</p>
+
+      <h2>A Legacy That Helps Others</h2>
+      <p>Sheku's family have expressed a powerful vision for his legacy: that his death should help others access services fairly and that there should be no room for injustice. That vision is at the heart of our work.</p>
+      <p>We want Sheku's name to be associated not only with a tragic loss, but with a movement towards positive change. His legacy can help inspire a Scotland where:</p>
+      <ul>
+        <li>Everyone is treated with dignity and respect.</li>
+        <li>Public services are accessible to all communities.</li>
+        <li>Racism and discrimination are challenged rather than ignored.</li>
+        <li>Institutions listen to the experiences of minority ethnic communities.</li>
+        <li>Families and communities have meaningful opportunities to be heard.</li>
+        <li>Policies are assessed for their impact on equality.</li>
+        <li>Professionals are equipped to understand cultural differences.</li>
+        <li>Concerns about discrimination are taken seriously.</li>
+        <li>Accountability and transparency are strengthened.</li>
+        <li>No family has to experience injustice without being heard.</li>
+      </ul>
+
+      <h2>Remembering Sheku</h2>
+      <p>Sheku Bayoh was much more than the circumstances of his death.</p>
+      <ul>
+        <li>He was a son.</li>
+        <li>He was a brother.</li>
+        <li>He was a father.</li>
+        <li>He was a friend.</li>
+        <li>He was a member of a family and a community who loved him.</li>
+        <li>His life mattered, and his memory continues to matter.</li>
+      </ul>
+      <p>The work to honour Sheku's legacy is therefore about remembering the person behind the headlines while ensuring that the lessons arising from his death contribute to a fairer and more inclusive Scotland.</p>
+
+      <h2>Our Commitment</h2>
+      <p>We are committed to working with public institutions, community organisations, professionals, families and individuals to promote equality, inclusion and meaningful change.</p>
+      <p>We believe that inclusivity is our strength.</p>
+      <p>By listening to one another, challenging discrimination, improving institutional practice and building trust between communities and public services, we can help create a Scotland in which everyone has an equal opportunity to be heard, respected and treated fairly.</p>
+      <p>Sheku's legacy is not only about remembering what happened. It is about helping to build a future where injustice is challenged, equality is protected and every person can access public services with dignity and respect.</p>
+
+      <blockquote>In memory of Sheku Bayoh.<br>For his family. For his children. For his community.<br>For a fairer Scotland.</blockquote>
+    </div>
+  </div>
+</section>
+
+<section class="section--tight" style="background:#fff7ea;border-block:1px solid var(--hairline);">
+  <div class="wrap" style="text-align:center;padding-block:30px;">
+    <p class="eyebrow" style="justify-content:center;">Read next</p>
+    <h2 class="display" style="font-size:1.4rem;">See our anti-racism education work</h2>
+    <p class="lead muted" style="margin:10px auto 18px;">NABA's ongoing partnership with Glasgow City Council Education, in memory of Sheku Bayoh and Stephen Lawrence.</p>
+    <a class="btn btn--solid rippleBtn" href="news.html">Visit the News page &rarr;</a>
+  </div>
+</section>
+
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="newsletter">
+      <h4>Stay in the loop</h4>
+      <p>Cultural weeks, town halls, and road trip updates — straight to your inbox.</p>
+      <form data-form data-collection="newsletterSignups">
+        <input type="email" name="email" required placeholder="you@email.com">
+        <button type="submit">Join</button>
+      </form>
+      <div class="success-msg" style="margin-top:10px;">Subscribed — welcome to NABA.</div>
+    </div>
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">
+          <img src="assets/new-naba-logo.png" alt="NABA crest" width="68" height="68">
+          <b>National African &amp;<br>Black Association</b>
+        </div>
+        <p style="max-width:34ch;opacity:.85;font-size:.9rem;">Our community is our strength — connecting African and Black communities across Scotland to trusted services, culture, and each other.</p>
+        <div class="social-row">
+          <a href="https://www.instagram.com/" aria-label="Instagram" target="_blank" rel="noreferrer">IG</a>
+          <a href="https://www.facebook.com/" aria-label="Facebook" target="_blank" rel="noreferrer">FB</a>
+          <a href="https://x.com/" aria-label="X" target="_blank" rel="noreferrer">X</a>
+          <a href="https://www.linkedin.com/" aria-label="LinkedIn" target="_blank" rel="noreferrer">IN</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="directory.html">Community</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="youth-hub.html">Youth Hub</a></li>
+          <li><a href="impact.html">Impact Tree</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Offices</h4>
+        <address><b>Glasgow</b><br>Parkhead Schoolhouse, 135 Westmuir St<br>Glasgow, G31 5EX</address><address style="margin-top:14px;"><b>Edinburgh</b><br>Gyleview House, 3 Redheughs Rigg<br>Edinburgh, EH12 9DQ</address><address style="margin-top:14px;"><b>Glasgow Correspondence Office</b><br>Clyde Offices, 2nd Floor<br>48 West George Street, Glasgow, G2 1BP</address>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="volunteer.html">Volunteering &amp; Partnerships</a></li>
+          <li><a href="volunteer.html#careers">Careers &amp; Vacancies</a></li>
+          <li><a href="cuisine.html">Cuisine</a></li>
+          <li><a href="contact.html">Contact us</a></li>
+          <li><a href="tel:07990753498">07990 753498</a></li>
+          <li><a href="mailto:admin@nabaorg.uk">admin@nabaorg.uk</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <span>&copy; <span id="year">2026</span> National African &amp; Black Association.</span>
+      <ul>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="accessibility.html">Accessibility</a></li>
+        <li><a href="safeguarding.html">Safeguarding</a></li>
+        <li><a href="admin.html">Staff Login</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+<script src="js/firebase-config.js"></script>
+<script type="module" src="js/cms.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-label="NABA mark placeholder">
+  <rect width="320" height="320" rx="36" fill="#fdf5e8"/>
+  <circle cx="160" cy="160" r="112" fill="#d9a63f"/>
+  <circle cx="160" cy="160" r="74" fill="#fff7ea"/>
+  <path d="M160 80 L210 120 L160 238 L110 120 Z" fill="#2e1f05"/>
+  <path d="M110 128 H210" stroke="#eeB54F" stroke-width="10" stroke-linecap="round"/>
+  <path d="M128 98 H192" stroke="#eeB54F" stroke-width="10" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Staff Admin — NABA</title>
+<meta name="description" content="NABA staff admin — manage events, news, gallery photos and form submissions.">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#2E1F05">
+<meta name="robots" content="noindex, nofollow">
+<meta name="msapplication-TileColor" content="#2E1F05">
+<meta name="msapplication-TileImage" content="assets/mstile-150.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Josefin+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<script>
+document.documentElement.classList.add('js');
+window.addEventListener('error', function(){
+  document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+});
+</script>
+
+<div class="progress-bar" id="progressBar"></div>
+<header class="site-header">
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span>Youth Hub is now live · Mentorship applications open</span>
+      <span>Edinburgh → Lagos Road Trip · 6 Nov 2027</span>
+      <span>70+ Community Businesses Listed</span>
+      <span>Youth Hub is now live · Mentorship applications open</span>
+      <span>Edinburgh → Lagos Road Trip · 6 Nov 2027</span>
+      <span>70+ Community Businesses Listed</span>
+    </div>
+  </div>
+  <div class="wrap">
+    <nav class="nav" aria-label="Primary">
+      <a class="brand" href="index.html" aria-label="NABA — home">
+        <span class="brand__badge"><img src="assets/new-naba-logo.png" alt="" width="68" height="68"></span>
+        <span class="brand__name"><b>National African &amp;</b><span>Black Association</span></span>
+      </a>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="directory.html">Community</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="volunteer.html">Volunteering & Partnerships</a></li>
+        <li><a href="cuisine.html">Cuisine</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li class="has-dropdown"><a href="youth-hub.html">More ▾</a>
+        <div class="dropdown">
+          <a href="youth-hub.html">Youth Hub (New)</a>
+          <a href="impact.html">Impact Tree</a>
+        </div></li>
+      </ul>
+      <div class="nav__actions">
+        <button class="icon-btn" id="searchBtn" aria-label="Search the site">🔍</button>
+        <button class="icon-btn" id="langBtn" aria-label="Change language">🌐</button>
+        <a class="icon-btn" href="login.html" id="accountBtn" aria-label="Account">👤</a>
+        <button class="nav__toggle" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><span></span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<div id="adminRoot" class="admin-shell">
+  <p class="admin-empty">Loading…</p>
+</div>
+
+<template id="tpl-setup">
+  <div class="admin-setup">
+    <p class="eyebrow">Staff Admin</p>
+    <h1 class="display" style="font-size:1.4rem;">Staff area ready for connection</h1>
+    <p>This dashboard is ready for the NABA team to manage events, news, gallery items, and enquiries once the live backend is connected.</p>
+    <ol>
+      <li>Set up the live site credentials in the backend config file.</li>
+      <li>Add the NABA staff email and password for the live workspace.</li>
+      <li>Reload this page and sign in with your staff account.</li>
+      <li>Use the dashboard tabs to publish updates without editing the website code.</li>
+    </ol>
+    <p class="muted">This area is for staff use only and does not appear on the public website.</p>
+  </div>
+</template>
+
+<template id="tpl-login">
+  <div class="admin-login">
+    <p class="eyebrow">Staff Admin</p>
+    <h1>Sign in</h1>
+    <p class="muted" style="font-size:.85rem;margin-bottom:18px;">Use your NABA staff email and password to continue.</p>
+    <form id="loginForm">
+      <div class="field"><label>Email</label><input type="email" id="loginEmail" required autocomplete="username"></div>
+      <div class="field"><label>Password</label><input type="password" id="loginPassword" required autocomplete="current-password"></div>
+      <button type="submit" class="btn btn--solid rippleBtn" style="width:100%;">Sign in</button>
+      <div class="admin-error" id="loginError"></div>
+    </form>
+  </div>
+</template>
+
+<template id="tpl-dashboard">
+  <div class="admin-topbar">
+    <div><strong>NABA Staff Admin</strong> <span class="who" id="whoami"></span></div>
+    <button class="btn btn--gold rippleBtn" id="logoutBtn" style="padding:8px 16px;">Sign out</button>
+  </div>
+  <div class="admin-shell">
+    <div class="admin-tabs" id="adminTabs">
+      <button class="admin-tab active" data-panel="events">Events</button>
+      <button class="admin-tab" data-panel="news">News</button>
+      <button class="admin-tab" data-panel="gallery">Gallery</button>
+      <button class="admin-tab" data-panel="volunteerApplications">Volunteer Applications</button>
+      <button class="admin-tab" data-panel="partnerEnquiries">Partner Enquiries</button>
+      <button class="admin-tab" data-panel="contactMessages">Contact Messages</button>
+      <button class="admin-tab" data-panel="newsletterSignups">Newsletter</button>
+    </div>
+
+    <div class="admin-panel active" data-panel="events">
+      <div class="admin-grid">
+        <form class="admin-form" data-add="events">
+          <h3>Add event</h3>
+          <div class="field"><label>Title</label><input name="title" required></div>
+          <div class="field"><label>Date (e.g. 14 Apr 2026)</label><input name="date"></div>
+          <div class="field"><label>Location</label><input name="location"></div>
+          <div class="field"><label>Description</label><textarea name="description"></textarea></div>
+          <button type="submit" class="btn btn--solid rippleBtn">Publish event</button>
+          <div class="admin-msg" data-msg></div>
+        </form>
+        <div class="admin-list" data-list="events"><p class="admin-empty">Loading…</p></div>
+      </div>
+    </div>
+
+    <div class="admin-panel" data-panel="news">
+      <div class="admin-grid">
+        <form class="admin-form" data-add="news">
+          <h3>Add news post</h3>
+          <div class="field"><label>Tag (e.g. Education Committee)</label><input name="tag"></div>
+          <div class="field"><label>Headline</label><input name="title" required></div>
+          <div class="field"><label>Body</label><textarea name="body"></textarea></div>
+          <div class="field"><label>Photo</label><input type="file" name="image" accept="image/*"></div>
+          <button type="submit" class="btn btn--solid rippleBtn">Publish post</button>
+          <div class="admin-msg" data-msg></div>
+        </form>
+        <div class="admin-list" data-list="news"><p class="admin-empty">Loading…</p></div>
+      </div>
+    </div>
+
+    <div class="admin-panel" data-panel="gallery">
+      <div class="admin-grid">
+        <form class="admin-form" data-add="gallery">
+          <h3>Add photo</h3>
+          <div class="field"><label>Caption</label><input name="caption" required></div>
+          <div class="field"><label>Photo</label><input type="file" name="image" accept="image/*" required></div>
+          <button type="submit" class="btn btn--solid rippleBtn">Add to gallery</button>
+          <div class="admin-msg" data-msg></div>
+        </form>
+        <div class="admin-list" data-list="gallery"><p class="admin-empty">Loading…</p></div>
+      </div>
+    </div>
+
+    <div class="admin-panel" data-panel="volunteerApplications">
+      <div class="admin-list" data-list="volunteerApplications"><p class="admin-empty">Loading…</p></div>
+    </div>
+    <div class="admin-panel" data-panel="partnerEnquiries">
+      <div class="admin-list" data-list="partnerEnquiries"><p class="admin-empty">Loading…</p></div>
+    </div>
+    <div class="admin-panel" data-panel="contactMessages">
+      <div class="admin-list" data-list="contactMessages"><p class="admin-empty">Loading…</p></div>
+    </div>
+    <div class="admin-panel" data-panel="newsletterSignups">
+      <div class="admin-list" data-list="newsletterSignups"><p class="admin-empty">Loading…</p></div>
+    </div>
+  </div>
+</template>
+
+<script src="js/firebase-config.js"></script>
+<script src="js/supabase-config.js"></script>
+<script type="module" src="js/cms.js"></script>
+<script type="module" src="js/admin.js"></script>
+
+</body>
+</html>

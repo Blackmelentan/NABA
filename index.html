@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NABA — National African & Black Association</title>
+<meta name="description" content="NABA connects African and Black communities across Scotland to trusted services, cultural life, and each other.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#2E1F05">
+<meta name="msapplication-TileColor" content="#2E1F05">
+<meta name="msapplication-TileImage" content="assets/mstile-150.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Josefin+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<script>
+document.documentElement.classList.add('js');
+window.addEventListener('error', function(){
+  document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+});
+</script>
+
+<div class="progress-bar" id="progressBar"></div>
+<header class="site-header">
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span>Youth Hub is now live · Mentorship applications open</span>
+      <span>Edinburgh → Lagos Road Trip · 6 Nov 2027</span>
+      <span>70+ Community Businesses Listed</span>
+      <span>Youth Hub is now live · Mentorship applications open</span>
+      <span>Edinburgh → Lagos Road Trip · 6 Nov 2027</span>
+      <span>70+ Community Businesses Listed</span>
+    </div>
+  </div>
+  <div class="wrap">
+    <nav class="nav" aria-label="Primary">
+      <a class="brand" href="index.html" aria-label="NABA — home">
+        <span class="brand__badge"><img src="assets/new-naba-logo.png" alt="" width="68" height="68"></span>
+        <span class="brand__name"><b>National African &amp;</b><span>Black Association</span></span>
+      </a>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="index.html" aria-current="page">Home</a></li>
+        <li><a href="directory.html">Community</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="volunteer.html">Volunteering & Partnerships</a></li>
+        <li><a href="cuisine.html">Cuisine</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li class="has-dropdown"><a href="youth-hub.html">More ▾</a>
+        <div class="dropdown">
+          <a href="youth-hub.html">Youth Hub (New)</a>
+          <a href="impact.html">Impact Tree</a>
+          <a href="gallery.html">Photo Gallery</a>
+          <a href="legacy.html">Legacy of Sheku Bayoh</a>
+        </div></li>
+      </ul>
+      <div class="nav__actions">
+        <button class="icon-btn" id="searchBtn" aria-label="Search the site">🔍</button>
+        <button class="icon-btn" id="langBtn" aria-label="Change language">🌐</button>
+        <a class="icon-btn" href="login.html" id="accountBtn" aria-label="Account">👤</a>
+        <button class="nav__toggle" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><span></span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<a class="help-now-btn" href="contact.html" aria-label="Get help now">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+  Get Help Now
+</a>
+
+<div class="a11y-toolbar" aria-label="Accessibility controls">
+  <button id="a11yContrast" aria-label="Toggle high contrast" title="High contrast">◐</button>
+  <button id="a11yMinus" aria-label="Decrease text size" title="Smaller text">A−</button>
+  <button id="a11yPlus" aria-label="Increase text size" title="Larger text">A+</button>
+</div>
+
+<div class="modal-backdrop" id="langBackdrop">
+  <div class="lang-modal">
+    <h3>Select Language</h3>
+    <div class="lang-row active" data-lang="en"><span class="name">English <span class="native">English</span></span><span class="check"></span></div>
+    <div class="lang-row" data-lang="fr"><span class="name">Français <span class="native">Français</span></span><span class="check"></span></div>
+    <div class="lang-row" data-lang="es"><span class="name">Español <span class="native">Español</span></span><span class="check"></span></div>
+    <div class="lang-row" data-lang="ar"><span class="name">العربية <span class="native">العربية</span></span><span class="check"></span></div>
+    <div class="lang-row" data-lang="pt"><span class="name">Português <span class="native">Português</span></span><span class="check"></span></div>
+  </div>
+</div>
+
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-panel glass">
+    <input type="text" id="siteSearch" placeholder="Search NABA — directory, events, pages…" autocomplete="off">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<button class="back-top" id="backTop" aria-label="Back to top">↑</button>
+<div class="toast" id="toast"></div>
+
+<button class="assistant-launcher" id="assistantLauncher" aria-label="Ask NABA">💬</button>
+<div class="assistant-panel" id="assistantPanel">
+  <div class="assistant-head"><span>Ask NABA</span><button id="assistantClose" aria-label="Close">✕</button></div>
+  <div class="assistant-body" id="assistantBody"></div>
+  <div class="assistant-quick" id="assistantQuick"></div>
+  <form class="assistant-form" id="assistantForm">
+    <input type="text" id="assistantInput" placeholder="Ask a question..." autocomplete="off">
+    <button type="submit" aria-label="Send">&rarr;</button>
+  </form>
+</div>
+
+<main id="main">
+
+<section class="hero" id="home">
+  <div class="hero__bg"><img src="assets/culturalweek.jpg" alt="" aria-hidden="true"></div>
+  <svg class="hero__tri" viewBox="0 0 400 360" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <path d="M200 20 L380 340 L20 340 Z" stroke="#EEB54F" stroke-width="2" opacity="0.55"/>
+    <path d="M200 90 L320 300 L80 300 Z" stroke="#D99B2E" stroke-width="2" opacity="0.5"/>
+    <path d="M200 155 L268 268 L132 268 Z" fill="#EEB54F" opacity="0.18"/>
+    <path d="M200 155 L268 268 L132 268 Z" stroke="#D99B2E" stroke-width="2" opacity="0.7"/>
+  </svg>
+  <div class="wrap hero__inner">
+    <p class="eyebrow">Scotland &bull; The Gambia &bull; West Africa</p>
+    <h1 class="display outline-fill" data-split>NABA finds strength in our community</h1>
+    <p class="hero__sub lead">NABA connects African and Black communities across Scotland to trusted services, cultural life, and each other — breaking down barriers wherever we find them.</p>
+    <div class="hero__ctas">
+      <a class="btn btn--solid rippleBtn" href="directory.html">Find a Service <span class="arw">&rarr;</span></a>
+      <a class="btn btn--gold rippleBtn" href="events.html">Find an Event</a>
+    </div>
+
+    <div class="hub-grid glass hero__glass">
+      <a class="hub-tile" href="directory.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <span>Community</span>
+      </a>
+      <a class="hub-tile" href="events.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="1"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span>Events</span>
+      </a>
+      <a class="hub-tile" href="news.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+        <span>News</span>
+      </a>
+      <a class="hub-tile" href="about.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>
+        <span>About Us</span>
+      </a>
+      <a class="hub-tile" href="volunteer.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        <span>Volunteering</span>
+      </a>
+      <a class="hub-tile" href="cuisine.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg>
+        <span>Cuisine</span>
+      </a>
+      <a class="hub-tile" href="youth-hub.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        <span>Youth Hub</span>
+      </a>
+      <a class="hub-tile" href="impact.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 22V12M12 12c-4 0-7-3-7-7 4 0 7 3 7 7zM12 12c4 0 7-3 7-7-4 0-7 3-7 7z"/></svg>
+        <span>Impact Tree</span>
+      </a>
+      <a class="hub-tile" href="contact.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.8 19.8 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.12.9.34 1.79.66 2.64a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.44-1.44a2 2 0 012.11-.45c.85.32 1.74.54 2.64.66A2 2 0 0122 16.92z"/></svg>
+        <span>Contact Us</span>
+      </a>
+    </div>
+
+    <div class="stat-strip glass hero__glass" style="margin-top:14px;">
+      <div><div class="num">70+</div><div class="lbl">Local Businesses</div></div>
+      <div><div class="num">10</div><div class="lbl">Service Providers</div></div>
+      <div><div class="num">3</div><div class="lbl">Offices</div></div>
+    </div>
+
+    <div class="service-categories" aria-label="Service providers">
+      <span class="service-pill">Education</span>
+      <span class="service-pill">Housing</span>
+      <span class="service-pill">Health</span>
+      <span class="service-pill">Legal</span>
+      <span class="service-pill">Youth</span>
+      <span class="service-pill">Business</span>
+      <span class="service-pill">Culture</span>
+      <span class="service-pill">Travel</span>
+      <span class="service-pill">Food</span>
+      <span class="service-pill">Community</span>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-wrap" aria-label="Partners and collaborators">
+  <div class="marquee">
+    <span>Glasgow City Council</span><span>Dundee City Council</span><span>GAMSCA</span><span>Glasgow City Chambers Education</span><span>SCVO</span>
+    <span>Glasgow City Council</span><span>Dundee City Council</span><span>GAMSCA</span><span>Glasgow City Chambers Education</span><span>SCVO</span>
+  </div>
+</div>
+
+<section class="section--tight"><div class="heritage-divider"><div class="hd-line"></div><div class="hd-mark"><img src="assets/new-naba-logo.png" alt=""></div><div class="hd-line"></div></div></section>
+
+<section class="section" aria-labelledby="mission-h">
+  <div class="wrap">
+    <div class="mission-grid">
+      <div>
+        <p class="eyebrow">What Is NABA?</p>
+        <h2 class="display" id="mission-h">We are an engaged community</h2>
+        <a class="textlink" href="about.html" style="display:inline-block;margin-top:8px;">Read our full story &rsaquo;</a>
+      </div>
+      <div class="mission-copy reveal">
+        <p class="pull-quote">"Our community is our strength."</p>
+        <p>The National African &amp; Black Association (NABA) is a UK non-profit dedicated to the legacy of Sheku Bayoh. NABA is a Scottish-based, not-for-profit organisation dedicated to promoting equity, inclusion, and improved access to public services for African and Black individuals across Scotland.</p>
+        <p>We work in partnership with institutions to assess the impact of policies and practices, deliver cultural awareness and anti-racism training, and foster meaningful engagement between public services and the communities they serve.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:#fff7ea;border-block:1px solid var(--hairline);" aria-labelledby="video-h">
+  <div class="wrap">
+    <p class="eyebrow">Watch</p>
+    <div class="sec-head"><h2 class="display" id="video-h">Learn More About NABA</h2></div>
+    <div class="video-block reveal" data-video="assets/naba-intro-video.mp4" role="button" tabindex="0" aria-label="Play NABA introduction video">
+      <img src="assets/video-poster.jpg" alt="NABA introduction video">
+      <div class="vb-overlay">
+        <div class="vb-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="vb-cap">A minute with NABA — watch our story</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="directory-teaser" aria-labelledby="dirt-h">
+  <div class="wrap">
+    <p class="eyebrow">Find The Right Service For Your Needs</p>
+    <div class="sec-head">
+      <h2 class="display" id="dirt-h">Find the right service</h2>
+      <a class="textlink" href="directory.html">View full directory &rsaquo;</a>
+    </div>
+    <div class="grid grid--3">
+      <a class="card card--link" href="directory.html"><div class="card__count">16</div><div class="card__label">Charity</div><p class="card__desc">Foundations &amp; giving circles</p><span class="card__more">View services &rsaquo;</span></a>
+      <a class="card card--link" href="directory.html"><div class="card__count">3</div><div class="card__label">Civic &amp; Social</div><p class="card__desc">Councils &amp; advocacy</p><span class="card__more">View services &rsaquo;</span></a>
+      <a class="card card--link" href="directory.html"><div class="card__count">17</div><div class="card__label">Community</div><p class="card__desc">Groups &amp; associations</p><span class="card__more">View services &rsaquo;</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="section--tight"><div class="heritage-divider"><div class="hd-line"></div><div class="hd-mark"><img src="assets/new-naba-logo.png" alt=""></div><div class="hd-line"></div></div></section>
+
+<section class="section" style="background:var(--espresso);color:var(--cream);" aria-labelledby="youth-h">
+  <div class="wrap" style="text-align:center;">
+    <p class="eyebrow onDark" style="justify-content:center;">New Initiative</p>
+    <h2 class="display outline-fill cream" id="youth-h">The Youth Hub is live</h2>
+    <p style="color:rgba(253,245,232,.8);max-width:52ch;margin:14px auto 22px;">Mentorship, a real resource library, and funding routes for the next generation of the community.</p>
+    <a class="btn btn--onDark rippleBtn" href="youth-hub.html">Explore the Youth Hub &rarr;</a>
+  </div>
+</section>
+
+<section class="section" style="background:#fff7ea;border-block:1px solid var(--hairline);" aria-labelledby="ev-teaser-h">
+  <div class="wrap">
+    <p class="eyebrow">Upcoming Events</p>
+    <div class="sec-head">
+      <h2 class="display" id="ev-teaser-h">Events all across Scotland</h2>
+      <a class="textlink" href="events.html">See all events &rsaquo;</a>
+    </div>
+    <div class="event-strip" style="grid-template-columns:repeat(3,1fr);display:grid;gap:12px;">
+      <div class="event"><div class="event__date"><div class="d">17</div><div class="m">Jul</div></div><div><div class="event__meta">GAMSCA</div><h3>Opening Ceremony &amp; Tanabirr</h3></div></div>
+      <div class="event"><div class="event__date"><div class="d">18</div><div class="m">Jul</div></div><div><div class="event__meta">GAMSCA</div><h3>Sport Day &amp; Gala Dinner</h3></div></div>
+      <div class="event"><div class="event__date"><div class="d">19</div><div class="m">Jul</div></div><div><div class="event__meta">GAMSCA</div><h3>Family Fun Day</h3></div></div>
+      <div class="event"><div class="event__date"><div class="d">—</div><div class="m">Jul</div></div><div><div class="event__meta">Edinburgh</div><h3>Gambia Community Cultural Week</h3></div></div>
+      <div class="event"><div class="event__date"><div class="d">—</div><div class="m">2026</div></div><div><div class="event__meta">Glasgow</div><h3>Gambian Community Cultural Week</h3></div></div>
+      <div class="event"><div class="event__date"><div class="d">14</div><div class="m">Apr</div></div><div><div class="event__meta">Dundee</div><h3>Multi Cultural Festival 2026</h3></div></div>
+      <div class="event"><div class="event__date"><div class="d">21</div><div class="m">Jun</div></div><div><div class="event__meta">Dundee</div><h3>"Inclusivity Is Our Strength" March</h3></div></div>
+      <div class="event"><div class="event__date"><div class="d">26</div><div class="m">Mar</div></div><div><div class="event__meta">Glasgow</div><h3>Community Town Hall Meetings</h3></div></div>
+      <div class="event"><div class="event__date"><div class="d">06</div><div class="m">Nov</div></div><div><div class="event__meta">Road Trip</div><h3>Edinburgh to Lagos Departs</h3></div></div>
+    </div>
+    <div style="text-align:center;margin-top:24px;">
+      <a class="btn btn--solid rippleBtn" href="events.html">Find an Event &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="stories-h">
+  <div class="wrap">
+    <p class="eyebrow">What We've Been Up To Recently</p>
+    <div class="sec-head"><h2 class="display" id="stories-h">Recent work</h2></div>
+  </div>
+  <div class="story-scroll" id="storyScroll">
+    <div class="story-card">
+      <img src="assets/townhall.jpg" alt="Community town hall meeting, Glasgow">
+      <div class="story-body"><div class="tag">26 Mar 2026</div><h4>Community Town Hall Meetings</h4><p>Supporting you and your community.</p></div>
+    </div>
+    <div class="story-card">
+      <img src="assets/glasgow-antiracism-education.jpg" alt="Commemorating the lives and legacies of the late Stephen Lawrence and the late Sheku Bayoh, Glasgow">
+      <div class="story-body"><div class="tag">Glasgow</div><h4>Commemorating Stephen Lawrence &amp; Sheku Bayoh</h4><p>Improving anti-racism education in schools.</p></div>
+    </div>
+    <div class="story-card">
+      <img src="assets/culturalweek.jpg" alt="Inclusivity is our strength march">
+      <div class="story-body"><div class="tag">21 Jun 2026</div><h4>"Inclusivity Is Our Strength"</h4><p>Marching in solidarity with the wider community.</p></div>
+    </div>
+    <div class="story-card">
+      <img src="assets/bridge-certificates.jpg" alt="We are an engaged community">
+      <div class="story-body"><div class="tag">2026</div><h4>We Are An Engaged Community</h4><p>Celebrating certificates of completion.</p></div>
+    </div>
+    <div class="story-card">
+      <img src="assets/colorful-attire.jpg" alt="We promote collaboration and partnership">
+      <div class="story-body"><div class="tag">Partnership</div><h4>Collaboration &amp; Partnership</h4><p>Building lasting community ties.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section--tight" style="background:#fff7ea;border-block:1px solid var(--hairline);" aria-labelledby="tree-teaser-h">
+  <div class="wrap" style="text-align:center;">
+    <p class="eyebrow" style="justify-content:center;">Live Visualisation</p>
+    <h2 class="display" id="tree-teaser-h">Watch our impact grow</h2>
+    <p class="lead muted" style="margin:10px auto 20px;">Every business, mentor, and young person who joins adds a leaf to NABA's Community Impact Tree.</p>
+    <div class="tree-divider"><svg viewBox="0 0 60 70" fill="none"><path d="M30 68V30" stroke="#3d2c0f" stroke-width="3" stroke-linecap="round"/><path d="M30 40C20 32 12 28 4 26" stroke="#3d2c0f" stroke-width="3" stroke-linecap="round"/><path d="M30 35C40 27 48 23 56 21" stroke="#3d2c0f" stroke-width="3" stroke-linecap="round"/><ellipse cx="4" cy="24" rx="7" ry="4.5" fill="#EEB54F"/><ellipse cx="56" cy="19" rx="7" ry="4.5" fill="#D99B2E"/><ellipse cx="30" cy="10" rx="8" ry="5" fill="#7fae5f"/></svg></div>
+    <a class="btn btn--gold rippleBtn" href="impact.html">See the Impact Tree &rarr;</a>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="newsletter">
+      <h4>Stay in the loop</h4>
+      <p>Cultural weeks, town halls, and road trip updates — straight to your inbox.</p>
+      <form data-form data-collection="newsletterSignups">
+        <input type="email" name="email" required placeholder="you@email.com">
+        <button type="submit">Join</button>
+      </form>
+      <div class="success-msg" style="margin-top:10px;">Subscribed — welcome to NABA.</div>
+    </div>
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">
+          <img src="assets/new-naba-logo.png" alt="NABA logo" width="92" height="92">
+          <b>National African &amp;<br>Black Association</b>
+        </div>
+        <p style="max-width:34ch;opacity:.85;font-size:.9rem;">Our community is our strength — connecting African and Black communities across Scotland to trusted services, culture, and each other.</p>
+        <div class="social-row">
+          <a href="https://www.instagram.com/" aria-label="Instagram" target="_blank" rel="noreferrer">IG</a>
+          <a href="https://www.facebook.com/" aria-label="Facebook" target="_blank" rel="noreferrer">FB</a>
+          <a href="https://x.com/" aria-label="X" target="_blank" rel="noreferrer">X</a>
+          <a href="https://www.linkedin.com/" aria-label="LinkedIn" target="_blank" rel="noreferrer">IN</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="directory.html">Community</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="youth-hub.html">Youth Hub</a></li>
+          <li><a href="impact.html">Impact Tree</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Offices</h4>
+        <address><b>Glasgow</b><br>Parkhead Schoolhouse, 135 Westmuir St<br>Glasgow, G31 5EX</address><address style="margin-top:14px;"><b>Edinburgh</b><br>Gyleview House, 3 Redheughs Rigg<br>Edinburgh, EH12 9DQ</address><address style="margin-top:14px;"><b>Glasgow Correspondence Office</b><br>Clyde Offices, 2nd Floor<br>48 West George Street, Glasgow, G2 1BP</address>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="volunteer.html">Volunteering &amp; Partnerships</a></li>
+          <li><a href="volunteer.html#careers">Careers &amp; Vacancies</a></li>
+          <li><a href="cuisine.html">Cuisine</a></li>
+          <li><a href="contact.html">Contact us</a></li>
+          <li><a href="tel:07990753498">07990 753498</a></li>
+          <li><a href="mailto:admin@nabaorg.uk">admin@nabaorg.uk</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <span>&copy; <span id="year">2026</span> National African &amp; Black Association.</span>
+      <ul>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="accessibility.html">Accessibility</a></li>
+        <li><a href="safeguarding.html">Safeguarding</a></li>
+        <li><a href="admin.html">Staff Login</a></li>
+      </ul>
+      <span style="display:block;opacity:.8;margin-top:8px;">Web design by Kaabu Technologies</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+<script src="js/firebase-config.js"></script>
+<script type="module" src="js/public-render.js"></script>
+</body>
+</html>

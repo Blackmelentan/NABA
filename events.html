@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Events — NABA</title>
+<meta name="description" content="Every NABA event across Scotland — the Edinburgh to Lagos Road Trip, GAMSCA's Cultural Week, town halls, and more.">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#2E1F05">
+<meta name="msapplication-TileColor" content="#2E1F05">
+<meta name="msapplication-TileImage" content="assets/mstile-150.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Josefin+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<script>
+document.documentElement.classList.add('js');
+window.addEventListener('error', function(){
+  document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+});
+</script>
+
+<div class="progress-bar" id="progressBar"></div>
+<header class="site-header">
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span>Youth Hub is now live · Mentorship applications open</span>
+      <span>Edinburgh → Lagos Road Trip · 6 Nov 2027</span>
+      <span>70+ Community Businesses Listed</span>
+      <span>Youth Hub is now live · Mentorship applications open</span>
+      <span>Edinburgh → Lagos Road Trip · 6 Nov 2027</span>
+      <span>70+ Community Businesses Listed</span>
+    </div>
+  </div>
+  <div class="wrap">
+    <nav class="nav" aria-label="Primary">
+      <a class="brand" href="index.html" aria-label="NABA — home">
+        <span class="brand__badge"><img src="assets/new-naba-logo.png" alt="" width="68" height="68"></span>
+        <span class="brand__name"><b>National African &amp;</b><span>Black Association</span></span>
+      </a>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="directory.html">Community</a></li>
+        <li><a href="events.html" aria-current="page">Events</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="volunteer.html">Volunteering & Partnerships</a></li>
+        <li><a href="cuisine.html">Cuisine</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li class="has-dropdown"><a href="youth-hub.html">More ▾</a>
+        <div class="dropdown">
+          <a href="youth-hub.html">Youth Hub (New)</a>
+          <a href="impact.html">Impact Tree</a>
+          <a href="gallery.html">Photo Gallery</a>
+          <a href="legacy.html">Legacy of Sheku Bayoh</a>
+        </div></li>
+      </ul>
+      <div class="nav__actions">
+        <button class="icon-btn" id="searchBtn" aria-label="Search the site">🔍</button>
+        <button class="icon-btn" id="langBtn" aria-label="Change language">🌐</button>
+        <a class="icon-btn" href="login.html" id="accountBtn" aria-label="Account">👤</a>
+        <button class="nav__toggle" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><span></span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<a class="help-now-btn" href="contact.html" aria-label="Get help now">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+  Get Help Now
+</a>
+
+<div class="a11y-toolbar" aria-label="Accessibility controls">
+  <button id="a11yContrast" aria-label="Toggle high contrast" title="High contrast">◐</button>
+  <button id="a11yMinus" aria-label="Decrease text size" title="Smaller text">A−</button>
+  <button id="a11yPlus" aria-label="Increase text size" title="Larger text">A+</button>
+</div>
+
+<div class="modal-backdrop" id="langBackdrop">
+  <div class="lang-modal">
+    <h3>Select Language</h3>
+    <div class="lang-row active" data-lang="en"><span class="name">English <span class="native">English</span></span><span class="check"></span></div>
+    <div class="lang-row" data-lang="fr"><span class="name">Français <span class="native">Français</span></span><span class="check"></span></div>
+    <div class="lang-row" data-lang="es"><span class="name">Español <span class="native">Español</span></span><span class="check"></span></div>
+    <div class="lang-row" data-lang="ar"><span class="name">العربية <span class="native">العربية</span></span><span class="check"></span></div>
+    <div class="lang-row" data-lang="pt"><span class="name">Português <span class="native">Português</span></span><span class="check"></span></div>
+  </div>
+</div>
+
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-panel glass">
+    <input type="text" id="siteSearch" placeholder="Search NABA — directory, events, pages…" autocomplete="off">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<button class="back-top" id="backTop" aria-label="Back to top">↑</button>
+<div class="toast" id="toast"></div>
+
+<button class="assistant-launcher" id="assistantLauncher" aria-label="Ask NABA">💬</button>
+<div class="assistant-panel" id="assistantPanel">
+  <div class="assistant-head"><span>Ask NABA</span><button id="assistantClose" aria-label="Close">✕</button></div>
+  <div class="assistant-body" id="assistantBody"></div>
+  <div class="assistant-quick" id="assistantQuick"></div>
+  <form class="assistant-form" id="assistantForm">
+    <input type="text" id="assistantInput" placeholder="Ask a question..." autocomplete="off">
+    <button type="submit" aria-label="Send">&rarr;</button>
+  </form>
+</div>
+
+<main id="main">
+
+<section class="page-head">
+  <div class="wrap">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Events</div>
+    <p class="eyebrow">Events All Across Scotland</p>
+    <h1 class="display outline-fill">On the move</h1>
+    <p>Flagship journeys and gatherings connecting our diaspora to home. Tap any event to expand it.</p>
+  </div>
+</section>
+
+<section class="section" id="roadtrip">
+  <div class="wrap">
+    <div class="journey-card">
+      <div class="postmark"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#2E1F05" stroke-width="2" stroke-dasharray="3 4"/><circle cx="50" cy="50" r="36" fill="none" stroke="#2E1F05" stroke-width="1.5"/><text x="50" y="46" text-anchor="middle" font-family="Archivo Black" font-size="9" fill="#2E1F05">EDI—LOS</text><text x="50" y="60" text-anchor="middle" font-family="Josefin Sans" font-size="7" fill="#2E1F05">NOV 2027</text></svg></div>
+      <div class="journey-map">
+        <div class="route-path" id="routePath">
+          <div class="waypoint start active" data-i="0"><div class="node"></div><div class="code">EDI</div><div class="city">Edinburgh</div></div>
+          <div class="waypoint" data-i="1"><div class="node"></div><div class="code">RAB</div><div class="city">Rabat</div></div>
+          <div class="waypoint end" data-i="2"><div class="node"></div><div class="code">LOS</div><div class="city">Lagos</div></div>
+        </div>
+      </div>
+      <div class="scrubber-wrap">
+        <input type="range" id="journeyScrub" min="0" max="2" value="0" step="1">
+      </div>
+      <div class="scrub-info" id="scrubInfo"><strong>Edinburgh, Scotland —</strong> Departure point. The convoy sets off from NABA's Edinburgh office at Summit House.</div>
+      <div class="journey-title">First Ever NABA Road Trip Adventure — Edinburgh to Lagos Road Trip</div>
+      <div class="journey-meta">Linking Scotland to West Africa overland. Departs 6 November 2027.</div>
+      <div class="countdown" id="countdown">
+        <div><div class="val" id="cd-d">–</div><div class="unit">Days</div></div>
+        <div><div class="val" id="cd-h">–</div><div class="unit">Hours</div></div>
+        <div><div class="val" id="cd-m">–</div><div class="unit">Mins</div></div>
+        <div><div class="val" id="cd-s">–</div><div class="unit">Secs</div></div>
+      </div>
+      <div class="journey-actions">
+        <a class="btn btn--solid rippleBtn" href="volunteer.html">Register Interest</a>
+        <button class="btn btn--gold rippleBtn" data-ics data-ics-title="NABA Road Trip: Edinburgh to Lagos" data-ics-start="20271106T080000" data-ics-end="20271106T180000" data-ics-loc="Summit House, Edinburgh" data-ics-desc="First-ever NABA road trip linking Scotland to West Africa overland.">Add to Calendar</button>
+      </div>
+      <p class="form-note" style="text-align:left;margin-top:10px;">Departure time is provisional and will be confirmed closer to the date.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section--tight"><div class="heritage-divider"><div class="hd-line"></div><div class="hd-mark"><img src="assets/new-naba-logo.png" alt=""></div><div class="hd-line"></div></div></section>
+
+<section class="section" aria-labelledby="ev-h">
+  <div class="wrap">
+    <p class="eyebrow">All Events</p>
+    <div class="sec-head"><h2 class="display" id="ev-h">Every gathering, in one place</h2></div>
+
+    <div class="event-grid" id="eventList">
+
+      <article class="event-card" data-expand data-expand-title="GAMSCA Cultural Week: Opening Ceremony" data-expand-tag="Community • Glasgow" data-expand-desc="The opening ceremony and Tanabirr celebration kicks off GAMSCA's 2026 Cultural Week, hosted with the Gambian community in Glasgow. This is the welcome moment for a week of culture, sport, and community celebration." data-expand-img="assets/culturalweek.jpg" data-expand-href="volunteer.html" data-expand-cta="Register interest">
+        <div class="event-card__media"><img src="assets/culturalweek.jpg" alt="GAMSCA event crowd" loading="lazy"></div>
+        <div class="event-card__body">
+          <div class="event-card__meta"><span>Fri 17 Jul 2026</span><span>Glasgow</span></div>
+          <h3>GAMSCA's Cultural Week: Opening Ceremony &amp; Tanabirr</h3>
+          <p>The opening ceremony and Tanabirr celebration kicks off GAMSCA's 2026 Cultural Week, hosted with the Gambian community in Glasgow.</p>
+          <div class="event-card__actions">
+            <button class="mini-btn rippleBtn" data-ics data-ics-title="GAMSCA Cultural Week: Opening Ceremony" data-ics-start="20260717T170000" data-ics-end="20260717T210000" data-ics-loc="Glasgow" data-ics-desc="GAMSCA Cultural Week 2026 opening ceremony and Tanabirr.">Add to Calendar</button>
+            <span class="link-arrow">Read more →</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="event-card" data-expand data-expand-title="Sport Day & Award Night" data-expand-tag="Community • Glasgow" data-expand-desc="A full day of community sport, then an evening gala with awards and celebration. It is a day of pride, achievement, and connecting families across the diaspora." data-expand-img="assets/bridge-certificates.jpg" data-expand-href="events.html#roadtrip" data-expand-cta="See details">
+        <div class="event-card__media"><img src="assets/bridge-certificates.jpg" alt="NABA event photo" loading="lazy"></div>
+        <div class="event-card__body">
+          <div class="event-card__meta"><span>Sat 18 Jul 2026</span><span>Glasgow</span></div>
+          <h3>GAMSCA's Cultural Week: Sport Day &amp; Award Night / Gala Dinner</h3>
+          <p>A full day of community sport, followed by the annual GAMSCA award night and gala dinner in the evening.</p>
+          <div class="event-card__actions">
+            <button class="mini-btn rippleBtn" data-ics data-ics-title="GAMSCA Cultural Week: Sport Day and Gala Dinner" data-ics-start="20260718T100000" data-ics-end="20260718T230000" data-ics-loc="Glasgow" data-ics-desc="GAMSCA Cultural Week 2026 sport day and award night gala dinner.">Add to Calendar</button>
+            <span class="link-arrow">Read more →</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="event-card" data-expand data-expand-title="Family Fun Day" data-expand-tag="Family • Glasgow" data-expand-desc="Closing celebrations for the whole family — a park gathering, Simba festivities, and a joyful community day that brings generations together." data-expand-img="assets/meeting-room.jpg" data-expand-href="contact.html" data-expand-cta="Get involved">
+        <div class="event-card__media"><img src="assets/meeting-room.jpg" alt="Community fun day" loading="lazy"></div>
+        <div class="event-card__body">
+          <div class="event-card__meta"><span>Sun 19 Jul 2026</span><span>Glasgow</span></div>
+          <h3>GAMSCA's Cultural Week: Sunday Park, Simba &amp; Family Fun Day</h3>
+          <p>Closing celebrations for the whole family — park gathering, Simba festivities, and community fun day.</p>
+          <div class="event-card__actions">
+            <button class="mini-btn rippleBtn" data-ics data-ics-title="GAMSCA Cultural Week: Family Fun Day" data-ics-start="20260719T110000" data-ics-end="20260719T170000" data-ics-loc="Glasgow" data-ics-desc="GAMSCA Cultural Week 2026 Sunday Park, Simba and family fun day.">Add to Calendar</button>
+            <span class="link-arrow">Read more →</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="event-card" data-expand data-expand-title="Edinburgh to Lagos Road Trip" data-expand-tag="Journey • Scotland to West Africa" data-expand-desc="The first-ever NABA Road Trip links Edinburgh to Lagos overland, bringing culture, enterprise, and community connection across the route." data-expand-img="assets/video-poster.jpg" data-expand-href="events.html#roadtrip" data-expand-cta="View route">
+        <div class="event-card__media"><img src="assets/video-poster.jpg" alt="Road trip poster" loading="lazy"></div>
+        <div class="event-card__body">
+          <div class="event-card__meta"><span>6 Nov 2027</span><span>Scotland → Lagos</span></div>
+          <h3>First Ever NABA Road Trip Adventure — Edinburgh to Lagos</h3>
+          <p>Linking Scotland to West Africa overland. This flagship route will connect communities through heritage, enterprise, and solidarity.</p>
+          <div class="event-card__actions">
+            <button class="mini-btn rippleBtn" data-ics data-ics-title="NABA Road Trip: Edinburgh to Lagos" data-ics-start="20271106T080000" data-ics-end="20271106T180000" data-ics-loc="Summit House, Edinburgh" data-ics-desc="First-ever NABA road trip linking Scotland to West Africa overland.">Add to Calendar</button>
+            <span class="link-arrow">Read more →</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="event-card" data-expand data-expand-title="Community Town Halls" data-expand-tag="Public Dialogue • Glasgow" data-expand-desc="Supporting you and your community through direct town halls and public conversations with local leadership, agencies, and residents." data-expand-img="assets/townhall.jpg" data-expand-href="contact.html" data-expand-cta="Ask a question">
+        <div class="event-card__media"><img src="assets/townhall.jpg" alt="Community town hall" loading="lazy"></div>
+        <div class="event-card__body">
+          <div class="event-card__meta"><span>26 Mar 2026</span><span>Glasgow</span></div>
+          <h3>Community Town Hall Meetings</h3>
+          <p>Supporting you and your community — an ongoing town hall programme run in partnership with Glasgow City Council, giving residents a direct line to the issues that affect them.</p>
+          <div class="event-card__actions">
+            <button class="mini-btn rippleBtn" data-ics data-ics-title="Community Town Hall Meetings" data-ics-start="20260326T180000" data-ics-end="20260326T210000" data-ics-loc="Glasgow" data-ics-desc="NABA community town hall meetings in partnership with Glasgow City Council.">Add to Calendar</button>
+            <span class="link-arrow">Read more →</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="event-card" data-expand data-expand-title="Anti-Racism in Education" data-expand-tag="Education • Glasgow" data-expand-desc="An impactful partnership dialogue with Dr Stuart Lawrence and community leaders, delivered to students in Glasgow to support anti-racism and inclusion in education." data-expand-img="assets/glasgow-antiracism-education.jpg" data-expand-href="about.html" data-expand-cta="Learn more">
+        <div class="event-card__media"><img src="assets/glasgow-antiracism-education.jpg" alt="Anti-racism event" loading="lazy"></div>
+        <div class="event-card__body">
+          <div class="event-card__meta"><span>Glasgow</span><span>Education</span></div>
+          <h3>Anti-Racism in Education with Dr Stuart Lawrence</h3>
+          <p>NABA, in partnership with Dr Stuart Lawrence and community leaders, delivered a session to over 600 students about inclusion and anti-racism.</p>
+          <div class="event-card__actions">
+            <button class="mini-btn rippleBtn" data-ics data-ics-title="Anti-Racism in Education with Dr Stuart Lawrence" data-ics-start="20260401T170000" data-ics-end="20260401T200000" data-ics-loc="Glasgow City Chambers" data-ics-desc="NABA anti-racism in education session with Dr Stuart Lawrence.">Add to Calendar</button>
+            <span class="link-arrow">Read more →</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="section--tight" style="background:#fff7ea;border-block:1px solid var(--hairline);">
+  <div class="wrap" style="text-align:center;padding-block:30px;">
+    <p class="eyebrow" style="justify-content:center;">Hosting Something?</p>
+    <h2 class="display" style="font-size:1.5rem;">Get your event listed here</h2>
+    <a class="btn btn--solid rippleBtn" href="contact.html" style="margin-top:14px;">Contact us &rarr;</a>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="newsletter">
+      <h4>Stay in the loop</h4>
+      <p>Cultural weeks, town halls, and road trip updates — straight to your inbox.</p>
+      <form data-form data-collection="newsletterSignups">
+        <input type="email" name="email" required placeholder="you@email.com">
+        <button type="submit">Join</button>
+      </form>
+      <div class="success-msg" style="margin-top:10px;">Subscribed — welcome to NABA.</div>
+    </div>
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">
+          <img src="assets/new-naba-logo.png" alt="NABA crest" width="68" height="68">
+          <b>National African &amp;<br>Black Association</b>
+        </div>
+        <p style="max-width:34ch;opacity:.85;font-size:.9rem;">Our community is our strength — connecting African and Black communities across Scotland to trusted services, culture, and each other.</p>
+        <div class="social-row">
+          <a href="https://www.instagram.com/" aria-label="Instagram" target="_blank" rel="noreferrer">IG</a>
+          <a href="https://www.facebook.com/" aria-label="Facebook" target="_blank" rel="noreferrer">FB</a>
+          <a href="https://x.com/" aria-label="X" target="_blank" rel="noreferrer">X</a>
+          <a href="https://www.linkedin.com/" aria-label="LinkedIn" target="_blank" rel="noreferrer">IN</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="directory.html">Community</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="youth-hub.html">Youth Hub</a></li>
+          <li><a href="impact.html">Impact Tree</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Offices</h4>
+        <address><b>Glasgow</b><br>Parkhead Schoolhouse, 135 Westmuir St<br>Glasgow, G31 5EX</address><address style="margin-top:14px;"><b>Edinburgh</b><br>Gyleview House, 3 Redheughs Rigg<br>Edinburgh, EH12 9DQ</address><address style="margin-top:14px;"><b>Glasgow Correspondence Office</b><br>Clyde Offices, 2nd Floor<br>48 West George Street, Glasgow, G2 1BP</address>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="volunteer.html">Volunteering &amp; Partnerships</a></li>
+          <li><a href="volunteer.html#careers">Careers &amp; Vacancies</a></li>
+          <li><a href="cuisine.html">Cuisine</a></li>
+          <li><a href="contact.html">Contact us</a></li>
+          <li><a href="tel:07990753498">07990 753498</a></li>
+          <li><a href="mailto:admin@nabaorg.uk">admin@nabaorg.uk</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <span>&copy; <span id="year">2026</span> National African &amp; Black Association.</span>
+      <ul>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="accessibility.html">Accessibility</a></li>
+        <li><a href="safeguarding.html">Safeguarding</a></li>
+        <li><a href="admin.html">Staff Login</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+<script src="js/firebase-config.js"></script>
+<script type="module" src="js/public-render.js"></script>
+</body>
+</html>
