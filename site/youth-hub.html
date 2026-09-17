@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Youth Hub — NABA | Mentorship, Resources & Funding</title>
+<meta name="description" content="NABA's Youth Hub connects young people across the diaspora with mentors, a curated resource library, and funding routes.">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#2E1F05">
+<meta name="msapplication-TileColor" content="#2E1F05">
+<meta name="msapplication-TileImage" content="assets/mstile-150.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Josefin+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<script>
+document.documentElement.classList.add('js');
+window.addEventListener('error', function(){
+  document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+});
+</script>
+
+<div class="progress-bar" id="progressBar"></div>
+<header class="site-header">
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span>Youth Hub is now live · Mentorship applications open</span>
+      <span>Edinburgh → Lagos Road Trip · 6 Nov 2027</span>
+      <span>70+ Community Businesses Listed</span>
+      <span>Youth Hub is now live · Mentorship applications open</span>
+      <span>Edinburgh → Lagos Road Trip · 6 Nov 2027</span>
+      <span>70+ Community Businesses Listed</span>
+    </div>
+  </div>
+  <div class="wrap">
+    <nav class="nav" aria-label="Primary">
+      <a class="brand" href="index.html" aria-label="NABA — home">
+        <span class="brand__badge"><img src="assets/new-naba-logo.png" alt="" width="68" height="68"></span>
+        <span class="brand__name"><b>National African &amp;</b><span>Black Association</span></span>
+      </a>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="directory.html">Community</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="volunteer.html">Volunteering & Partnerships</a></li>
+        <li><a href="cuisine.html">Cuisine</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li class="has-dropdown"><a href="youth-hub.html" aria-current="page">More ▾</a>
+        <div class="dropdown">
+          <a href="youth-hub.html">Youth Hub (New)</a>
+          <a href="impact.html">Impact Tree</a>
+          <a href="gallery.html">Photo Gallery</a>
+          <a href="legacy.html">Legacy of Sheku Bayoh</a>
+        </div></li>
+      </ul>
+      <div class="nav__actions">
+        <button class="icon-btn" id="searchBtn" aria-label="Search the site">🔍</button>
+        <button class="icon-btn" id="langBtn" aria-label="Change language">🌐</button>
+        <a class="icon-btn" href="login.html" id="accountBtn" aria-label="Account">👤</a>
+        <button class="nav__toggle" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><span></span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<a class="help-now-btn" href="contact.html" aria-label="Get help now">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+  Get Help Now
+</a>
+
+<div class="a11y-toolbar" aria-label="Accessibility controls">
+  <button id="a11yContrast" aria-label="Toggle high contrast" title="High contrast">◐</button>
+  <button id="a11yMinus" aria-label="Decrease text size" title="Smaller text">A−</button>
+  <button id="a11yPlus" aria-label="Increase text size" title="Larger text">A+</button>
+</div>
+
+<div class="modal-backdrop" id="langBackdrop">
+  <div class="lang-modal">
+    <h3>Select Language</h3>
+    <div class="lang-row active" data-lang="en"><span class="name">English <span class="native">English</span></span><span class="check"></span></div>
+    <div class="lang-row" data-lang="fr"><span class="name">Français <span class="native">Français</span></span><span class="check"></span></div>
+    <div class="lang-row" data-lang="es"><span class="name">Español <span class="native">Español</span></span><span class="check"></span></div>
+    <div class="lang-row" data-lang="ar"><span class="name">العربية <span class="native">العربية</span></span><span class="check"></span></div>
+    <div class="lang-row" data-lang="pt"><span class="name">Português <span class="native">Português</span></span><span class="check"></span></div>
+  </div>
+</div>
+
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-panel glass">
+    <input type="text" id="siteSearch" placeholder="Search NABA — directory, events, pages…" autocomplete="off">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<button class="back-top" id="backTop" aria-label="Back to top">↑</button>
+<div class="toast" id="toast"></div>
+
+<button class="assistant-launcher" id="assistantLauncher" aria-label="Ask NABA">💬</button>
+<div class="assistant-panel" id="assistantPanel">
+  <div class="assistant-head"><span>Ask NABA</span><button id="assistantClose" aria-label="Close">✕</button></div>
+  <div class="assistant-body" id="assistantBody"></div>
+  <div class="assistant-quick" id="assistantQuick"></div>
+  <form class="assistant-form" id="assistantForm">
+    <input type="text" id="assistantInput" placeholder="Ask a question..." autocomplete="off">
+    <button type="submit" aria-label="Send">&rarr;</button>
+  </form>
+</div>
+
+<main id="main">
+
+<section class="page-head">
+  <div class="wrap">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Youth Hub</div>
+    <p class="eyebrow">New Initiative <span class="new-badge">Launching 2026</span></p>
+    <h1 class="display outline-fill">A hub built for the next generation</h1>
+    <p>Mentorship, a curated resource library, leadership development, and real funding routes — brought together in one place for young people across the diaspora, and the mentors and partners who want to back them.</p>
+    <div class="hero__ctas" style="margin-top:22px;">
+      <a class="btn btn--solid rippleBtn" href="#mentorship">Find a mentor &rarr;</a>
+      <a class="btn btn--gold rippleBtn" href="#resources">Browse resources</a>
+    </div>
+  </div>
+</section>
+
+<section class="section--tight"><div class="heritage-divider"><div class="hd-line"></div><div class="hd-mark"><img src="assets/new-naba-logo.png" alt=""></div><div class="hd-line"></div></div></section>
+
+<section class="section" aria-labelledby="pillars-h">
+  <div class="wrap">
+    <p class="eyebrow">What The Hub Offers</p>
+    <div class="sec-head"><h2 class="display" id="pillars-h">Four pillars</h2></div>
+    <div class="pillar-grid">
+      <div class="pillar-card reveal" data-delay="0">
+        <div class="pill-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+        <h3>1:1 Mentorship</h3>
+        <p>Matched with a volunteer mentor from the community for guidance on education, career, or simply finding your feet.</p>
+      </div>
+      <div class="pillar-card reveal" data-delay="1">
+        <div class="pill-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <h3>Digital Skills &amp; Resources</h3>
+        <p>A curated library of real, vetted organisations covering education, careers, wellbeing, rights, and housing.</p>
+      </div>
+      <div class="pillar-card reveal" data-delay="2">
+        <div class="pill-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 2l3 7h7l-5.5 4.5L18.5 21 12 16.5 5.5 21l2-7.5L2 9h7z"/></svg></div>
+        <h3>Leadership Programme</h3>
+        <p>Structured pathways for young people to lead their own community projects, with NABA backing and visibility.</p>
+      </div>
+      <div class="pillar-card reveal" data-delay="3">
+        <div class="pill-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18 14 14 0 010-18z"/></svg></div>
+        <h3>Global Exchange</h3>
+        <p>Ties to the Edinburgh–Lagos road trip and diaspora partners — connecting Scottish-based youth to peers across West Africa.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:#fff7ea;border-block:1px solid var(--hairline);" id="resources" aria-labelledby="res-h">
+  <div class="wrap">
+    <p class="eyebrow">Resource Library</p>
+    <div class="sec-head">
+      <h2 class="display" id="res-h">Real support,<br>one click away</h2>
+      <p class="lead muted">Every organisation below is a genuine, independent Scottish or UK service — NABA curates the list, we don't run these services ourselves.</p>
+    </div>
+
+    <div class="res-category reveal">
+      <h3 style="margin-bottom:12px;">Education &amp; Mentorship</h3>
+      <div class="resource-grid">
+        <a class="resource-card" href="https://www.mcrpathways.org/" target="_blank" rel="noopener"><span class="rc-tag">Mentoring</span><h4>MCR Pathways</h4><p>Scotland's largest school-based mentoring movement, pairing young people with a trusted mentor.</p></a>
+        <a class="resource-card" href="https://young.scot/" target="_blank" rel="noopener"><span class="rc-tag">Bursaries &amp; Info</span><h4>Young Scot</h4><p>National youth information service — funding, rights, and opportunities for 11–26s.</p></a>
+        <a class="resource-card" href="https://www.mygov.scot/saltire-scholarships" target="_blank" rel="noopener"><span class="rc-tag">Scholarships</span><h4>Saltire Scholarships</h4><p>Scottish Government scholarships supporting study links between Scotland and overseas.</p></a>
+      </div>
+    </div>
+
+    <div class="res-category reveal" style="margin-top:26px;">
+      <h3 style="margin-bottom:12px;">Careers &amp; Digital Skills</h3>
+      <div class="resource-grid">
+        <a class="resource-card" href="https://www.skillsdevelopmentscotland.co.uk/" target="_blank" rel="noopener"><span class="rc-tag">Careers</span><h4>Skills Development Scotland</h4><p>Free careers advice, apprenticeships, and job-search support across Scotland.</p></a>
+        <a class="resource-card" href="https://www.myworldofwork.co.uk/" target="_blank" rel="noopener"><span class="rc-tag">Careers</span><h4>My World of Work</h4><p>Career planning tool from Skills Development Scotland for CVs, interviews, and pathways.</p></a>
+        <a class="resource-card" href="https://young.scot/campaigns/national/digital-skills" target="_blank" rel="noopener"><span class="rc-tag">Digital</span><h4>Young Scot Digital Skills</h4><p>Free digital skills resources and courses for young people.</p></a>
+      </div>
+    </div>
+
+    <div class="res-category reveal" style="margin-top:26px;">
+      <h3 style="margin-bottom:12px;">Wellbeing &amp; Mental Health</h3>
+      <div class="resource-grid">
+        <a class="resource-card" href="https://breathingspace.scot/" target="_blank" rel="noopener"><span class="rc-tag">Crisis Support</span><h4>Breathing Space Scotland</h4><p>Free, confidential phone line — 0800 83 85 87 — for anyone feeling low or anxious.</p></a>
+        <a class="resource-card" href="https://www.samh.org.uk/" target="_blank" rel="noopener"><span class="rc-tag">Mental Health</span><h4>SAMH</h4><p>Scottish Association for Mental Health — support, services and information.</p></a>
+        <a class="resource-card" href="https://www.blackmindsmatteruk.com/" target="_blank" rel="noopener"><span class="rc-tag">Culturally Specific</span><h4>Black Minds Matter UK</h4><p>Connects Black individuals with free professional mental health support.</p></a>
+      </div>
+    </div>
+
+    <div class="res-category reveal" style="margin-top:26px;">
+      <h3 style="margin-bottom:12px;">Rights, Advocacy &amp; Housing</h3>
+      <div class="resource-grid">
+        <a class="resource-card" href="https://crer.scot/" target="_blank" rel="noopener"><span class="rc-tag">Racial Equality</span><h4>CRER</h4><p>Coalition for Racial Equality and Rights — Scotland's racial justice infrastructure body.</p></a>
+        <a class="resource-card" href="https://www.cas.org.uk/" target="_blank" rel="noopener"><span class="rc-tag">Advice</span><h4>Citizens Advice Scotland</h4><p>Free, independent advice on rights, money, and legal issues.</p></a>
+        <a class="resource-card" href="https://scotland.shelter.org.uk/" target="_blank" rel="noopener"><span class="rc-tag">Housing</span><h4>Shelter Scotland</h4><p>Housing and homelessness advice and support.</p></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section--tight"><div class="heritage-divider"><div class="hd-line"></div><div class="hd-mark"><img src="assets/new-naba-logo.png" alt=""></div><div class="hd-line"></div></div></section>
+
+<section class="section" id="mentorship" aria-labelledby="mentor-h">
+  <div class="wrap">
+    <p class="eyebrow">Mentorship Programme</p>
+    <div class="sec-head"><h2 class="display" id="mentor-h">Work with us,<br>directly</h2></div>
+    <div class="tab-row">
+      <div class="tab active" data-tab="youth">I'm a young person</div>
+      <div class="tab" data-tab="mentor">I want to mentor</div>
+    </div>
+
+    <form class="form-panel active" data-panel="youth" data-form>
+      <div class="field"><label>Full name</label><input type="text" required placeholder="Your name"></div>
+      <div class="field"><label>Age</label><input type="number" min="13" max="25" required placeholder="13–25"></div>
+      <div class="field"><label>Email</label><input type="email" required placeholder="you@email.com"></div>
+      <div class="field"><label>What do you need support with?</label>
+        <select><option>Education &amp; School</option><option>Career &amp; First Job</option><option>Confidence &amp; Wellbeing</option><option>Starting a Community Project</option></select>
+      </div>
+      <div class="field"><label>Tell us a bit about yourself</label><textarea placeholder="Optional — anything you'd like your mentor to know"></textarea></div>
+      <button type="submit" class="btn btn--solid submit-btn rippleBtn">Request a Mentor</button>
+      <div class="success-msg">Thank you — we'll match you with a mentor and be in touch within 5 working days.</div>
+      <p class="form-note">All young people are matched with a vetted, DBS-checked mentor from our community network.</p>
+    </form>
+
+    <form class="form-panel" data-panel="mentor" data-form>
+      <div class="field"><label>Full name</label><input type="text" required placeholder="Your name"></div>
+      <div class="field"><label>Email</label><input type="email" required placeholder="you@email.com"></div>
+      <div class="field"><label>Area of expertise</label>
+        <select><option>Education &amp; Study Skills</option><option>Career &amp; Industry Guidance</option><option>Entrepreneurship</option><option>Arts &amp; Culture</option><option>Wellbeing &amp; Life Skills</option></select>
+      </div>
+      <div class="field"><label>Availability</label><textarea placeholder="Roughly how much time can you offer each month?"></textarea></div>
+      <button type="submit" class="btn btn--solid submit-btn rippleBtn">Apply to Mentor</button>
+      <div class="success-msg">Thank you — mentor applications include a short vetting process. We'll be in touch soon.</div>
+      <p class="form-note">Mentors are asked for a minimum six-month commitment, roughly 2 hours a month.</p>
+    </form>
+  </div>
+</section>
+
+<section class="section" style="background:#fff7ea;border-block:1px solid var(--hairline);" aria-labelledby="pledge-h">
+  <div class="wrap">
+    <p class="eyebrow">Cross-Community</p>
+    <div class="sec-head"><h2 class="display" id="pledge-h">The Youth Employability Pledge</h2></div>
+    <p class="lead muted" style="margin-top:-10px;">A new idea: businesses already listed in NABA's <a class="textlink" href="directory.html">community directory</a> can pledge work experience placements, apprenticeships, or first-job opportunities to young people through the Youth Hub — turning the directory into a real pipeline, not just a listing.</p>
+    <div class="hero__ctas" style="margin-top:20px;">
+      <a class="btn btn--gold rippleBtn" href="contact.html">Register your business as a pledge partner &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<section class="section--tight"><div class="heritage-divider"><div class="hd-line"></div><div class="hd-mark"><img src="assets/new-naba-logo.png" alt=""></div><div class="hd-line"></div></div></section>
+
+<section class="section" id="funding" aria-labelledby="fund-h">
+  <div class="wrap">
+    <p class="eyebrow">Funding &amp; Partners</p>
+    <div class="sec-head">
+      <h2 class="display" id="fund-h">Help us fund it</h2>
+      <p class="lead muted">The Youth Hub is a new NABA initiative and is actively seeking funding partners. These are real, active Scottish funding routes we're exploring — if your organisation funds youth work, we'd love to talk.</p>
+    </div>
+    <div class="resource-grid">
+      <a class="resource-card" href="https://www.tnlcommunityfund.org.uk/" target="_blank" rel="noopener"><span class="rc-tag">National</span><h4>National Lottery Community Fund</h4><p>The UK's largest community funder, including programmes for community leadership and youth-led change.</p></a>
+      <a class="resource-card" href="https://www.therobertsontrust.org.uk/" target="_blank" rel="noopener"><span class="rc-tag">Scotland</span><h4>The Robertson Trust — Youth Fund</h4><p>Core funding up to £50,000/year for organisations working with young people aged 14–25.</p></a>
+      <a class="resource-card" href="https://www.corra.scot/" target="_blank" rel="noopener"><span class="rc-tag">Scotland</span><h4>Corra Foundation</h4><p>Manages multiple Scottish Government and independent funds, including the Boost Fund for grassroots groups.</p></a>
+      <a class="resource-card" href="https://www.youthlink.scot/funding/" target="_blank" rel="noopener"><span class="rc-tag">Directory</span><h4>YouthLink Scotland</h4><p>National funding directory listing hundreds of live youth work grants across Scotland.</p></a>
+      <a class="resource-card" href="https://www.foundationscotland.org.uk/" target="_blank" rel="noopener"><span class="rc-tag">Scotland</span><h4>Foundation Scotland</h4><p>Scotland's community foundation, connecting local funds to grassroots organisations.</p></a>
+      <a class="resource-card" href="https://www.youthscotland.org.uk/programmes/funding/" target="_blank" rel="noopener"><span class="rc-tag">Scotland</span><h4>Youth Scotland</h4><p>Grassroots youth work funds including Safe Spaces and Rural Action grants.</p></a>
+    </div>
+    <div class="mentor-cta reveal" style="margin-top:30px;">
+      <p class="eyebrow onDark" style="justify-content:center;">Are You A Funder?</p>
+      <h2 class="display outline-fill cream" style="text-align:center;">Back the next generation</h2>
+      <p style="text-align:center;margin-inline:auto;">If your trust, foundation, or business wants to support youth mentorship and resources within Scotland's African &amp; Black community, we want to hear from you.</p>
+      <div class="hero__ctas" style="justify-content:center;">
+        <a class="btn btn--onDark rippleBtn" href="mailto:admin@nabaorg.uk?subject=Funding%20the%20NABA%20Youth%20Hub">Talk to us about funding &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section--tight" aria-labelledby="next-h">
+  <div class="wrap">
+    <div class="donate-card" style="background:var(--tan);border:1px solid var(--hairline);text-align:left;padding:26px;">
+      <p class="eyebrow" style="justify-content:flex-start;">Coming Next</p>
+      <h3 id="next-h" style="text-transform:none;font-family:var(--f-ui);font-weight:700;font-size:1.1rem;">Elders &amp; Heritage Exchange</h3>
+      <p style="color:var(--muted);max-width:60ch;">Another idea on our roadmap: pairing young people with community elders to record oral histories and pass on heritage, language, and lived experience — the reverse-mentorship companion to this hub. Have thoughts? <a class="textlink" href="contact.html">Tell us what you'd want to see.</a></p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="newsletter">
+      <h4>Stay in the loop</h4>
+      <p>Cultural weeks, town halls, and road trip updates — straight to your inbox.</p>
+      <form data-form data-collection="newsletterSignups">
+        <input type="email" name="email" required placeholder="you@email.com">
+        <button type="submit">Join</button>
+      </form>
+      <div class="success-msg" style="margin-top:10px;">Subscribed — welcome to NABA.</div>
+    </div>
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">
+          <img src="assets/new-naba-logo.png" alt="NABA crest" width="68" height="68">
+          <b>National African &amp;<br>Black Association</b>
+        </div>
+        <p style="max-width:34ch;opacity:.85;font-size:.9rem;">Our community is our strength — connecting African and Black communities across Scotland to trusted services, culture, and each other.</p>
+        <div class="social-row">
+          <a href="https://www.instagram.com/" aria-label="Instagram" target="_blank" rel="noreferrer">IG</a>
+          <a href="https://www.facebook.com/" aria-label="Facebook" target="_blank" rel="noreferrer">FB</a>
+          <a href="https://x.com/" aria-label="X" target="_blank" rel="noreferrer">X</a>
+          <a href="https://www.linkedin.com/" aria-label="LinkedIn" target="_blank" rel="noreferrer">IN</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="directory.html">Community</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="youth-hub.html">Youth Hub</a></li>
+          <li><a href="impact.html">Impact Tree</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Offices</h4>
+        <address><b>Glasgow</b><br>Parkhead Schoolhouse, 135 Westmuir St<br>Glasgow, G31 5EX</address><address style="margin-top:14px;"><b>Edinburgh</b><br>Gyleview House, 3 Redheughs Rigg<br>Edinburgh, EH12 9DQ</address><address style="margin-top:14px;"><b>Glasgow Correspondence Office</b><br>Clyde Offices, 2nd Floor<br>48 West George Street, Glasgow, G2 1BP</address>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="volunteer.html">Volunteering &amp; Partnerships</a></li>
+          <li><a href="volunteer.html#careers">Careers &amp; Vacancies</a></li>
+          <li><a href="cuisine.html">Cuisine</a></li>
+          <li><a href="contact.html">Contact us</a></li>
+          <li><a href="tel:07990753498">07990 753498</a></li>
+          <li><a href="mailto:admin@nabaorg.uk">admin@nabaorg.uk</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <span>&copy; <span id="year">2026</span> National African &amp; Black Association.</span>
+      <ul>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="accessibility.html">Accessibility</a></li>
+        <li><a href="safeguarding.html">Safeguarding</a></li>
+        <li><a href="admin.html">Staff Login</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+<script src="js/firebase-config.js"></script>
+<script type="module" src="js/cms.js"></script>
+</body>
+</html>
