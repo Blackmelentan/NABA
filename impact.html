@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Our Impact — NABA</title>
+<meta name="description" content="A real, honestly-labelled visual of NABA's community impact — businesses connected, milestones reached, and where we work.">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#2E1F05">
+<meta name="msapplication-TileColor" content="#2E1F05">
+<meta name="msapplication-TileImage" content="assets/mstile-150.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Josefin+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<script>
+document.documentElement.classList.add('js');
+window.addEventListener('error', function(){
+  document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+});
+</script>
+
+<div class="progress-bar" id="progressBar"></div>
+<header class="site-header">
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span>Youth Hub is now live · Mentorship applications open</span>
+      <span>Edinburgh → Lagos Road Trip · 6 Nov 2027</span>
+      <span>70+ Community Businesses Listed</span>
+      <span>Youth Hub is now live · Mentorship applications open</span>
+      <span>Edinburgh → Lagos Road Trip · 6 Nov 2027</span>
+      <span>70+ Community Businesses Listed</span>
+    </div>
+  </div>
+  <div class="wrap">
+    <nav class="nav" aria-label="Primary">
+      <a class="brand" href="index.html" aria-label="NABA — home">
+        <span class="brand__badge"><img src="assets/new-naba-logo.png" alt="" width="68" height="68"></span>
+        <span class="brand__name"><b>National African &amp;</b><span>Black Association</span></span>
+      </a>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="directory.html">Community</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="volunteer.html">Volunteering & Partnerships</a></li>
+        <li><a href="cuisine.html">Cuisine</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li class="has-dropdown"><a href="youth-hub.html" aria-current="page">More ▾</a>
+        <div class="dropdown">
+          <a href="youth-hub.html">Youth Hub (New)</a>
+          <a href="impact.html">Impact Tree</a>
+          <a href="gallery.html">Photo Gallery</a>
+          <a href="legacy.html">Legacy of Sheku Bayoh</a>
+        </div></li>
+      </ul>
+      <div class="nav__actions">
+        <button class="icon-btn" id="searchBtn" aria-label="Search the site">🔍</button>
+        <button class="icon-btn" id="langBtn" aria-label="Change language">🌐</button>
+        <a class="icon-btn" href="login.html" id="accountBtn" aria-label="Account">👤</a>
+        <button class="nav__toggle" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><span></span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<a class="help-now-btn" href="contact.html" aria-label="Get help now">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+  Get Help Now
+</a>
+
+<div class="a11y-toolbar" aria-label="Accessibility controls">
+  <button id="a11yContrast" aria-label="Toggle high contrast" title="High contrast">◐</button>
+  <button id="a11yMinus" aria-label="Decrease text size" title="Smaller text">A−</button>
+  <button id="a11yPlus" aria-label="Increase text size" title="Larger text">A+</button>
+</div>
+
+<div class="modal-backdrop" id="langBackdrop">
+  <div class="lang-modal">
+    <h3>Select Language</h3>
+    <div class="lang-row active" data-lang="en"><span class="name">English <span class="native">English</span></span><span class="check"></span></div>
+    <div class="lang-row" data-lang="fr"><span class="name">Français <span class="native">Français</span></span><span class="check"></span></div>
+    <div class="lang-row" data-lang="es"><span class="name">Español <span class="native">Español</span></span><span class="check"></span></div>
+    <div class="lang-row" data-lang="ar"><span class="name">العربية <span class="native">العربية</span></span><span class="check"></span></div>
+    <div class="lang-row" data-lang="pt"><span class="name">Português <span class="native">Português</span></span><span class="check"></span></div>
+  </div>
+</div>
+
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-panel glass">
+    <input type="text" id="siteSearch" placeholder="Search NABA — directory, events, pages…" autocomplete="off">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<button class="back-top" id="backTop" aria-label="Back to top">↑</button>
+<div class="toast" id="toast"></div>
+
+<button class="assistant-launcher" id="assistantLauncher" aria-label="Ask NABA">💬</button>
+<div class="assistant-panel" id="assistantPanel">
+  <div class="assistant-head"><span>Ask NABA</span><button id="assistantClose" aria-label="Close">✕</button></div>
+  <div class="assistant-body" id="assistantBody"></div>
+  <div class="assistant-quick" id="assistantQuick"></div>
+  <form class="assistant-form" id="assistantForm">
+    <input type="text" id="assistantInput" placeholder="Ask a question..." autocomplete="off">
+    <button type="submit" aria-label="Send">&rarr;</button>
+  </form>
+</div>
+
+<main id="main">
+
+<section class="page-head">
+  <div class="wrap">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Impact</div>
+    <p class="eyebrow">Community Impact <span class="live-pill"><span class="live-dot"></span>Growing</span></p>
+    <h1 class="display outline-fill">Every tree is a real action</h1>
+    <p>NABA does not operate a formal carbon-offset programme. This grove is a visual metaphor for community impact: each tree represents a real milestone reached, not a verified offset claim or ecological accounting system.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow">Your Grove</p>
+    <div class="sec-head"><h2 class="display">Every action grows the community</h2></div>
+    <p class="lead muted" style="margin-top:-10px;">Businesses connected, service providers supported, events run, and every account created on this device grow the grove below.</p>
+    <div class="pin-map" style="margin:10px 0 24px;padding:0;background:#fff7ea;">
+      <div class="grove" id="grove"></div>
+    </div>
+    <p style="text-align:center;font-size:.86rem;color:var(--muted);" id="groveCaption"></p>
+  </div>
+</section>
+
+<section class="section" style="background:#fff7ea;border-block:1px solid var(--hairline);">
+  <div class="wrap">
+    <div class="impact-grid" id="counterGrid">
+      <div class="impact-card"><div class="count" data-target="70">0</div><div class="lbl">Businesses</div></div>
+      <div class="impact-card"><div class="count" data-target="10">0</div><div class="lbl">Service Providers</div></div>
+      <div class="impact-card"><div class="count" data-target="3">0</div><div class="lbl">Offices</div></div>
+      <div class="impact-card"><div class="count" id="accCount" data-target="4">0</div><div class="lbl">Accounts Created</div></div>
+    </div>
+    <p class="info-note" style="max-width:520px;margin:16px auto 0;">Accounts Created reflects community sign-ups made through the NABA account area as the community grows.</p>
+  </div>
+</section>
+
+<section class="section--tight"><div class="heritage-divider"><div class="hd-line"></div><div class="hd-mark"><img src="assets/new-naba-logo.png" alt=""></div><div class="hd-line"></div></div></section>
+
+<section class="section" aria-labelledby="map-h">
+  <div class="wrap">
+    <p class="eyebrow">Where We Work</p>
+    <div class="sec-head"><h2 class="display" id="map-h">Our footprint</h2></div>
+    <p class="lead muted" style="margin-top:-10px;">A schematic layout of NABA's real offices and partnership cities — not drawn to geographic scale.</p>
+    <div class="pin-map">
+      <svg viewBox="0 0 400 260" preserveAspectRatio="none"><path d="M40 230 Q60 120 120 60 Q180 20 260 40 Q340 60 360 140 Q370 190 320 220 Q220 250 120 240 Q60 236 40 230Z" fill="none" stroke="#D99B2E" stroke-width="1.5" stroke-dasharray="5 5"/></svg>
+      <div class="pin hq" style="left:34%;top:58%;"><div class="dot"></div><div class="lbl">Glasgow HQ</div></div>
+      <div class="pin" style="left:52%;top:40%;"><div class="dot"></div><div class="lbl">Edinburgh</div></div>
+      <div class="pin" style="left:60%;top:22%;"><div class="dot"></div><div class="lbl">Dundee</div></div>
+      <div class="pin" style="left:82%;top:75%;"><div class="dot"></div><div class="lbl">Lagos (2027)</div></div>
+    </div>
+    <div class="office" style="margin-top:20px;"><h3>Glasgow</h3><address>Clyde Offices, 2nd Floor, 48 West George Street, Glasgow, G2 1BP — Head Office</address></div>
+    <div class="office"><h3>Edinburgh</h3><address>Gyleview House, 3 Redheughs Rigg, Edinburgh, EH12 9DQ — Regional Office</address></div>
+    <div class="office"><h3>Dundee</h3><address>Partnership city — Dundee City Council Multi Cultural Festival</address></div>
+  </div>
+</section>
+
+<section class="section--tight"><div class="heritage-divider"><div class="hd-line"></div><div class="hd-mark"><img src="assets/new-naba-logo.png" alt=""></div><div class="hd-line"></div></div></section>
+
+<section class="section" style="background:#fff7ea;border-block:1px solid var(--hairline);">
+  <div class="wrap">
+    <p class="eyebrow">Breakdown</p>
+    <div class="sec-head"><h2 class="display">Directory by category</h2></div>
+    <div class="bar-chart">
+      <h4>Businesses by Category</h4>
+      <div id="barChart"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ---- The Grove: real, device-local impact, honestly labelled ---- */
+var groveEl = document.getElementById('grove');
+var groveCaption = document.getElementById('groveCaption');
+
+function computeGroveItems(){
+  var accounts = window.nabaAuth ? window.nabaAuth.getUsers().length : 4;
+  var items = [
+    {tag:'Charity', stage:3}, {tag:'Community', stage:3}, {tag:'Retail', stage:3},
+    {tag:'Categories', stage:2}, {tag:'Offices', stage:2}, {tag:'Values', stage:3},
+    {tag:'Events', stage:2}
+  ];
+  for(var i=0;i<accounts;i++){
+    items.push({tag:'Account', stage: i < 2 ? 3 : (i < 4 ? 2 : 1)});
+  }
+  return items;
+}
+
+function renderGrove(){
+  var items = computeGroveItems();
+  groveEl.innerHTML = items.map(function(it){
+    return '<div class="tree3d" data-stage="'+it.stage+'"><div class="leaf leaf3"></div><div class="leaf leaf2"></div><div class="leaf leaf1"></div><div class="trunk"></div><div class="tag">'+it.tag+'</div></div>';
+  }).join('');
+  groveCaption.textContent = items.length + ' trees in your grove — ' + (window.nabaAuth ? window.nabaAuth.getUsers().length : 4) + ' from accounts created on this device.';
+  requestAnimationFrame(function(){
+    setTimeout(function(){
+      document.querySelectorAll('.tree3d').forEach(function(el, i){
+        setTimeout(function(){ el.classList.add('grown'); }, i*80);
+      });
+    }, 100);
+  });
+}
+renderGrove();
+
+/* ---- count-up ---- */
+function countUp(el){
+  var target = parseInt(el.dataset.target, 10);
+  var dur = 1200;
+  var start = performance.now();
+  function step(now){
+    var p = Math.min((now-start)/dur, 1);
+    var eased = 1 - Math.pow(1-p, 3);
+    el.textContent = Math.round(eased * target) + (target >= 70 ? '+' : '');
+    if(p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+var counterGrid = document.getElementById('counterGrid');
+if(counterGrid){
+  document.getElementById('accCount').setAttribute('data-target', window.nabaAuth ? window.nabaAuth.getUsers().length : 4);
+  var impactObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.querySelectorAll('.count').forEach(countUp);
+        impactObs.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.3});
+  impactObs.observe(counterGrid);
+}
+
+/* ---- bar chart ---- */
+var directory = [
+  {cat:'Charity', count:16},{cat:'Civic & Social', count:3},{cat:'Community', count:17},
+  {cat:'Eating', count:2},{cat:'Education', count:2},{cat:'Female Empowerment', count:4},
+  {cat:'Health', count:1},{cat:'Religion', count:1},{cat:'Retail', count:16},{cat:'Shopping', count:13}
+];
+var barChart = document.getElementById('barChart');
+if(barChart){
+  var maxCount = Math.max.apply(null, directory.map(function(d){ return d.count; }));
+  barChart.innerHTML = directory.slice().sort(function(a,b){ return b.count-a.count; }).map(function(d){
+    return '<div class="bar-row"><div class="bar-label"><span>'+d.cat+'</span><span>'+d.count+'</span></div><div class="bar-track"><div class="bar-fill" data-w="'+Math.round(d.count/maxCount*100)+'"></div></div></div>';
+  }).join('');
+  var barObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.querySelectorAll('.bar-fill').forEach(function(b){ b.style.width = b.dataset.w + '%'; });
+        barObs.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.2});
+  barObs.observe(barChart);
+}
+</script>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="newsletter">
+      <h4>Stay in the loop</h4>
+      <p>Cultural weeks, town halls, and road trip updates — straight to your inbox.</p>
+      <form data-form data-collection="newsletterSignups">
+        <input type="email" name="email" required placeholder="you@email.com">
+        <button type="submit">Join</button>
+      </form>
+      <div class="success-msg" style="margin-top:10px;">Subscribed — welcome to NABA.</div>
+    </div>
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">
+          <img src="assets/new-naba-logo.png" alt="NABA crest" width="68" height="68">
+          <b>National African &amp;<br>Black Association</b>
+        </div>
+        <p style="max-width:34ch;opacity:.85;font-size:.9rem;">Our community is our strength — connecting African and Black communities across Scotland to trusted services, culture, and each other.</p>
+        <div class="social-row">
+          <a href="https://www.instagram.com/" aria-label="Instagram" target="_blank" rel="noreferrer">IG</a>
+          <a href="https://www.facebook.com/" aria-label="Facebook" target="_blank" rel="noreferrer">FB</a>
+          <a href="https://x.com/" aria-label="X" target="_blank" rel="noreferrer">X</a>
+          <a href="https://www.linkedin.com/" aria-label="LinkedIn" target="_blank" rel="noreferrer">IN</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="directory.html">Community</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="youth-hub.html">Youth Hub</a></li>
+          <li><a href="impact.html">Impact Tree</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Offices</h4>
+        <address><b>Glasgow</b><br>Parkhead Schoolhouse, 135 Westmuir St<br>Glasgow, G31 5EX</address><address style="margin-top:14px;"><b>Edinburgh</b><br>Gyleview House, 3 Redheughs Rigg<br>Edinburgh, EH12 9DQ</address><address style="margin-top:14px;"><b>Glasgow Correspondence Office</b><br>Clyde Offices, 2nd Floor<br>48 West George Street, Glasgow, G2 1BP</address>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="volunteer.html">Volunteering &amp; Partnerships</a></li>
+          <li><a href="volunteer.html#careers">Careers &amp; Vacancies</a></li>
+          <li><a href="cuisine.html">Cuisine</a></li>
+          <li><a href="contact.html">Contact us</a></li>
+          <li><a href="tel:07990753498">07990 753498</a></li>
+          <li><a href="mailto:admin@nabaorg.uk">admin@nabaorg.uk</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <span>&copy; <span id="year">2026</span> National African &amp; Black Association.</span>
+      <ul>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="accessibility.html">Accessibility</a></li>
+        <li><a href="safeguarding.html">Safeguarding</a></li>
+        <li><a href="admin.html">Staff Login</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+<script src="js/firebase-config.js"></script>
+<script type="module" src="js/cms.js"></script>
+</body>
+</html>
