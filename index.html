@@ -46,15 +46,15 @@ window.addEventListener('error', function(){
         <span class="brand__name"><b>National African &amp;</b><span>Black Association</span></span>
       </a>
       <ul class="nav__links" id="nav-links">
-        <li><a href="index.html" aria-current="page">Home</a></li>
-        <li><a href="directory.html">Community</a></li>
-        <li><a href="events.html">Events</a></li>
-        <li><a href="news.html">News</a></li>
-        <li><a href="about.html">About Us</a></li>
-        <li><a href="volunteer.html">Volunteering & Partnerships</a></li>
-        <li><a href="cuisine.html">Cuisine</a></li>
-        <li><a href="contact.html">Contact Us</a></li>
-        <li class="has-dropdown"><a href="youth-hub.html">More ▾</a>
+        <li><a href="index.html" aria-current="page" data-i18n="home">Home</a></li>
+        <li><a href="directory.html" data-i18n="community">Community</a></li>
+        <li><a href="events.html" data-i18n="events">Events</a></li>
+        <li><a href="news.html" data-i18n="news">News</a></li>
+        <li><a href="about.html" data-i18n="about">About Us</a></li>
+        <li><a href="volunteer.html" data-i18n="volunteering">Volunteering &amp; Partnerships</a></li>
+        <li><a href="cuisine.html" data-i18n="cuisine">Cuisine</a></li>
+        <li><a href="contact.html" data-i18n="contact">Contact Us</a></li>
+        <li class="has-dropdown"><a href="youth-hub.html" data-i18n="more">More ▾</a>
         <div class="dropdown">
           <a href="youth-hub.html">Youth Hub (New)</a>
           <a href="impact.html">Impact Tree</a>
@@ -63,16 +63,16 @@ window.addEventListener('error', function(){
         </div></li>
       </ul>
       <div class="nav__actions">
-        <button class="icon-btn" id="searchBtn" aria-label="Search the site">🔍</button>
+        <button class="icon-btn" id="searchBtn" aria-label="Search the site" data-i18n="search">🔍</button>
         <button class="icon-btn" id="langBtn" aria-label="Change language">🌐</button>
-        <a class="icon-btn" href="login.html" id="accountBtn" aria-label="Account">👤</a>
+        <a class="icon-btn" href="login.html" id="accountBtn" aria-label="Account" data-i18n="account">👤</a>
         <button class="nav__toggle" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><span></span></button>
       </div>
     </nav>
   </div>
 </header>
 
-<a class="help-now-btn" href="contact.html" aria-label="Get help now">
+<a class="help-now-btn" href="contact.html" aria-label="Get help now" data-i18n="help">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
   Get Help Now
 </a>
@@ -128,10 +128,10 @@ window.addEventListener('error', function(){
   <div class="wrap hero__inner">
     <p class="eyebrow">Scotland &bull; The Gambia &bull; West Africa</p>
     <h1 class="display outline-fill" data-split>NABA finds strength in our community</h1>
-    <p class="hero__sub lead">NABA connects African and Black communities across Scotland to trusted services, cultural life, and each other — breaking down barriers wherever we find them.</p>
+    <p class="hero__sub lead">NABA connects African and Black communities across Scotland to trusted services, cultural life, and each other breaking down barriers wherever we find them.</p>
     <div class="hero__ctas">
-      <a class="btn btn--solid rippleBtn" href="directory.html">Find a Service <span class="arw">&rarr;</span></a>
-      <a class="btn btn--gold rippleBtn" href="events.html">Find an Event</a>
+      <a class="btn btn--solid rippleBtn" href="directory.html" data-i18n="service">Find a Service <span class="arw">&rarr;</span></a>
+      <a class="btn btn--gold rippleBtn" href="events.html" data-i18n="event">Find an Event</a>
     </div>
 
     <div class="hub-grid glass hero__glass">
@@ -222,14 +222,41 @@ window.addEventListener('error', function(){
 
 <section class="section" style="background:#fff7ea;border-block:1px solid var(--hairline);" aria-labelledby="video-h">
   <div class="wrap">
-    <p class="eyebrow">Watch</p>
-    <div class="sec-head"><h2 class="display" id="video-h">Learn More About NABA</h2></div>
+    <p class="eyebrow" data-i18n="watch">Watch</p>
+    <div class="sec-head"><h2 class="display" id="video-h" data-i18n="learnMore">Learn More About NABA</h2></div>
     <div class="video-block reveal" data-video="assets/naba-intro-video.mp4" role="button" tabindex="0" aria-label="Play NABA introduction video">
       <img src="assets/video-poster.jpg" alt="NABA introduction video">
       <div class="vb-overlay">
         <div class="vb-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
       </div>
       <div class="vb-cap">A minute with NABA — watch our story</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="youtube-h">
+  <div class="wrap">
+    <p class="eyebrow">YouTube</p>
+    <div class="sec-head"><h2 class="display" id="youtube-h">Latest talks, interviews and community updates</h2></div>
+    <div class="grid grid--3">
+      <a class="card card--link" href="https://www.youtube.com/results?search_query=NABA+National+African+and+Black+Association" target="_blank" rel="noopener">
+        <div class="card__count">01</div>
+        <div class="card__label">Community Talk</div>
+        <p class="card__desc">Short-form conversations on identity, belonging and public life.</p>
+        <span class="card__more">Watch now &rsaquo;</span>
+      </a>
+      <a class="card card--link" href="https://www.youtube.com/results?search_query=NABA+Scotland+community" target="_blank" rel="noopener">
+        <div class="card__count">02</div>
+        <div class="card__label">Voices &amp; Stories</div>
+        <p class="card__desc">Real community stories—local, personal and rooted in lived experience.</p>
+        <span class="card__more">Watch now &rsaquo;</span>
+      </a>
+      <a class="card card--link" href="https://www.youtube.com/results?search_query=NABA+Black+Association+Scotland" target="_blank" rel="noopener">
+        <div class="card__count">03</div>
+        <div class="card__label">Live Session</div>
+        <p class="card__desc">Panel discussions, Q&amp;A sessions and updates from the wider network.</p>
+        <span class="card__more">Watch now &rsaquo;</span>
+      </a>
     </div>
   </div>
 </section>
@@ -328,12 +355,12 @@ window.addEventListener('error', function(){
   <div class="wrap">
     <div class="newsletter">
       <h4>Stay in the loop</h4>
-      <p>Cultural weeks, town halls, and road trip updates — straight to your inbox.</p>
+      <p>Cultural weeks, town halls, and road trip updates straight to your inbox.</p>
       <form data-form data-collection="newsletterSignups">
         <input type="email" name="email" required placeholder="you@email.com">
         <button type="submit">Join</button>
       </form>
-      <div class="success-msg" style="margin-top:10px;">Subscribed — welcome to NABA.</div>
+      <div class="success-msg" style="margin-top:10px;">Subscribed  welcome to NABA.</div>
     </div>
     <div class="footer-top">
       <div>
@@ -341,7 +368,7 @@ window.addEventListener('error', function(){
           <img src="assets/new-naba-logo.png" alt="NABA logo" width="92" height="92">
           <b>National African &amp;<br>Black Association</b>
         </div>
-        <p style="max-width:34ch;opacity:.85;font-size:.9rem;">Our community is our strength — connecting African and Black communities across Scotland to trusted services, culture, and each other.</p>
+        <p style="max-width:34ch;opacity:.85;font-size:.9rem;">Our community is our strength connecting African and Black communities across Scotland to trusted services, culture, and each other.</p>
         <div class="social-row">
           <a href="https://www.instagram.com/" aria-label="Instagram" target="_blank" rel="noreferrer">IG</a>
           <a href="https://www.facebook.com/" aria-label="Facebook" target="_blank" rel="noreferrer">FB</a>

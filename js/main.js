@@ -120,17 +120,61 @@ document.addEventListener('click', function (e) {
   }
 });
 
-/* ---- language modal ---- */
+/* ---- language modal and i18n ---- */
 var langBtn = document.getElementById('langBtn');
 var langBackdrop = document.getElementById('langBackdrop');
+var langNames = { en: 'English', fr: 'Français', es: 'Español', ar: 'العربية', pt: 'Português' };
+var languageCatalog = {
+  en: {
+    home: 'Home', community: 'Community', events: 'Events', news: 'News', about: 'About Us', volunteering: 'Volunteering & Partnerships', cuisine: 'Cuisine', contact: 'Contact Us', more: 'More', search: 'Search the site', account: 'Account', help: 'Get Help Now', service: 'Find a Service', event: 'Find an Event', watch: 'Watch', learnMore: 'Learn More About NABA', youthHub: 'The Youth Hub is live', exploreYouth: 'Explore the Youth Hub', searchPlaceholder: 'Search NABA — directory, events, pages…', pleaseWait: 'Language set to English'
+  },
+  fr: {
+    home: 'Accueil', community: 'Communauté', events: 'Événements', news: 'Actualités', about: 'À propos', volunteering: 'Bénévolat & Partenariats', cuisine: 'Cuisine', contact: 'Contact', more: 'Plus', search: 'Rechercher', account: 'Compte', help: 'Obtenir de l’aide', service: 'Trouver un service', event: 'Trouver un événement', watch: 'Regarder', learnMore: 'En savoir plus sur NABA', youthHub: 'Le Youth Hub est en ligne', exploreYouth: 'Explorer le Youth Hub', searchPlaceholder: 'Rechercher dans NABA — annuaire, événements…', pleaseWait: 'Langue définie sur Français'
+  },
+  es: {
+    home: 'Inicio', community: 'Comunidad', events: 'Eventos', news: 'Noticias', about: 'Nosotros', volunteering: 'Voluntariado y asociaciones', cuisine: 'Cocina', contact: 'Contacto', more: 'Más', search: 'Buscar', account: 'Cuenta', help: 'Solicitar ayuda', service: 'Buscar un servicio', event: 'Buscar un evento', watch: 'Ver', learnMore: 'Más información sobre NABA', youthHub: 'El Youth Hub ya está disponible', exploreYouth: 'Explorar el Youth Hub', searchPlaceholder: 'Buscar en NABA — directorio, eventos…', pleaseWait: 'Idioma establecido en Español'
+  },
+  ar: {
+    home: 'الرئيسية', community: 'المجتمع', events: 'الفعاليات', news: 'الأخبار', about: 'من نحن', volunteering: 'التطوع والشراكات', cuisine: 'المطاعم', contact: 'تواصل معنا', more: 'المزيد', search: 'بحث', account: 'الحساب', help: 'احصل على المساعدة', service: 'ابحث عن خدمة', event: 'ابحث عن فعالية', watch: 'شاهد', learnMore: 'المزيد عن نابا', youthHub: 'مركز الشباب الآن متاح', exploreYouth: 'استكشف مركز الشباب', searchPlaceholder: 'ابحث في نابا — الدليل، الفعاليات…', pleaseWait: 'تم تعيين اللغة إلى العربية'
+  },
+  pt: {
+    home: 'Início', community: 'Comunidade', events: 'Eventos', news: 'Notícias', about: 'Sobre nós', volunteering: 'Voluntariado e parcerias', cuisine: 'Cozinha', contact: 'Contato', more: 'Mais', search: 'Pesquisar', account: 'Conta', help: 'Solicitar ajuda', service: 'Encontrar um serviço', event: 'Encontrar um evento', watch: 'Assistir', learnMore: 'Saiba mais sobre a NABA', youthHub: 'O Youth Hub já está ativo', exploreYouth: 'Explorar o Youth Hub', searchPlaceholder: 'Pesquisar na NABA — diretório, eventos…', pleaseWait: 'Idioma definido como Português'
+  }
+};
+function applyTranslations(lang){
+  var trans = languageCatalog[lang] || languageCatalog.en;
+  document.documentElement.lang = lang;
+  document.documentElement.setAttribute('data-lang', lang);
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var key = el.getAttribute('data-i18n');
+    if(!trans[key]) return;
+    if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA'){
+      el.placeholder = trans[key];
+    } else {
+      el.textContent = trans[key];
+    }
+  });
+  document.querySelectorAll('.lang-row').forEach(function(row){
+    row.classList.toggle('active', row.getAttribute('data-lang') === lang);
+  });
+  if (document.getElementById('siteSearch')) {
+    document.getElementById('siteSearch').placeholder = trans.searchPlaceholder || trans.search;
+  }
+  if (langBtn) {
+    langBtn.setAttribute('aria-label', 'Change language: ' + (langNames[lang] || 'English'));
+  }
+  try { localStorage.setItem('naba_lang', lang); } catch (e) {}
+}
 if(langBtn && langBackdrop){
+  var savedLang = (function(){ try { return localStorage.getItem('naba_lang') || 'en'; } catch (e) { return 'en'; } })();
+  applyTranslations(savedLang);
   langBtn.onclick = function(){ langBackdrop.classList.add('open'); };
   langBackdrop.onclick = function(e){ if(e.target === langBackdrop) langBackdrop.classList.remove('open'); };
   document.querySelectorAll('.lang-row').forEach(function(row){
     row.onclick = function(){
-      document.querySelectorAll('.lang-row').forEach(function(r){ r.classList.remove('active'); });
-      row.classList.add('active');
-      toast('Language set to ' + row.querySelector('.name').textContent.trim().split(' ')[1]);
+      var selected = row.getAttribute('data-lang') || 'en';
+      applyTranslations(selected);
+      toast('Language set to ' + (langNames[selected] || 'English'));
       setTimeout(function(){ langBackdrop.classList.remove('open'); }, 250);
     };
   });
