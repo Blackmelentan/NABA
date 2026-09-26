@@ -90,7 +90,6 @@
             '<span class="brand__name">' +
               '<b>National African &amp;</b>' +
               '<span>Black Association</span>' +
-              '<small class="brand__hub" data-i18n="hub_tagline">Scotland\'s African &amp; Black Community Hub</small>' +
             '</span>' +
           '</a>' +
           '<ul class="nav__links" id="nav-links">' +
