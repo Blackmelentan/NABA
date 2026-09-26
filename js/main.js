@@ -138,51 +138,73 @@
   /* ================================================================
      LANGUAGE SWITCHER (full site translation)
      ============================================================== */
-  var langBtn   = document.getElementById('langBtn');
-  var langModal = document.getElementById('langModal') || document.getElementById('langBackdrop');
-  var langClose = document.getElementById('langModalClose');
+  /* ================================================================
+     LANGUAGE SWITCHER (full site translation)
+     ============================================================== */
+  function getLangModal() {
+    return document.getElementById('langModal') || document.getElementById('langBackdrop');
+  }
 
   function openLangModal() {
-    langModal = document.getElementById('langModal') || document.getElementById('langBackdrop');
-    if (!langModal) return;
-    langModal.hidden = false;
-    langModal.removeAttribute('hidden');
-    langModal.classList.add('open');
-    var box = langModal.querySelector('.modal-box, .lang-modal');
+    var modal = getLangModal();
+    if (!modal) return;
+    modal.hidden = false;
+    modal.removeAttribute('hidden');
+    modal.classList.add('open');
+    var box = modal.querySelector('.modal-box, .lang-modal');
     if (box && box.focus) box.focus();
   }
 
   function closeLangModal() {
-    langModal = document.getElementById('langModal') || document.getElementById('langBackdrop');
-    if (!langModal) return;
-    langModal.hidden = true;
-    langModal.classList.remove('open');
-    if (langBtn) langBtn.focus();
+    var modal = getLangModal();
+    if (!modal) return;
+    modal.hidden = true;
+    modal.setAttribute('hidden', '');
+    modal.classList.remove('open');
+    var btn = document.getElementById('langBtn');
+    if (btn) btn.focus();
   }
 
-  if (langBtn) {
-    langBtn.addEventListener('click', openLangModal);
-  }
-  if (langClose) {
-    langClose.addEventListener('click', closeLangModal);
-  }
-
+  /* Delegated clicks for language button, options, close button, and backdrop */
   document.addEventListener('click', function (e) {
-    if (langModal && (e.target === langModal || e.target.classList.contains('modal-backdrop'))) {
-      closeLangModal();
+    if (e.target.closest('#langBtn')) {
+      e.preventDefault();
+      openLangModal();
+      return;
     }
-  });
-
-  document.querySelectorAll('.lang-option, .lang-row').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var lang = btn.getAttribute('data-lang');
-      if (window.NABA_I18N) {
+    if (e.target.closest('#langModalClose') || e.target.closest('.modal-close')) {
+      e.preventDefault();
+      closeLangModal();
+      return;
+    }
+    var opt = e.target.closest('.lang-option, .lang-row');
+    if (opt) {
+      e.preventDefault();
+      var lang = opt.getAttribute('data-lang');
+      if (lang && window.NABA_I18N) {
         window.NABA_I18N.setLang(lang);
       }
       closeLangModal();
-      var label = btn.querySelector('span') ? btn.querySelector('span').textContent : (lang || '').toUpperCase();
-      toast('Language changed · ' + label);
-    });
+      var labelEl = opt.querySelector('span:not(.lang-flag)') || opt.querySelector('span');
+      var label = labelEl ? labelEl.textContent.trim() : (lang || '').toUpperCase();
+      toast('Language: ' + label);
+      return;
+    }
+    var modal = getLangModal();
+    if (modal && modal.classList.contains('open') && !e.target.closest('.modal-box, .lang-modal')) {
+      if (e.target === modal || modal.contains(e.target)) {
+        closeLangModal();
+      }
+    }
+  });
+
+  window.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      var modal = getLangModal();
+      if (modal && modal.classList.contains('open')) {
+        closeLangModal();
+      }
+    }
   });
 
   /* Apply saved language on load */

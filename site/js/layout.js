@@ -126,11 +126,13 @@
       '<div id="langModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="langModalTitle" hidden>' +
         '<div class="modal-box">' +
           '<button class="modal-close" id="langModalClose" aria-label="Close language picker" type="button">&times;</button>' +
-          '<h2 id="langModalTitle" data-i18n="lang.choose">Choose language</h2>' +
+          '<h2 id="langModalTitle" data-i18n="lang.choose">Choose Language</h2>' +
           '<div class="lang-grid">' +
-            '<button class="lang-option" data-lang="en" type="button">🇬🇧 <span>English</span></button>' +
-            '<button class="lang-option" data-lang="fr" type="button">🇫🇷 <span>Français</span></button>' +
-            '<button class="lang-option" data-lang="ar" type="button">🇸🇦 <span>العربية</span></button>' +
+            '<button class="lang-option" data-lang="en" type="button"><span class="lang-flag">🇬🇧</span> <span>English</span></button>' +
+            '<button class="lang-option" data-lang="fr" type="button"><span class="lang-flag">🇫🇷</span> <span>Français</span></button>' +
+            '<button class="lang-option" data-lang="es" type="button"><span class="lang-flag">🇪🇸</span> <span>Español</span></button>' +
+            '<button class="lang-option" data-lang="ar" type="button"><span class="lang-flag">🇸🇦</span> <span>العربية</span></button>' +
+            '<button class="lang-option" data-lang="pt" type="button"><span class="lang-flag">🇵🇹</span> <span>Português</span></button>' +
           '</div>' +
         '</div>' +
       '</div>' +
@@ -291,10 +293,25 @@
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initLayout);
+    document.addEventListener('DOMContentLoaded', function() {
+      initLayout();
+      updateHeaderHeight();
+    });
   } else {
     initLayout();
+    updateHeaderHeight();
   }
+
+  function updateHeaderHeight() {
+    var header = document.querySelector('.site-header');
+    if (header) {
+      var h = header.offsetHeight;
+      document.documentElement.style.setProperty('--header-h', h + 'px');
+    }
+  }
+  window.addEventListener('resize', function() {
+    updateHeaderHeight();
+  }, { passive: true });
 
   function patchExistingHeader() {
     /* Replace old logo src */
@@ -324,6 +341,12 @@
       }
     }
 
+    /* Remove conflicting static langBackdrop if present to avoid dual-modal screen takeover */
+    var oldBackdrop = document.getElementById('langBackdrop');
+    if (oldBackdrop) {
+      oldBackdrop.remove();
+    }
+
     /* Add modal and overlays if missing */
     if (!document.getElementById('langModal')) {
       document.body.insertAdjacentHTML('beforeend',
@@ -331,11 +354,13 @@
           'aria-labelledby="langModalTitle" hidden>' +
           '<div class="modal-box">' +
             '<button class="modal-close" id="langModalClose" aria-label="Close" type="button">&times;</button>' +
-            '<h2 id="langModalTitle" data-i18n="lang.choose">Choose language</h2>' +
+            '<h2 id="langModalTitle" data-i18n="lang.choose">Choose Language</h2>' +
             '<div class="lang-grid">' +
-              '<button class="lang-option" data-lang="en" type="button">🇬🇧 <span>English</span></button>' +
-              '<button class="lang-option" data-lang="fr" type="button">🇫🇷 <span>Français</span></button>' +
-              '<button class="lang-option" data-lang="ar" type="button">🇸🇦 <span>العربية</span></button>' +
+              '<button class="lang-option" data-lang="en" type="button"><span class="lang-flag">🇬🇧</span> <span>English</span></button>' +
+              '<button class="lang-option" data-lang="fr" type="button"><span class="lang-flag">🇫🇷</span> <span>Français</span></button>' +
+              '<button class="lang-option" data-lang="es" type="button"><span class="lang-flag">🇪🇸</span> <span>Español</span></button>' +
+              '<button class="lang-option" data-lang="ar" type="button"><span class="lang-flag">🇸🇦</span> <span>العربية</span></button>' +
+              '<button class="lang-option" data-lang="pt" type="button"><span class="lang-flag">🇵🇹</span> <span>Português</span></button>' +
             '</div>' +
           '</div>' +
         '</div>'
