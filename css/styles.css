@@ -1576,3 +1576,11 @@ html[dir="rtl"] .brand {
   color:var(--gold-deep);margin-top:4px;
 }
 .yt-card:hover .yt-card__more{text-decoration:underline;}
+
+/* brand subtitle under name */
+.brand__hub{
+  display:block;font-size:.55rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:1.6px;color:var(--muted);opacity:.75;margin-top:2px;
+  white-space:nowrap;line-height:1;
+}
+@media(max-width:700px){.brand__hub{display:none;}}

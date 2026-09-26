@@ -46,7 +46,7 @@
       '<a href="' + href + '"' + ariaCurrent + dataI18n + '>' + label + '</a></li>';
   }
 
-  /* ---- Build header pre-brand (socials + hub tagline) ---- */
+  /* ---- Build header pre-brand (socials only) ---- */
   function buildHeaderPreBrand() {
     var links = Object.keys(SOCIALS).map(function (key) {
       var s = SOCIALS[key];
@@ -56,7 +56,6 @@
     });
     return '<div class="header-pre-brand">' +
       '<div class="header-socials" aria-label="NABA on social media">' + links.join('') + '</div>' +
-      '<span class="header-hub-tag" data-i18n="hub_tagline">Scotland\'s African &amp; Black Community Hub</span>' +
     '</div>';
   }
 
@@ -92,6 +91,7 @@
             '<span class="brand__name">' +
               '<b>National African &amp;</b>' +
               '<span>Black Association</span>' +
+              '<small class="brand__hub" data-i18n="hub_tagline">Scotland\'s African &amp; Black Community Hub</small>' +
             '</span>' +
           '</a>' +
           '<ul class="nav__links" id="nav-links">' +
