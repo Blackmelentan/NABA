@@ -1,0 +1,34 @@
+/* NABA Design Tokens – Extracted from locked logo */
+:root {
+  /* Primary */
+  --naba-gold: #F5A623;
+  --naba-gold-rgb: 245, 166, 35;
+  --naba-onyx: #111111;
+  --naba-black: #000000;
+  --naba-white: #FFFFFF;
+  --naba-offwhite: #FAF8F5;
+
+  /* Secondary */
+  --naba-slate-dark: #2A2A2A;
+  --naba-slate-light: #E5E5E5;
+
+  /* Effects */
+  --naba-gold-glow: rgba(245, 166, 35, 0.12);
+  --naba-gold-glow-strong: rgba(245, 166, 35, 0.25);
+
+  /* Typography scale suggestion */
+  --naba-font-sans: Inter, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  --naba-font-weight-bold: 700;
+  --naba-font-weight-medium: 500;
+  --naba-font-weight-regular: 400;
+
+  /* Spacing / clear space */
+  --naba-logo-clearspace: 0.5em; /* relative to logo height */
+}
+
+/* Utility classes */
+.bg-naba-gold { background-color: var(--naba-gold); }
+.bg-naba-onyx { background-color: var(--naba-onyx); }
+.text-naba-gold { color: var(--naba-gold); }
+.text-naba-onyx { color: var(--naba-onyx); }
+.border-naba-gold { border-color: var(--naba-gold); }

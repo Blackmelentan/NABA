@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Open book -->
+  <path d="M4 6 C4 5 5 4 7 4 H11 V18 H7 C5 18 4 17 4 16 V6 Z"/>
+  <path d="M20 6 C20 5 19 4 17 4 H13 V18 H17 C19 18 20 17 20 16 V6 Z"/>
+  <path d="M12 4 V18"/>
+  <!-- Rising flame / knowledge -->
+  <path d="M12 8 C12.8 7 13.5 6.2 13.5 5.2 C13.5 4.3 12.7 3.8 12 3.8 C11.3 3.8 10.5 4.3 10.5 5.2 C10.5 6.2 11.2 7 12 8 Z" fill="#F5A623"/>
+</svg>

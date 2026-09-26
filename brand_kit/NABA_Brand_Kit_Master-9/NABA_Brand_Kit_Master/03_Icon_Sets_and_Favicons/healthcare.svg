@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Shield outline -->
+  <path d="M12 3 L19 7 V13 C19 17 15.5 20 12 21 C8.5 20 5 17 5 13 V7 Z"/>
+  <!-- Heart -->
+  <path d="M12 16 C12 16 8.5 13.5 8.5 11.2 C8.5 9.8 9.5 9 10.7 9 C11.4 9 12 9.4 12 10 C12 9.4 12.6 9 13.3 9 C14.5 9 15.5 9.8 15.5 11.2 C15.5 13.5 12 16 12 16 Z" fill="#F5A623"/>
+</svg>

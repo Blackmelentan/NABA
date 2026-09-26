@@ -42,7 +42,7 @@ window.addEventListener('error', function(){
   <div class="wrap">
     <nav class="nav" aria-label="Primary">
       <a class="brand" href="index.html" aria-label="NABA — home">
-        <span class="brand__badge"><img src="assets/new-naba-logo.png" alt="" width="68" height="68"></span>
+        <span class="brand__badge"><img src="assets/logo-light.png" alt="NABA Logo" width="68" height="68"></span>
         <span class="brand__name"><b>National African &amp;</b><span>Black Association</span></span>
       </a>
       <ul class="nav__links" id="nav-links">
@@ -113,6 +113,8 @@ window.addEventListener('error', function(){
       <button class="admin-tab active" data-panel="events">Events</button>
       <button class="admin-tab" data-panel="news">News</button>
       <button class="admin-tab" data-panel="gallery">Gallery</button>
+      <button class="admin-tab" data-panel="members">Directory / Members</button>
+      <button class="admin-tab" data-panel="youthHub">Youth Hub</button>
       <button class="admin-tab" data-panel="volunteerApplications">Volunteer Applications</button>
       <button class="admin-tab" data-panel="partnerEnquiries">Partner Enquiries</button>
       <button class="admin-tab" data-panel="contactMessages">Contact Messages</button>
@@ -123,10 +125,12 @@ window.addEventListener('error', function(){
       <div class="admin-grid">
         <form class="admin-form" data-add="events">
           <h3>Add event</h3>
-          <div class="field"><label>Title</label><input name="title" required></div>
-          <div class="field"><label>Date (e.g. 14 Apr 2026)</label><input name="date"></div>
-          <div class="field"><label>Location</label><input name="location"></div>
-          <div class="field"><label>Description</label><textarea name="description"></textarea></div>
+          <div class="field"><label>Title</label><input name="title" required placeholder="e.g. African Cultural Night"></div>
+          <div class="field"><label>Date (e.g. 14 Apr 2026)</label><input name="date" placeholder="e.g. 24 Oct 2026, 6:00 PM"></div>
+          <div class="field"><label>Location</label><input name="location" placeholder="e.g. Parkhead Schoolhouse, Glasgow"></div>
+          <div class="field"><label>Category</label><input name="category" placeholder="e.g. Cultural, Community, Workshop"></div>
+          <div class="field"><label>Description</label><textarea name="description" placeholder="Full event details..."></textarea></div>
+          <div class="field"><label>Ticket / RSVP Link (optional)</label><input name="link" placeholder="https://..."></div>
           <button type="submit" class="btn btn--solid rippleBtn">Publish event</button>
           <div class="admin-msg" data-msg></div>
         </form>
@@ -138,9 +142,10 @@ window.addEventListener('error', function(){
       <div class="admin-grid">
         <form class="admin-form" data-add="news">
           <h3>Add news post</h3>
-          <div class="field"><label>Tag (e.g. Education Committee)</label><input name="tag"></div>
-          <div class="field"><label>Headline</label><input name="title" required></div>
-          <div class="field"><label>Body</label><textarea name="body"></textarea></div>
+          <div class="field"><label>Category / Tag</label><input name="tag" placeholder="e.g. Education, Health, Community Update"></div>
+          <div class="field"><label>Headline</label><input name="title" required placeholder="Post headline"></div>
+          <div class="field"><label>Excerpt / Summary</label><textarea name="excerpt" style="min-height:50px;" placeholder="Brief 1-2 sentence preview..."></textarea></div>
+          <div class="field"><label>Full Article Body</label><textarea name="body" placeholder="Full news content..."></textarea></div>
           <div class="field"><label>Photo</label><input type="file" name="image" accept="image/*"></div>
           <button type="submit" class="btn btn--solid rippleBtn">Publish post</button>
           <div class="admin-msg" data-msg></div>
@@ -152,13 +157,72 @@ window.addEventListener('error', function(){
     <div class="admin-panel" data-panel="gallery">
       <div class="admin-grid">
         <form class="admin-form" data-add="gallery">
-          <h3>Add photo</h3>
-          <div class="field"><label>Caption</label><input name="caption" required></div>
+          <h3>Add photo to gallery</h3>
+          <div class="field"><label>Caption / Title</label><input name="caption" required placeholder="e.g. Community Gathering 2026"></div>
+          <div class="field"><label>Category / Event</label><input name="category" placeholder="e.g. Events, Culture, Workshops"></div>
           <div class="field"><label>Photo</label><input type="file" name="image" accept="image/*" required></div>
           <button type="submit" class="btn btn--solid rippleBtn">Add to gallery</button>
           <div class="admin-msg" data-msg></div>
         </form>
         <div class="admin-list" data-list="gallery"><p class="admin-empty">Loading…</p></div>
+      </div>
+    </div>
+
+    <div class="admin-panel" data-panel="members">
+      <div class="admin-grid">
+        <form class="admin-form" data-add="members">
+          <h3>Add directory listing</h3>
+          <div class="field"><label>Business / Organisation Name</label><input name="name" required placeholder="e.g. Afrobeats Cafe"></div>
+          <div class="field">
+            <label>Category</label>
+            <select name="category">
+              <option value="Food & Dining">Food & Dining</option>
+              <option value="Legal & Professional">Legal & Professional Services</option>
+              <option value="Healthcare & Wellness">Healthcare & Wellness</option>
+              <option value="Hair & Beauty">Hair, Fashion & Beauty</option>
+              <option value="Tech & Creative">Tech, Media & Creative</option>
+              <option value="Education & Training">Education & Training</option>
+              <option value="Community Organization">Community Organization</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="field"><label>City / Location</label><input name="location" placeholder="e.g. Glasgow, Edinburgh, Aberdeen"></div>
+          <div class="field"><label>Phone</label><input name="phone" placeholder="e.g. 0141 123 4567"></div>
+          <div class="field"><label>Email</label><input type="email" name="email" placeholder="contact@example.com"></div>
+          <div class="field"><label>Website</label><input type="url" name="website" placeholder="https://example.com"></div>
+          <div class="field"><label>Description</label><textarea name="description" placeholder="About the business or service..."></textarea></div>
+          <div class="field"><label>Logo / Photo</label><input type="file" name="image" accept="image/*"></div>
+          <button type="submit" class="btn btn--solid rippleBtn">Add to directory</button>
+          <div class="admin-msg" data-msg></div>
+        </form>
+        <div class="admin-list" data-list="members"><p class="admin-empty">Loading…</p></div>
+      </div>
+    </div>
+
+    <div class="admin-panel" data-panel="youthHub">
+      <div class="admin-grid">
+        <form class="admin-form" data-add="youthHub">
+          <h3>Add Youth Hub entry</h3>
+          <div class="field"><label>Opportunity / Program Title</label><input name="title" required placeholder="e.g. Creative Mentorship Program"></div>
+          <div class="field">
+            <label>Category</label>
+            <select name="category">
+              <option value="Mentorship">Mentorship</option>
+              <option value="Workshop">Skills Workshop</option>
+              <option value="Scholarship">Scholarship / Bursary</option>
+              <option value="Internship">Internship / Job</option>
+              <option value="Sports & Culture">Sports & Culture</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="field"><label>Target Age / Eligibility</label><input name="eligibility" placeholder="e.g. Ages 16–25 across Scotland"></div>
+          <div class="field"><label>Deadline / Date</label><input name="deadline" placeholder="e.g. 30 Nov 2026 or Ongoing"></div>
+          <div class="field"><label>Description</label><textarea name="description" placeholder="Details and how to join..."></textarea></div>
+          <div class="field"><label>Application / Info Link</label><input name="link" placeholder="https://..."></div>
+          <button type="submit" class="btn btn--solid rippleBtn">Publish opportunity</button>
+          <div class="admin-msg" data-msg></div>
+        </form>
+        <div class="admin-list" data-list="youthHub"><p class="admin-empty">Loading…</p></div>
       </div>
     </div>
 
@@ -172,12 +236,14 @@ window.addEventListener('error', function(){
       <div class="admin-list" data-list="contactMessages"><p class="admin-empty">Loading…</p></div>
     </div>
     <div class="admin-panel" data-panel="newsletterSignups">
+      <div style="margin-bottom:14px;display:flex;justify-content:flex-end;">
+        <button id="exportNewsletterBtn" class="btn btn--gold" style="font-size:0.8rem;padding:6px 14px;">Export CSV</button>
+      </div>
       <div class="admin-list" data-list="newsletterSignups"><p class="admin-empty">Loading…</p></div>
     </div>
   </div>
 </template>
 
-<script src="js/firebase-config.js"></script>
 <script src="js/supabase-config.js"></script>
 <script type="module" src="js/cms.js"></script>
 <script type="module" src="js/admin.js"></script>

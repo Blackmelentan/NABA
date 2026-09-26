@@ -55,14 +55,17 @@ async function renderNews(cms){
   await cms.listItems('news', function(items){
     document.querySelectorAll('.media-card[data-dynamic]').forEach(function(n){ n.remove(); });
     items.forEach(function(n){
+      var img = n.image_url || n.imageUrl;
       var el = document.createElement('div');
       el.className = 'media-card reveal in';
       el.setAttribute('data-dynamic','1');
       el.innerHTML =
-        (n.imageUrl ? '<img src="'+escapeAttr(n.imageUrl)+'" alt="'+escapeAttr(n.title||'')+'">' : '') +
+        (img ? '<img src="'+escapeAttr(img)+'" alt="'+escapeAttr(n.title||'')+'">' : '') +
         '<div class="mc-body"><div class="mc-tag">'+escapeHtml(n.tag||'News')+'</div>' +
         '<h3>'+escapeHtml(n.title||'Untitled')+'</h3>' +
-        '<p>'+escapeHtml(n.body||'')+'</p></div>';
+        '<p>'+escapeHtml(n.excerpt || n.body || '')+'</p>' +
+        (n.body && n.excerpt && n.body !== n.excerpt ? '<div class="expand-content"><p>'+escapeHtml(n.body)+'</p></div><button type="button" class="read-more-btn" aria-expanded="false">Read more →</button>' : '') +
+        '</div>';
       grid.prepend(el);
     });
   });
@@ -70,29 +73,76 @@ async function renderNews(cms){
 
 async function renderGallery(cms){
   var grid = document.getElementById('galleryGrid');
-  var empty = document.getElementById('galleryEmpty');
   if (!grid) return;
   await cms.listItems('gallery', function(items){
     document.querySelectorAll('.gallery-item[data-dynamic]').forEach(function(n){ n.remove(); });
     items.forEach(function(g){
-      if (!g.imageUrl) return;
+      var img = g.image_url || g.imageUrl;
+      if (!img) return;
       var fig = document.createElement('figure');
       fig.className = 'gallery-item reveal in';
       fig.setAttribute('data-dynamic','1');
-      fig.innerHTML = '<img src="'+escapeAttr(g.imageUrl)+'" alt="'+escapeAttr(g.caption||'')+'" loading="lazy">' +
+      fig.innerHTML = '<img src="'+escapeAttr(img)+'" alt="'+escapeAttr(g.caption||'')+'" loading="lazy">' +
         '<figcaption>'+escapeHtml(g.caption||'')+'</figcaption>';
       grid.prepend(fig);
     });
   });
 }
 
-function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+async function renderMembers(cms){
+  var grid = document.getElementById('dirGrid');
+  if (!grid) return;
+  await cms.listItems('members', function(items){
+    document.querySelectorAll('.dir-card[data-dynamic]').forEach(function(n){ n.remove(); });
+    items.forEach(function(m){
+      var img = m.image_url || m.imageUrl;
+      var el = document.createElement('div');
+      el.className = 'dir-card card reveal in';
+      el.setAttribute('data-dynamic','1');
+      el.innerHTML =
+        (img ? '<div class="dir-card__img"><img src="'+escapeAttr(img)+'" alt="'+escapeAttr(m.name||'')+'"></div>' : '') +
+        '<div class="dir-card__body">' +
+        '<span class="tag">'+escapeHtml(m.category||'Business')+'</span>' +
+        '<h3>'+escapeHtml(m.name||'Untitled')+'</h3>' +
+        '<p>'+escapeHtml(m.description||'')+'</p>' +
+        (m.location ? '<p class="muted" style="font-size:0.8rem;">📍 '+escapeHtml(m.location)+'</p>' : '') +
+        (m.website ? '<p style="margin-top:8px;"><a href="'+escapeAttr(m.website)+'" target="_blank" rel="noopener" class="link-btn">Visit Website →</a></p>' : '') +
+        '</div>';
+      grid.prepend(el);
+    });
+  });
+}
+
+async function renderYouthHub(cms){
+  var grid = document.querySelector('#resources .resource-grid');
+  if (!grid) return;
+  await cms.listItems('youthHub', function(items){
+    document.querySelectorAll('.resource-card[data-dynamic]').forEach(function(n){ n.remove(); });
+    items.forEach(function(y){
+      var el = document.createElement('a');
+      el.className = 'resource-card reveal in';
+      el.setAttribute('data-dynamic','1');
+      el.href = y.link || '#';
+      if (y.link) { el.target = '_blank'; el.rel = 'noopener'; }
+      el.innerHTML =
+        '<span class="rc-tag">'+escapeHtml(y.category||'Opportunity')+'</span>' +
+        '<h4>'+escapeHtml(y.title||'Untitled')+'</h4>' +
+        '<p>'+escapeHtml(y.description||'')+'</p>' +
+        (y.deadline ? '<p class="muted" style="font-size:0.75rem;margin-top:4px;">Deadline: '+escapeHtml(y.deadline)+'</p>' : '');
+      grid.prepend(el);
+    });
+  });
+}
+
+function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
 function escapeAttr(s){ return escapeHtml(s); }
 
 (async function(){
   var cms = await waitForCMS();
-  if (!cms.isEnabled()) return; // static content already on the page is the fallback
+  if (!cms.isEnabled()) return;
   renderEvents(cms);
   renderNews(cms);
   renderGallery(cms);
+  renderMembers(cms);
+  renderYouthHub(cms);
 })();

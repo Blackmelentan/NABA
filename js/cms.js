@@ -1,257 +1,359 @@
 /* =====================================================================
-   NABA CMS — data access layer (Firebase Auth + Firestore + Storage)
-   -----------------------------------------------------------------------
-   Loaded as a <script type="module"> on every page. If NABA_FIREBASE_ENABLED
-   is false (see firebase-config.js), every function below no-ops safely
-   so the static site keeps working exactly as it does today.
-
-   Collections used:
-     events                — admin-added events (shown alongside the
-                              existing static events on events.html/index.html)
-     news                  — admin-added news posts
-     gallery               — admin-added photos
-     directoryListings     — admin-added community directory entries
-     volunteerApplications — submissions from volunteer.html
-     partnerEnquiries      — submissions from volunteer.html (partner tab)
-     contactMessages       — submissions from contact.html
-     newsletterSignups     — submissions from the footer newsletter form
+   NABA — CMS / backend abstraction layer
+   Uses Supabase as primary backend, falls back to localStorage for
+   local development when credentials are not yet configured.
    ===================================================================== */
 
-let app, auth, db, storage;
-let sdk = null;
+/* ---- Local-storage fallback constants ---- */
+var LOCAL_DATA_KEY    = 'naba_local_admin_data';
+var LOCAL_SESSION_KEY = 'naba_local_admin_email';
+var LOCAL_ADMIN_EMAIL = 'admin@nabaorg.uk';
+var LOCAL_ADMIN_PASS  = 'naba-admin-2026';
 
-const LOCAL_ADMIN_EMAIL = 'admin@nabaorg.uk';
-const LOCAL_ADMIN_PASSWORD = 'naba1234';
-const LOCAL_SESSION_KEY = 'naba_local_admin_session';
-const LOCAL_DATA_KEY = 'naba_local_admin_data';
+/* ---- Supabase SDK (lazy-loaded) ---- */
+var supabaseClient = null;
 
-function readLocalData(){
+async function loadSupabase() {
+  if (supabaseClient) return supabaseClient;
+  if (!window.NABA_SUPABASE_ENABLED) return null;
+
   try {
-    return JSON.parse(localStorage.getItem(LOCAL_DATA_KEY) || '{}');
+    // Load Supabase v2 from CDN
+    if (!window.supabase) {
+      await new Promise(function (resolve, reject) {
+        var s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+        s.onload = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
+    }
+    supabaseClient = window.supabase.createClient(
+      window.NABA_SUPABASE_URL,
+      window.NABA_SUPABASE_ANON_KEY
+    );
+    return supabaseClient;
   } catch (err) {
-    return {};
+    console.error('[NABA CMS] Failed to load Supabase:', err);
+    return null;
   }
 }
-function writeLocalData(data){
+
+/* ---- LocalStorage helpers ---- */
+function readLocalData() {
+  try { return JSON.parse(localStorage.getItem(LOCAL_DATA_KEY) || '{}'); }
+  catch (_) { return {}; }
+}
+function writeLocalData(data) {
   localStorage.setItem(LOCAL_DATA_KEY, JSON.stringify(data));
 }
-function getLocalCollection(name){
+function getLocalCollection(name) {
   var all = readLocalData();
   return Array.isArray(all[name]) ? all[name] : [];
 }
-function setLocalCollection(name, items){
+function setLocalCollection(name, items) {
   var all = readLocalData();
   all[name] = items;
   writeLocalData(all);
 }
-function localUser(){
+function localUser() {
   var email = localStorage.getItem(LOCAL_SESSION_KEY);
   return email ? { email: email } : null;
 }
 
-async function loadFirebase(){
-  if (!window.NABA_FIREBASE_ENABLED) return null;
-  if (sdk) return sdk;
-  const [appMod, authMod, fsMod, stMod] = await Promise.all([
-    import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"),
-    import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"),
-    import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"),
-    import("https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js"),
-  ]);
-  app = appMod.initializeApp(window.NABA_FIREBASE_CONFIG);
-  auth = authMod.getAuth(app);
-  db = fsMod.getFirestore(app);
-  storage = stMod.getStorage(app);
-  sdk = { appMod, authMod, fsMod, stMod };
-  return sdk;
-}
+/* =====================================================================
+   AUTH
+   ===================================================================== */
 
-/* ---------------- Auth ---------------- */
-
-async function login(email, password){
-  if (!window.NABA_FIREBASE_ENABLED) {
-    if (String(email).trim().toLowerCase() === LOCAL_ADMIN_EMAIL && String(password) === LOCAL_ADMIN_PASSWORD) {
+async function login(email, password) {
+  var sb = await loadSupabase();
+  if (!sb) {
+    // Local-mode login
+    if (email.trim().toLowerCase() === LOCAL_ADMIN_EMAIL && password === LOCAL_ADMIN_PASS) {
       localStorage.setItem(LOCAL_SESSION_KEY, email.trim());
       return { ok: true };
     }
     return { ok: false, message: 'Incorrect email or password.' };
   }
-  const { authMod } = await loadFirebase();
-  if (!authMod) return { ok:false, message:"Firebase isn't configured yet — see SETUP.md." };
-  try{
-    await authMod.signInWithEmailAndPassword(auth, email, password);
-    return { ok:true };
-  }catch(err){
-    return { ok:false, message: friendlyAuthError(err) };
-  }
+  var { data, error } = await sb.auth.signInWithPassword({ email, password });
+  if (error) return { ok: false, message: friendlyAuthError(error) };
+  return { ok: true, user: data.user };
 }
 
-async function logout(){
-  if (!window.NABA_FIREBASE_ENABLED) {
-    localStorage.removeItem(LOCAL_SESSION_KEY);
-    return;
-  }
-  const { authMod } = await loadFirebase() || {};
-  if (authMod) await authMod.signOut(auth);
+async function logout() {
+  localStorage.removeItem(LOCAL_SESSION_KEY);
+  var sb = await loadSupabase();
+  if (sb) await sb.auth.signOut();
 }
 
-async function onAuthChange(cb){
-  if (!window.NABA_FIREBASE_ENABLED) {
+async function onAuthChange(cb) {
+  var sb = await loadSupabase();
+  if (!sb) {
     cb(localUser());
     return;
   }
-  const { authMod } = await loadFirebase() || {};
-  if (!authMod){ cb(null); return; }
-  authMod.onAuthStateChanged(auth, cb);
+  // Fire immediately with current session
+  var { data: { session } } = await sb.auth.getSession();
+  cb(session ? session.user : null);
+  // Then listen for changes
+  sb.auth.onAuthStateChange(function (event, session) {
+    cb(session ? session.user : null);
+  });
 }
 
-function friendlyAuthError(err){
-  var code = err && err.code || '';
-  if (code.indexOf('user-not-found') !== -1 || code.indexOf('wrong-password') !== -1 || code.indexOf('invalid-credential') !== -1)
-    return "Incorrect email or password.";
-  if (code.indexOf('too-many-requests') !== -1)
-    return "Too many attempts — please wait a moment and try again.";
-  return "Sign-in failed: " + (err && err.message ? err.message : 'unknown error');
-}
-
-/* ---------------- Firestore CRUD ---------------- */
-
-async function listItems(collectionName, cb){
-  if (!window.NABA_FIREBASE_ENABLED) {
-    cb(getLocalCollection(collectionName));
-    return function unsubscribe(){};
+function friendlyAuthError(err) {
+  var msg = err && err.message ? err.message.toLowerCase() : '';
+  if (msg.includes('invalid') || msg.includes('credentials') || msg.includes('password')) {
+    return 'Incorrect email or password.';
   }
-  const { fsMod } = await loadFirebase() || {};
-  if (!fsMod){ cb([]); return function unsubscribe(){}; }
-  const q = fsMod.query(fsMod.collection(db, collectionName), fsMod.orderBy('createdAt', 'desc'));
-  return fsMod.onSnapshot(q, function(snap){
-    var items = [];
-    snap.forEach(function(doc){ items.push(Object.assign({ id: doc.id }, doc.data())); });
-    cb(items);
-  }, function(){ cb([]); });
+  if (msg.includes('rate') || msg.includes('too many')) {
+    return 'Too many attempts — please wait a moment and try again.';
+  }
+  return 'Sign-in failed: ' + (err.message || 'unknown error');
 }
 
-async function uploadImage(file, pathPrefix){
-  const { stMod } = await loadFirebase() || {};
-  if (!stMod || !file) return null;
-  var path = pathPrefix + '/' + Date.now() + '-' + file.name.replace(/[^a-z0-9.\-_]/gi,'_');
-  var ref = stMod.ref(storage, path);
-  await stMod.uploadBytes(ref, file);
-  return await stMod.getDownloadURL(ref);
+/* =====================================================================
+   CRUD — Collection operations
+   ===================================================================== */
+
+/* Map frontend collection names to Supabase table names */
+var TABLE_MAP = {
+  events:                 'events',
+  news:                   'news',
+  gallery:                'gallery',
+  volunteerApplications:  'volunteer_applications',
+  partnerEnquiries:       'partner_enquiries',
+  contactMessages:        'contact_messages',
+  newsletterSignups:      'newsletter_signups',
+  members:                'members',
+  youthHub:               'youth_hub_entries'
+};
+
+function tableName(col) {
+  return TABLE_MAP[col] || col;
 }
 
-async function addItem(collectionName, data, imageFile){
-  if (!window.NABA_FIREBASE_ENABLED) {
+/**
+ * List items from a collection.
+ * @param {string} collectionName
+ * @param {function} cb  - called with items array; called again on real-time update
+ * @returns {function}   - unsubscribe function
+ */
+async function listItems(collectionName, cb) {
+  var sb = await loadSupabase();
+  if (!sb) {
+    cb(getLocalCollection(collectionName));
+    return function () {};
+  }
+
+  var tbl = tableName(collectionName);
+
+  // Initial fetch
+  var { data, error } = await sb
+    .from(tbl)
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) { console.error('[NABA CMS] listItems:', error); cb([]); return function () {}; }
+  cb(data || []);
+
+  // Real-time subscription
+  var channel = sb
+    .channel('rt-' + tbl)
+    .on('postgres_changes', { event: '*', schema: 'public', table: tbl }, async function () {
+      var { data: fresh } = await sb.from(tbl).select('*').order('created_at', { ascending: false });
+      cb(fresh || []);
+    })
+    .subscribe();
+
+  return function () { sb.removeChannel(channel); };
+}
+
+/**
+ * Upload image to Supabase Storage.
+ * @returns {string|null} public URL
+ */
+async function uploadImage(file, folder) {
+  var sb = await loadSupabase();
+  if (!sb || !file) return null;
+
+  var ext = file.name.split('.').pop();
+  var path = folder + '/' + Date.now() + '-' + Math.random().toString(36).slice(2) + '.' + ext;
+  var bucket = window.NABA_SUPABASE_STORAGE_BUCKET || 'naba-site';
+
+  var { error } = await sb.storage.from(bucket).upload(path, file, {
+    cacheControl: '31536000',
+    upsert: false
+  });
+
+  if (error) { console.error('[NABA CMS] uploadImage:', error); return null; }
+
+  var { data } = sb.storage.from(bucket).getPublicUrl(path);
+  return data.publicUrl;
+}
+
+/**
+ * Add item to a collection.
+ */
+async function addItem(collectionName, data, imageFile) {
+  var sb = await loadSupabase();
+  if (!sb) {
+    // Local mode
     var all = readLocalData();
     var items = Array.isArray(all[collectionName]) ? all[collectionName] : [];
     var item = Object.assign({}, data, {
       id: String(Date.now()),
-      createdAt: new Date().toISOString(),
-      imageUrl: imageFile ? 'local-upload' : (data.imageUrl || null)
+      created_at: new Date().toISOString(),
+      status: 'published',
+      image_url: imageFile ? 'local:' + imageFile.name : (data.image_url || null)
     });
-    if (imageFile) item.imageUrl = 'local-upload:' + fileNameFor(imageFile);
     items.unshift(item);
     all[collectionName] = items;
     writeLocalData(all);
     return { ok: true };
   }
-  const { fsMod } = await loadFirebase() || {};
-  if (!fsMod) return { ok:false, message:"Firebase isn't configured yet." };
-  try{
-    var imageUrl = imageFile ? await uploadImage(imageFile, collectionName) : (data.imageUrl || null);
-    await fsMod.addDoc(fsMod.collection(db, collectionName), Object.assign({}, data, {
-      imageUrl: imageUrl,
-      createdAt: fsMod.serverTimestamp()
-    }));
-    return { ok:true };
-  }catch(err){
-    return { ok:false, message: err.message };
+
+  try {
+    var imageUrl = imageFile ? await uploadImage(imageFile, collectionName) : (data.image_url || null);
+    var payload = Object.assign({}, data, {
+      image_url: imageUrl,
+      created_at: new Date().toISOString(),
+      status: data.status || 'published'
+    });
+
+    var { error } = await sb.from(tableName(collectionName)).insert([payload]);
+    if (error) return { ok: false, message: error.message };
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, message: err.message };
   }
 }
 
-function fileNameFor(file){
-  if (!file || !file.name) return 'upload';
-  return String(file.name).replace(/[^a-z0-9.\-_]/gi, '_');
-}
-
-async function updateItem(collectionName, id, data, imageFile){
-  if (!window.NABA_FIREBASE_ENABLED) {
+/**
+ * Update an item.
+ */
+async function updateItem(collectionName, id, data, imageFile) {
+  var sb = await loadSupabase();
+  if (!sb) {
     var all = readLocalData();
     var items = Array.isArray(all[collectionName]) ? all[collectionName] : [];
-    var index = items.findIndex(function(item){ return String(item.id) === String(id); });
-    if (index === -1) return { ok: false, message: 'Item not found.' };
-    var updated = Object.assign({}, items[index], data);
-    if (imageFile) updated.imageUrl = 'local-upload:' + fileNameFor(imageFile);
-    items[index] = updated;
+    var idx = items.findIndex(function (i) { return String(i.id) === String(id); });
+    if (idx === -1) return { ok: false, message: 'Item not found.' };
+    items[idx] = Object.assign({}, items[idx], data);
+    if (imageFile) items[idx].image_url = 'local:' + imageFile.name;
     all[collectionName] = items;
     writeLocalData(all);
     return { ok: true };
   }
-  const { fsMod } = await loadFirebase() || {};
-  if (!fsMod) return { ok:false, message:"Firebase isn't configured yet." };
-  try{
+
+  try {
     var patch = Object.assign({}, data);
-    if (imageFile) patch.imageUrl = await uploadImage(imageFile, collectionName);
-    await fsMod.updateDoc(fsMod.doc(db, collectionName, id), patch);
-    return { ok:true };
-  }catch(err){
-    return { ok:false, message: err.message };
+    if (imageFile) patch.image_url = await uploadImage(imageFile, collectionName);
+    var { error } = await sb.from(tableName(collectionName)).update(patch).eq('id', id);
+    if (error) return { ok: false, message: error.message };
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, message: err.message };
   }
 }
 
-async function deleteItem(collectionName, id){
-  if (!window.NABA_FIREBASE_ENABLED) {
+/**
+ * Delete an item.
+ */
+async function deleteItem(collectionName, id) {
+  var sb = await loadSupabase();
+  if (!sb) {
     var all = readLocalData();
     var items = Array.isArray(all[collectionName]) ? all[collectionName] : [];
-    all[collectionName] = items.filter(function(item){ return String(item.id) !== String(id); });
+    all[collectionName] = items.filter(function (i) { return String(i.id) !== String(id); });
     writeLocalData(all);
     return { ok: true };
   }
-  const { fsMod } = await loadFirebase() || {};
-  if (!fsMod) return { ok:false, message:"Firebase isn't configured yet." };
-  try{
-    await fsMod.deleteDoc(fsMod.doc(db, collectionName, id));
-    return { ok:true };
-  }catch(err){
-    return { ok:false, message: err.message };
+
+  try {
+    var { error } = await sb.from(tableName(collectionName)).delete().eq('id', id);
+    if (error) return { ok: false, message: error.message };
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, message: err.message };
   }
 }
 
-/* Public, unauthenticated writes (form submissions) */
-async function submitPublic(collectionName, data){
-  if (!window.NABA_FIREBASE_ENABLED) {
+/**
+ * Public (unauthenticated) form submission — newsletter, contact, volunteer, partner.
+ */
+async function submitPublic(collectionName, data) {
+  var sb = await loadSupabase();
+  if (!sb) {
     var all = readLocalData();
     var items = Array.isArray(all[collectionName]) ? all[collectionName] : [];
     items.unshift(Object.assign({}, data, {
       id: String(Date.now()),
       status: 'new',
-      createdAt: new Date().toISOString()
+      created_at: new Date().toISOString()
     }));
     all[collectionName] = items;
     writeLocalData(all);
-    return { ok:true };
+    return { ok: true };
   }
-  const { fsMod } = await loadFirebase() || {};
-  if (!fsMod) return { ok:false, message:"not-configured" };
-  try{
-    await fsMod.addDoc(fsMod.collection(db, collectionName), Object.assign({}, data, {
-      createdAt: fsMod.serverTimestamp(),
+
+  try {
+    var payload = Object.assign({}, data, {
+      created_at: new Date().toISOString(),
       status: 'new'
-    }));
-    return { ok:true };
-  }catch(err){
-    return { ok:false, message: err.message };
+    });
+    var { error } = await sb.from(tableName(collectionName)).insert([payload]);
+    if (error) return { ok: false, message: error.message };
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, message: err.message };
   }
 }
 
+/**
+ * Fetch public data for rendering on public pages (events, news, gallery, etc.)
+ */
+async function fetchPublic(collectionName, options) {
+  options = options || {};
+  var sb = await loadSupabase();
+  if (!sb) {
+    var items = getLocalCollection(collectionName);
+    if (options.limit) items = items.slice(0, options.limit);
+    return items;
+  }
+
+  try {
+    var q = sb.from(tableName(collectionName))
+      .select('*')
+      .eq('status', 'published')
+      .order('created_at', { ascending: false });
+
+    if (options.limit) q = q.limit(options.limit);
+    if (options.filter) {
+      Object.entries(options.filter).forEach(function ([k, v]) { q = q.eq(k, v); });
+    }
+
+    var { data, error } = await q;
+    if (error) { console.error('[NABA CMS] fetchPublic:', error); return []; }
+    return data || [];
+  } catch (err) {
+    console.error('[NABA CMS] fetchPublic:', err);
+    return [];
+  }
+}
+
+/* ---- Expose public API ---- */
 window.nabaCMS = {
-  isEnabled: function(){ return true; },
-  login: login,
-  logout: logout,
+  isEnabled:    function () { return true; },  // always true (local-mode is still "enabled")
+  isLive:       function () { return !!window.NABA_SUPABASE_ENABLED; },
+  login:        login,
+  logout:       logout,
   onAuthChange: onAuthChange,
-  listItems: listItems,
-  addItem: addItem,
-  updateItem: updateItem,
-  deleteItem: deleteItem,
-  submitPublic: submitPublic
+  listItems:    listItems,
+  addItem:      addItem,
+  updateItem:   updateItem,
+  deleteItem:   deleteItem,
+  submitPublic: submitPublic,
+  fetchPublic:  fetchPublic,
+  uploadImage:  uploadImage
 };
