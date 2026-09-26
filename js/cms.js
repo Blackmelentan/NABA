@@ -357,3 +357,5 @@ window.nabaCMS = {
   fetchPublic:  fetchPublic,
   uploadImage:  uploadImage
 };
+
+
