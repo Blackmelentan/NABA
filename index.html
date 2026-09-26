@@ -85,7 +85,7 @@ window.addEventListener('error', function(){
   <div class="search-panel glass">
     <button class="search-close" id="searchClose" aria-label="Close search" type="button">&times;</button>
     <form class="search-form" id="searchForm" role="search">
-      <input type="text" id="siteSearch" placeholder="Search NABA â€” directory, events, pagesâ€¦" autocomplete="off">
+      <input type="text" id="searchInput" placeholder="Search NABA — directory, events, pages…" autocomplete="off">
       <button type="submit" aria-label="Submit search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="5.5"/><path d="M16 16L21 21" stroke-linecap="round"/>
@@ -99,19 +99,16 @@ window.addEventListener('error', function(){
 <button class="back-top" id="backToTop" aria-label="Back to top" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg></button>
 <div class="toast" id="toast"></div>
 
-<button class="assistant-launcher" id="assistantLauncher" aria-label="Ask NABA" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 18.5 3 21V6.8A2.8 2.8 0 0 1 5.8 4h12.4A2.8 2.8 0 0 1 21 6.8v7.4A2.8 2.8 0 0 1 18.2 17H6Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 9h8M8 12h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+<button class="assistant-fab" id="assistantLauncher" aria-label="Ask NABA" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 18.5 3 21V6.8A2.8 2.8 0 0 1 5.8 4h12.4A2.8 2.8 0 0 1 21 6.8v7.4A2.8 2.8 0 0 1 18.2 17H6Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 9h8M8 12h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
 <div class="assistant-panel" id="assistantPanel" role="dialog" aria-labelledby="assistantTitle" aria-modal="false" hidden>
-  <div class="assistant-head">
-    <span id="assistantTitle" style="display:flex;align-items:center;gap:8px;">
-      <img src="assets/crest.png" alt="" width="20" height="20" style="object-fit:contain;">
-      Ask NABA
-    </span>
-    <button id="assistantClose" aria-label="Close" type="button">&times;</button>
+  <div class="asst-header">
+    <span id="assistantTitle">NABA Assistant</span>
+    <button class="asst-close" id="assistantClose" aria-label="Close assistant" type="button">&times;</button>
   </div>
-  <div class="assistant-body" id="assistantMessages"></div>
-  <div class="assistant-quick" id="assistantQuick"></div>
-  <form class="assistant-form" id="assistantForm">
-    <input type="text" id="assistantInput" placeholder="Ask a question..." autocomplete="off">
+  <div class="asst-messages" id="assistantMessages"></div>
+  <div class="asst-quick" id="assistantQuick"></div>
+  <form class="asst-form" id="assistantForm">
+    <input type="text" id="assistantInput" placeholder="Ask a question…" autocomplete="off">
     <button type="submit" aria-label="Send">&#9654;</button>
   </form>
 </div>
