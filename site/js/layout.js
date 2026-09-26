@@ -201,8 +201,8 @@
           /* Brand col */
           '<div>' +
             '<div class="footer-brand">' +
-              '<img src="assets/logo-light.png" alt="NABA logo" width="92" height="92" ' +
-                'onerror="this.src=\'assets/NABA_Full_Lockup_Light_BG.png\'">' +
+              '<img src="assets/logo-dark.png" alt="NABA logo" width="110" height="92" ' +
+                'onerror="this.src=\'assets/logo-light.png\'">' +
               '<b>National African &amp;<br>Black Association</b>' +
             '</div>' +
             '<p class="footer-tagline" data-i18n="footer.tagline">' +
@@ -418,7 +418,7 @@
   function patchExistingFooter() {
     /* Replace old logo in footer */
     document.querySelectorAll('.footer-brand img, .site-footer img[src*="new-naba-logo"]').forEach(function (img) {
-      img.src = 'assets/logo-light.png';
+      img.src = 'assets/logo-dark.png';
     });
 
     /* Replace generic social links with real ones */

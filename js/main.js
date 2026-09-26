@@ -53,11 +53,21 @@
     search: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="5.5" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M16 16L21 21" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>',
     globe:  '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3c2.8 2.9 4.3 5.9 4.3 9S14.8 18.1 12 21c-2.8-2.9-4.3-5.9-4.3-9S9.2 5.9 12 3Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>',
     user:   '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="3.6" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M5 19c1.6-3.1 4.1-4.7 7-4.7s5.4 1.6 7 4.7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>',
-    chat:   '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 18.5 3 21V6.8A2.8 2.8 0 0 1 5.8 4h12.4A2.8 2.8 0 0 1 21 6.8v7.4A2.8 2.8 0 0 1 18.2 17H6Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 9h8M8 12h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>'
+    chat:   '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 18.5 3 21V6.8A2.8 2.8 0 0 1 5.8 4h12.4A2.8 2.8 0 0 1 21 6.8v7.4A2.8 2.8 0 0 1 18.2 17H6Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 9h8M8 12h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    contrast: '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18V3z" fill="currentColor"/></svg>',
+    arrowUp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>'
   };
 
   (function setSvgIcons() {
-    var map = { searchBtn: 'search', langBtn: 'globe', accountBtn: 'user', assistantLauncher: 'chat' };
+    var map = {
+      searchBtn: 'search',
+      langBtn: 'globe',
+      accountBtn: 'user',
+      assistantLauncher: 'chat',
+      a11yContrast: 'contrast',
+      backTop: 'arrowUp',
+      backToTop: 'arrowUp'
+    };
     Object.keys(map).forEach(function (id) {
       var el = document.getElementById(id);
       if (el && !el.querySelector('svg')) {
@@ -65,6 +75,60 @@
       }
     });
   })();
+
+  /* ================================================================
+     ACCESSIBILITY CONTROLS (Contrast & Text Size)
+     ============================================================== */
+  var a11yContrast = document.getElementById('a11yContrast');
+  var a11yMinus    = document.getElementById('a11yMinus');
+  var a11yPlus     = document.getElementById('a11yPlus');
+
+  if (localStorage.getItem('naba_contrast') === '1') {
+    document.documentElement.classList.add('contrast');
+    if (a11yContrast) a11yContrast.classList.add('active');
+  }
+  var savedSize = localStorage.getItem('naba_fontsize');
+  if (savedSize === 'xl') {
+    document.documentElement.classList.add('text-xl');
+  } else if (savedSize === 'lg') {
+    document.documentElement.classList.add('text-lg');
+  }
+
+  if (a11yContrast) {
+    a11yContrast.addEventListener('click', function () {
+      var isContrast = document.documentElement.classList.toggle('contrast');
+      a11yContrast.classList.toggle('active', isContrast);
+      localStorage.setItem('naba_contrast', isContrast ? '1' : '0');
+    });
+  }
+
+  if (a11yPlus) {
+    a11yPlus.addEventListener('click', function () {
+      var html = document.documentElement;
+      if (html.classList.contains('text-lg')) {
+        html.classList.remove('text-lg');
+        html.classList.add('text-xl');
+        localStorage.setItem('naba_fontsize', 'xl');
+      } else if (!html.classList.contains('text-xl')) {
+        html.classList.add('text-lg');
+        localStorage.setItem('naba_fontsize', 'lg');
+      }
+    });
+  }
+
+  if (a11yMinus) {
+    a11yMinus.addEventListener('click', function () {
+      var html = document.documentElement;
+      if (html.classList.contains('text-xl')) {
+        html.classList.remove('text-xl');
+        html.classList.add('text-lg');
+        localStorage.setItem('naba_fontsize', 'lg');
+      } else {
+        html.classList.remove('text-lg');
+        localStorage.removeItem('naba_fontsize');
+      }
+    });
+  }
 
   /* ================================================================
      SCROLL PROGRESS BAR
@@ -262,6 +326,8 @@
   function openSearch() {
     if (!searchOverlay) return;
     searchOverlay.hidden = false;
+    searchOverlay.removeAttribute('hidden');
+    searchOverlay.classList.add('open');
     document.body.classList.add('search-open');
     if (searchInput) { searchInput.value = ''; searchInput.focus(); }
     if (searchResults) searchResults.innerHTML = '';
@@ -269,8 +335,20 @@
   function closeSearch() {
     if (!searchOverlay) return;
     searchOverlay.hidden = true;
+    searchOverlay.setAttribute('hidden', '');
+    searchOverlay.classList.remove('open');
     document.body.classList.remove('search-open');
     if (searchBtn) searchBtn.focus();
+  }
+
+  /* Force search overlay to start explicitly closed */
+  if (searchOverlay) {
+    searchOverlay.hidden = true;
+    searchOverlay.setAttribute('hidden', '');
+    searchOverlay.classList.remove('open');
+    searchOverlay.addEventListener('click', function (e) {
+      if (e.target === searchOverlay) closeSearch();
+    });
   }
 
   if (searchBtn) searchBtn.addEventListener('click', openSearch);
@@ -366,17 +444,28 @@
     if (!panel) return;
     panel.hidden = false;
     panel.removeAttribute('hidden');
+    panel.classList.add('open');
     if (!assistantStarted) {
       assistantStarted = true;
       addMsg('Hi! I\'m the NABA assistant. I can answer common questions about NABA, our services, events, and how to get involved. What would you like to know?', 'bot');
       renderQuickReplies();
     }
+    if (assistantInput) assistantInput.focus();
   }
 
   function closeAssistant() {
     if (!panel) return;
     panel.hidden = true;
+    panel.setAttribute('hidden', '');
+    panel.classList.remove('open');
     if (launcher) launcher.focus();
+  }
+
+  /* Force assistant panel to start explicitly closed */
+  if (panel) {
+    panel.hidden = true;
+    panel.setAttribute('hidden', '');
+    panel.classList.remove('open');
   }
 
   if (launcher) launcher.addEventListener('click', openAssistant);
@@ -770,7 +859,7 @@
   /* ================================================================
      BACK TO TOP BUTTON
      ============================================================== */
-  var backToTop = document.getElementById('backToTop');
+  var backToTop = document.getElementById('backToTop') || document.getElementById('backTop');
   if (!backToTop) {
     backToTop = document.createElement('button');
     backToTop.id = 'backToTop';
@@ -779,12 +868,18 @@
     backToTop.setAttribute('aria-label', 'Back to top');
     backToTop.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>';
     document.body.appendChild(backToTop);
+  } else {
+    if (!backToTop.querySelector('svg')) {
+      backToTop.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>';
+    }
   }
   backToTop.addEventListener('click', function () {
     window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
   });
   window.addEventListener('scroll', function () {
-    backToTop.classList.toggle('visible', window.scrollY > 400);
+    var isVis = window.scrollY > 350;
+    backToTop.classList.toggle('visible', isVis);
+    backToTop.classList.toggle('show', isVis);
   }, { passive: true });
 
   /* ================================================================

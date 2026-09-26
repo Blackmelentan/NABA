@@ -847,6 +847,8 @@ window.NABA_I18N = (function () {
         el.setAttribute(attr, val);
       } else if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
         el.placeholder = val;
+      } else if (el.classList.contains('icon-btn') || el.querySelector('svg')) {
+        el.setAttribute('aria-label', val);
       } else {
         el.textContent = val;
       }

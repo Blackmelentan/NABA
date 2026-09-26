@@ -63,9 +63,9 @@ window.addEventListener('error', function(){
         </div></li>
       </ul>
       <div class="nav__actions">
-        <button class="icon-btn" id="searchBtn" aria-label="Search the site" data-i18n="search">🔍</button>
-        <button class="icon-btn" id="langBtn" aria-label="Change language">🌐</button>
-        <a class="icon-btn" href="login.html" id="accountBtn" aria-label="Account" data-i18n="account">👤</a>
+        <button class="icon-btn" id="searchBtn" aria-label="Search the site" data-i18n="search" data-i18n-attr="aria-label" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="5.5" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M16 16L21 21" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
+        <button class="icon-btn" id="langBtn" aria-label="Change language" data-i18n="lang.choose" data-i18n-attr="aria-label" data-lang="en" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3c2.8 2.9 4.3 5.9 4.3 9S14.8 18.1 12 21c-2.8-2.9-4.3-5.9-4.3-9S9.2 5.9 12 3Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
+        <a class="icon-btn" href="login.html" id="accountBtn" aria-label="Account" data-i18n="account" data-i18n-attr="aria-label"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="3.6" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M5 19c1.6-3.1 4.1-4.7 7-4.7s5.4 1.6 7 4.7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></a>
         <button class="nav__toggle" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><span></span></button>
       </div>
     </nav>
@@ -78,31 +78,41 @@ window.addEventListener('error', function(){
 </a>
 
 <div class="a11y-toolbar" aria-label="Accessibility controls">
-  <button id="a11yContrast" aria-label="Toggle high contrast" title="High contrast">◐</button>
-  <button id="a11yMinus" aria-label="Decrease text size" title="Smaller text">A−</button>
-  <button id="a11yPlus" aria-label="Increase text size" title="Larger text">A+</button>
-</div>
-
-</div>
-
-<div class="search-overlay" id="searchOverlay">
+  <button id="a11yContrast" aria-label="Toggle high contrast" title="High contrast" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18V3z" fill="currentColor"/></svg></button>
+  <button id="a11yMinus" aria-label="Decrease text size" title="Smaller text" type="button">A−</button>
+  <button id="a11yPlus" aria-label="Increase text size" title="Larger text" type="button">A+</button>
+<div class="search-overlay" id="searchOverlay" hidden>
   <div class="search-panel glass">
-    <input type="text" id="siteSearch" placeholder="Search NABA — directory, events, pages…" autocomplete="off">
+    <button class="search-close" id="searchClose" aria-label="Close search" type="button">&times;</button>
+    <form class="search-form" id="searchForm" role="search">
+      <input type="text" id="siteSearch" placeholder="Search NABA â€” directory, events, pagesâ€¦" autocomplete="off">
+      <button type="submit" aria-label="Submit search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="5.5"/><path d="M16 16L21 21" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </form>
     <div class="search-results" id="searchResults"></div>
   </div>
 </div>
 
-<button class="back-top" id="backTop" aria-label="Back to top">↑</button>
+<button class="back-top" id="backToTop" aria-label="Back to top" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg></button>
 <div class="toast" id="toast"></div>
 
-<button class="assistant-launcher" id="assistantLauncher" aria-label="Ask NABA">💬</button>
-<div class="assistant-panel" id="assistantPanel">
-  <div class="assistant-head"><span>Ask NABA</span><button id="assistantClose" aria-label="Close">✕</button></div>
-  <div class="assistant-body" id="assistantBody"></div>
+<button class="assistant-launcher" id="assistantLauncher" aria-label="Ask NABA" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 18.5 3 21V6.8A2.8 2.8 0 0 1 5.8 4h12.4A2.8 2.8 0 0 1 21 6.8v7.4A2.8 2.8 0 0 1 18.2 17H6Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 9h8M8 12h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+<div class="assistant-panel" id="assistantPanel" role="dialog" aria-labelledby="assistantTitle" aria-modal="false" hidden>
+  <div class="assistant-head">
+    <span id="assistantTitle" style="display:flex;align-items:center;gap:8px;">
+      <img src="assets/crest.png" alt="" width="20" height="20" style="object-fit:contain;">
+      Ask NABA
+    </span>
+    <button id="assistantClose" aria-label="Close" type="button">&times;</button>
+  </div>
+  <div class="assistant-body" id="assistantMessages"></div>
   <div class="assistant-quick" id="assistantQuick"></div>
   <form class="assistant-form" id="assistantForm">
     <input type="text" id="assistantInput" placeholder="Ask a question..." autocomplete="off">
-    <button type="submit" aria-label="Send">&rarr;</button>
+    <button type="submit" aria-label="Send">&#9654;</button>
   </form>
 </div>
 
@@ -192,7 +202,7 @@ window.addEventListener('error', function(){
   </div>
 </div>
 
-<section class="section--tight"><div class="heritage-divider"><div class="hd-line"></div><div class="hd-mark"><img src="assets/logo-light.png" alt=""></div><div class="hd-line"></div></div></section>
+<section class="section--tight"><div class="heritage-divider"><div class="hd-line"></div><div class="hd-mark"><img src="assets/crest.png" alt="NABA Crest" width="22" height="22"></div><div class="hd-line"></div></div></section>
 
 <section class="section" aria-labelledby="mission-h">
   <div class="wrap">
@@ -267,7 +277,7 @@ window.addEventListener('error', function(){
   </div>
 </section>
 
-<section class="section--tight"><div class="heritage-divider"><div class="hd-line"></div><div class="hd-mark"><img src="assets/logo-light.png" alt=""></div><div class="hd-line"></div></div></section>
+<section class="section--tight"><div class="heritage-divider"><div class="hd-line"></div><div class="hd-mark"><img src="assets/crest.png" alt="NABA Crest" width="22" height="22"></div><div class="hd-line"></div></div></section>
 
 <section class="section" style="background:var(--espresso);color:var(--cream);" aria-labelledby="youth-h">
   <div class="wrap" style="text-align:center;">
@@ -306,8 +316,7 @@ window.addEventListener('error', function(){
   <div class="wrap">
     <p class="eyebrow">What We've Been Up To Recently</p>
     <div class="sec-head"><h2 class="display" id="stories-h">Recent work</h2></div>
-  </div>
-  <div class="story-scroll" id="storyScroll">
+    <div class="story-scroll" id="storyScroll">
     <div class="story-card">
       <img src="assets/townhall.jpg" alt="Community town hall meeting, Glasgow">
       <div class="story-body"><div class="tag">26 Mar 2026</div><h4>Community Town Hall Meetings</h4><p>Supporting you and your community.</p></div>
@@ -328,6 +337,7 @@ window.addEventListener('error', function(){
       <img src="assets/colorful-attire.jpg" alt="We promote collaboration and partnership">
       <div class="story-body"><div class="tag">Partnership</div><h4>Collaboration &amp; Partnership</h4><p>Building lasting community ties.</p></div>
     </div>
+  </div>
   </div>
 </section>
 
@@ -356,7 +366,7 @@ window.addEventListener('error', function(){
     <div class="footer-top">
       <div>
         <div class="footer-brand">
-          <img src="assets/logo-light.png" alt="NABA logo" width="92" height="92">
+          <img src="assets/logo-dark.png" alt="NABA logo" width="110" height="92" onerror="this.src='assets/logo-light.png'">
           <b>National African &amp;<br>Black Association</b>
         </div>
         <p style="max-width:34ch;opacity:.85;font-size:.9rem;">Our community is our strength connecting African and Black communities across Scotland to trusted services, culture, and each other.</p>
