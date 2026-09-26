@@ -85,7 +85,7 @@
           buildHeaderPreBrand() +
           '<a class="brand" href="./" aria-label="NABA &middot; Home">' +
             '<span class="brand__badge">' +
-              '<img src="assets/NABA_Transparent_Mark_No_Text.png.jpg" alt="NABA lion crest" width="52" height="52">' +
+              '<img src="assets/logo-light.png" alt="NABA logo" width="46" height="52">' +
             '</span>' +
             '<span class="brand__name">' +
               '<b>National African &amp;</b>' +

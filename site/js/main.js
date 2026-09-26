@@ -6,6 +6,14 @@
 (function () {
   'use strict';
 
+  /* ---- URL normalizer: strip /index.html from browser address bar ---- */
+  try {
+    if (typeof window !== 'undefined' && window.location.pathname.endsWith('/index.html')) {
+      var cleanPath = window.location.pathname.replace(/\/index\.html$/, '/') + window.location.search + window.location.hash;
+      window.history.replaceState(null, document.title, cleanPath);
+    }
+  } catch (_) {}
+
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ================================================================

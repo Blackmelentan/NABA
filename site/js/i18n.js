@@ -61,6 +61,7 @@ window.NABA_I18N = (function () {
       'searchPlaceholder': 'Search NABA — directory, events, pages…',
       'selectLanguage': 'Select Language',
       'lang.choose': 'Select Language',
+      'hub_tagline': "Scotland's African & Black Community Hub",
 
       /* Hero */
       'heroEyebrow': "Scotland's African & Black Community Hub",
@@ -217,6 +218,7 @@ window.NABA_I18N = (function () {
       'searchPlaceholder': 'Rechercher dans NABA — annuaire, événements…',
       'selectLanguage': 'Choisir la langue',
       'lang.choose': 'Choisir la langue',
+      'hub_tagline': "Le Centre Communautaire Africain & Noir d'Écosse",
 
       /* Hero */
       'heroEyebrow': "Le Centre Communautaire Africain & Noir d'Écosse",
@@ -373,6 +375,7 @@ window.NABA_I18N = (function () {
       'searchPlaceholder': 'Buscar en NABA — directorio, eventos…',
       'selectLanguage': 'Seleccionar Idioma',
       'lang.choose': 'Seleccionar Idioma',
+      'hub_tagline': 'El Centro Comunitario Africano y Negro de Escocia',
 
       /* Hero */
       'heroEyebrow': 'El Centro Comunitario Africano y Negro de Escocia',
@@ -529,6 +532,7 @@ window.NABA_I18N = (function () {
       'searchPlaceholder': 'ابحث في NABA — الدليل، الفعاليات…',
       'selectLanguage': 'اختر اللغة',
       'lang.choose': 'اختر اللغة',
+      'hub_tagline': 'مركز المجتمع الأفريقي والأسود في اسكتلندا',
 
       /* Hero */
       'heroEyebrow': 'مركز المجتمع الأفريقي والأسود في اسكتلندا',
@@ -685,6 +689,7 @@ window.NABA_I18N = (function () {
       'searchPlaceholder': 'Pesquisar na NABA — diretório, eventos…',
       'selectLanguage': 'Selecionar Idioma',
       'lang.choose': 'Selecionar Idioma',
+      'hub_tagline': 'O Centro Comunitário Africano e Negro da Escócia',
 
       /* Hero */
       'heroEyebrow': 'O Centro Comunitário Africano e Negro da Escócia',

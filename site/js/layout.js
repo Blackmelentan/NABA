@@ -27,9 +27,18 @@
     return file;
   }
 
+  /* ---- URL normalizer: strip /index.html from URL bar ---- */
+  try {
+    if (typeof window !== 'undefined' && window.location.pathname.endsWith('/index.html')) {
+      var cleanPath = window.location.pathname.replace(/\/index\.html$/, '/') + window.location.search + window.location.hash;
+      window.history.replaceState(null, document.title, cleanPath);
+    }
+  } catch (_) {}
+
   function navLink(href, label, i18nKey, extra) {
     var page = currentPage();
-    var isActive = page === href;
+    var isHome = (href === './' || href === 'index.html') && (page === 'index.html' || page === '' || page === '/');
+    var isActive = isHome || page === href;
     var ariaCurrent = isActive ? ' aria-current="page"' : '';
     var dataI18n = i18nKey ? ' data-i18n="' + i18nKey + '"' : '';
     var cls = extra || '';
@@ -37,15 +46,17 @@
       '<a href="' + href + '"' + ariaCurrent + dataI18n + '>' + label + '</a></li>';
   }
 
-  /* ---- Build social bar HTML ---- */
-  function buildSocialBar() {
+  /* ---- Build header pre-brand (socials only) ---- */
+  function buildHeaderPreBrand() {
     var links = Object.keys(SOCIALS).map(function (key) {
       var s = SOCIALS[key];
-      return '<a href="' + s.url + '" class="social-top__link social-top__link--' + key +
+      return '<a href="' + s.url + '" class="header-social-link header-social-link--' + key +
         '" aria-label="' + s.label + '" target="_blank" rel="noopener noreferrer">' +
         SOCIAL_ICONS[key] + '</a>';
     });
-    return '<div class="social-top" aria-label="NABA on social media">' + links.join('') + '</div>';
+    return '<div class="header-pre-brand">' +
+      '<div class="header-socials" aria-label="NABA on social media">' + links.join('') + '</div>' +
+    '</div>';
   }
 
   /* ---- Build header HTML ---- */
@@ -56,24 +67,14 @@
       '<div class="progress-bar" id="progressBar"></div>' +
       '<header class="site-header">' +
 
-      /* Social bar ABOVE logo */
-      '<div class="social-topbar">' +
-        '<div class="wrap">' +
-          buildSocialBar() +
-          '<div class="topbar-right">' +
-            '<span class="topbar-tagline">Scotland\'s African &amp; Black Community Hub</span>' +
-          '</div>' +
-        '</div>' +
-      '</div>' +
-
       /* Ticker */
       '<div class="ticker-wrap" aria-live="off" aria-atomic="false">' +
         '<div class="ticker">' +
           '<span data-i18n="ticker.1">Youth Hub is now live &middot; Mentorship applications open</span>' +
-          '<span data-i18n="ticker.2">Edinburgh &rarr; Lagos Road Trip &middot; 6 Nov 2027</span>' +
+          '<span data-i18n="ticker.2">Edinburgh to Lagos Road Trip &middot; 6 Nov 2027</span>' +
           '<span data-i18n="ticker.3">70+ Community Businesses Listed</span>' +
           '<span data-i18n="ticker.1">Youth Hub is now live &middot; Mentorship applications open</span>' +
-          '<span data-i18n="ticker.2">Edinburgh &rarr; Lagos Road Trip &middot; 6 Nov 2027</span>' +
+          '<span data-i18n="ticker.2">Edinburgh to Lagos Road Trip &middot; 6 Nov 2027</span>' +
           '<span data-i18n="ticker.3">70+ Community Businesses Listed</span>' +
         '</div>' +
       '</div>' +
@@ -81,18 +82,19 @@
       /* Main nav */
       '<div class="wrap">' +
         '<nav class="nav" aria-label="Primary">' +
-          '<a class="brand" href="index.html" aria-label="NABA — Home">' +
+          buildHeaderPreBrand() +
+          '<a class="brand" href="./" aria-label="NABA &middot; Home">' +
             '<span class="brand__badge">' +
-              '<img src="assets/logo-light.png" alt="NABA logo" width="68" height="68" ' +
-                'onerror="this.src=\'assets/NABA_Full_Lockup_Light_BG.png\'">' +
+              '<img src="assets/logo-light.png" alt="NABA logo" width="46" height="52">' +
             '</span>' +
             '<span class="brand__name">' +
               '<b>National African &amp;</b>' +
               '<span>Black Association</span>' +
+              '<small class="brand__hub" data-i18n="hub_tagline">Scotland\'s African &amp; Black Community Hub</small>' +
             '</span>' +
           '</a>' +
           '<ul class="nav__links" id="nav-links">' +
-            navLink('index.html', 'Home', 'nav.home') +
+            navLink('./', 'Home', 'nav.home') +
             navLink('directory.html', 'Community', 'nav.community') +
             navLink('events.html', 'Events', 'nav.events') +
             navLink('news.html', 'News', 'nav.news') +
@@ -194,7 +196,7 @@
             '<input type="email" name="email" required placeholder="you@email.com" data-i18n-ph="footer.newsletter.ph">' +
             '<button type="submit" data-i18n="footer.newsletter.btn">Join</button>' +
           '</form>' +
-          '<div class="success-msg">Subscribed — welcome to NABA.</div>' +
+          '<div class="success-msg">Subscribed &middot; welcome to NABA.</div>' +
         '</div>' +
 
         '<div class="footer-top">' +
@@ -206,7 +208,7 @@
               '<b>National African &amp;<br>Black Association</b>' +
             '</div>' +
             '<p class="footer-tagline" data-i18n="footer.tagline">' +
-              'Our community is our strength — connecting African and Black communities across Scotland to trusted services, culture, and each other.' +
+              'Our community is our strength &middot; connecting African and Black communities across Scotland to trusted services, culture, and each other.' +
             '</p>' +
             /* Social row in footer */
             '<div class="social-row">' +
@@ -324,22 +326,23 @@
       }
     });
 
-    /* Inject social bar before ticker if not already present */
-    if (!document.querySelector('.social-topbar')) {
-      var header = document.querySelector('.site-header');
-      if (header) {
-        header.insertAdjacentHTML('afterbegin',
-          '<div class="social-topbar">' +
-            '<div class="wrap">' +
-              buildSocialBar() +
-              '<div class="topbar-right">' +
-                '<span class="topbar-tagline">Scotland\'s African &amp; Black Community Hub</span>' +
-              '</div>' +
-            '</div>' +
-          '</div>'
-        );
-      }
+    /* Remove any old social-topbar from the DOM */
+    document.querySelectorAll('.social-topbar').forEach(function (el) {
+      el.remove();
+    });
+
+    /* Inject header-pre-brand before brand if not already present */
+    var nav = document.querySelector('.site-header .nav');
+    var brand = nav ? nav.querySelector('.brand') : null;
+    if (nav && brand && !nav.querySelector('.header-pre-brand')) {
+      brand.insertAdjacentHTML('beforebegin', buildHeaderPreBrand());
     }
+    if (brand) {
+      brand.setAttribute('href', './');
+      brand.setAttribute('aria-label', 'NABA \u00B7 Home');
+    }
+    var homeLink = document.querySelector('.nav__links a[href="index.html"]');
+    if (homeLink) homeLink.setAttribute('href', './');
 
     /* Remove conflicting static langBackdrop if present to avoid dual-modal screen takeover */
     var oldBackdrop = document.getElementById('langBackdrop');

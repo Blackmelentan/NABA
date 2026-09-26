@@ -134,8 +134,9 @@ body.loaded .hero h1 .word i{animation:wordUp .6s var(--ease) forwards;animation
 .ticker span{color:var(--gold);font-weight:700;font-size:.62rem;letter-spacing:1.2px;text-transform:uppercase;padding:4px 20px;display:inline-flex;align-items:center;gap:8px;}
 .ticker span::after{content:"✦";opacity:.55;}
 @keyframes tickerScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
-/* Single-row nav: [socials] [logo] [brand name] [tabs→flex] [actions] */
-.nav{display:flex;align-items:center;gap:16px;min-height:64px;padding:6px 0;}
+.site-header .wrap{max-width:100%;padding-inline:clamp(16px, 2.4vw, 40px);margin-inline:0;}
+/* Single-row nav: [socials] [logo] [brand name] [tabs centered] [actions right] */
+.nav{display:flex;align-items:center;justify-content:space-between;gap:clamp(10px, 1.4vw, 24px);min-height:64px;padding:6px 0;width:100%;}
 .nav .header-pre-brand{flex-shrink:0;}
 .header-pre-brand{display:flex;align-items:center;gap:6px;flex-shrink:0;}
 .header-socials{display:flex;align-items:center;gap:5px;}
@@ -146,21 +147,21 @@ body.loaded .hero h1 .word i{animation:wordUp .6s var(--ease) forwards;animation
 @media(max-width:860px){.header-pre-brand{gap:4px;}}
 @media(max-width:540px){.header-pre-brand{display:none;}}
 
-/* Brand: logo mark (no circle) + text name */
+/* Brand: logo mark (transparent, no circle) + text name */
 .brand{display:flex;align-items:center;gap:10px;min-width:0;flex-shrink:0;text-decoration:none;}
-.brand__badge{width:52px;height:52px;border-radius:0;background:transparent !important;border:none !important;box-shadow:none !important;display:flex;align-items:center;justify-content:center;overflow:visible;flex-shrink:0;padding:0;transition:transform .25s ease;}
-.brand:hover .brand__badge{transform:scale(1.05);}
-.brand__badge img{width:52px !important;height:52px !important;object-fit:contain !important;background:transparent !important;border-radius:0 !important;border:none !important;box-shadow:none !important;}
+.brand__badge{width:46px;height:52px;background:transparent !important;border:none !important;border-radius:0 !important;box-shadow:none !important;display:flex;align-items:center;justify-content:center;overflow:visible;flex-shrink:0;padding:0;transition:transform .25s ease;}
+.brand:hover .brand__badge{transform:scale(1.04);}
+.brand__badge img{width:100% !important;height:100% !important;object-fit:contain !important;background:transparent !important;border-radius:0 !important;border:none !important;box-shadow:none !important;}
 .brand__name{font-family:var(--f-display);text-transform:uppercase;line-height:.92;font-size:.82rem;letter-spacing:-.3px;color:var(--ink);}
 .brand__name b{display:block;font-weight:400;}
 .brand__name span{display:block;color:var(--gold-deep);}
 
-/* Nav tabs fill remaining space */
-.nav__links{display:flex;align-items:center;gap:12px;list-style:none;margin:0;padding:0;flex:1;flex-wrap:nowrap;}
-.nav__links a{font-weight:700;text-transform:uppercase;letter-spacing:-.4px;font-size:.72rem;padding:6px 0;position:relative;white-space:nowrap;}
+/* Nav tabs centered in available space */
+.nav__links{display:flex;align-items:center;justify-content:center;gap:clamp(6px, 0.9vw, 15px);list-style:none;margin:0;padding:0;flex:1;min-width:0;flex-wrap:nowrap;}
+.nav__links a{font-weight:700;text-transform:uppercase;letter-spacing:-.35px;font-size:clamp(.67rem, .78vw, .76rem);padding:6px 2px;position:relative;white-space:nowrap;}
 .nav__links a::after{content:"";position:absolute;left:0;right:100%;bottom:-2px;height:3px;background:var(--gold);transition:right var(--dur) var(--ease);}
 .nav__links a:hover::after,.nav__links a[aria-current="page"]::after{right:0;}
-.nav__actions{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.nav__actions{display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:auto;}
 @media(max-width:400px){
   .nav__actions{gap:5px;}
   .icon-btn{width:34px;height:34px;font-size:.64rem;}
@@ -177,7 +178,7 @@ body.loaded .hero h1 .word i{animation:wordUp .6s var(--ease) forwards;animation
 body.menu-open .nav__toggle span{background:transparent;}
 body.menu-open .nav__toggle span::before{transform:translateY(6px) rotate(45deg);}
 body.menu-open .nav__toggle span::after{transform:translateY(-6px) rotate(-45deg);}
-@media(max-width:1180px){
+@media(max-width:1200px){
   .nav__toggle{display:inline-flex;}
   .nav__links{position:fixed;top:0;left:0;right:0;flex-direction:column;align-items:flex-start;gap:0;background:var(--cream);
     border-bottom:1px solid var(--hairline);padding:8px var(--gutter) 26px;transform:translateY(-8px);opacity:0;pointer-events:none;
