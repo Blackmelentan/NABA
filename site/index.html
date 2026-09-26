@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NABA — National African & Black Association</title>
+<title>NABA — National African &amp; Black Association</title>
 <meta name="description" content="NABA connects African and Black communities across Scotland to trusted services, cultural life, and each other.">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
@@ -81,27 +81,6 @@ window.addEventListener('error', function(){
   <button id="a11yContrast" aria-label="Toggle high contrast" title="High contrast" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18V3z" fill="currentColor"/></svg></button>
   <button id="a11yMinus" aria-label="Decrease text size" title="Smaller text" type="button">A−</button>
   <button id="a11yPlus" aria-label="Increase text size" title="Larger text" type="button">A+</button>
-</div>
-
-<div class="search-overlay" id="searchOverlay" hidden>
-  <div class="search-panel glass">
-    <input type="text" id="siteSearch" placeholder="Search NABA — directory, events, pages…" autocomplete="off">
-    <div class="search-results" id="searchResults"></div>
-  </div>
-</div>
-
-<button class="back-top" id="backToTop" aria-label="Back to top" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg></button>
-<div class="toast" id="toast"></div>
-
-<button class="assistant-launcher" id="assistantLauncher" aria-label="Ask NABA" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 18.5 3 21V6.8A2.8 2.8 0 0 1 5.8 4h12.4A2.8 2.8 0 0 1 21 6.8v7.4A2.8 2.8 0 0 1 18.2 17H6Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 9h8M8 12h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-<div class="assistant-panel" id="assistantPanel" role="dialog" aria-labelledby="assistantTitle" aria-modal="false" hidden>
-  <div class="assistant-head"><span id="assistantTitle" style="display:flex;align-items:center;gap:8px;"><img src="assets/crest.png" alt="" width="20" height="20" style="object-fit:contain;">Ask NABA</span><button id="assistantClose" aria-label="Close">✕</button></div>
-  <div class="assistant-body" id="assistantBody"></div>
-  <div class="assistant-quick" id="assistantQuick"></div>
-  <form class="assistant-form" id="assistantForm">
-    <input type="text" id="assistantInput" placeholder="Ask a question..." autocomplete="off">
-    <button type="submit" aria-label="Send">&rarr;</button>
-  </form>
 </div>
 
 <main id="main">
@@ -228,19 +207,19 @@ window.addEventListener('error', function(){
     <p class="eyebrow">YouTube</p>
     <div class="sec-head"><h2 class="display" id="youtube-h">Latest talks, interviews and community updates</h2></div>
     <div class="grid grid--3">
-      <a class="card card--link" href="https://www.youtube.com/results?search_query=NABA+National+African+and+Black+Association" target="_blank" rel="noopener">
+      <a class="card card--link" href="https://www.youtube.com/@nabacommunity" target="_blank" rel="noopener">
         <div class="card__count">01</div>
         <div class="card__label">Community Talk</div>
         <p class="card__desc">Short-form conversations on identity, belonging and public life.</p>
         <span class="card__more">Watch now &rsaquo;</span>
       </a>
-      <a class="card card--link" href="https://www.youtube.com/results?search_query=NABA+Scotland+community" target="_blank" rel="noopener">
+      <a class="card card--link" href="https://www.youtube.com/@nabacommunity" target="_blank" rel="noopener">
         <div class="card__count">02</div>
         <div class="card__label">Voices &amp; Stories</div>
         <p class="card__desc">Real community stories—local, personal and rooted in lived experience.</p>
         <span class="card__more">Watch now &rsaquo;</span>
       </a>
-      <a class="card card--link" href="https://www.youtube.com/results?search_query=NABA+Black+Association+Scotland" target="_blank" rel="noopener">
+      <a class="card card--link" href="https://www.youtube.com/@nabacommunity" target="_blank" rel="noopener">
         <div class="card__count">03</div>
         <div class="card__label">Live Session</div>
         <p class="card__desc">Panel discussions, Q&amp;A sessions and updates from the wider network.</p>
@@ -304,8 +283,7 @@ window.addEventListener('error', function(){
   <div class="wrap">
     <p class="eyebrow">What We've Been Up To Recently</p>
     <div class="sec-head"><h2 class="display" id="stories-h">Recent work</h2></div>
-  </div>
-  <div class="story-scroll" id="storyScroll">
+    <div class="story-scroll" id="storyScroll">
     <div class="story-card">
       <img src="assets/townhall.jpg" alt="Community town hall meeting, Glasgow">
       <div class="story-body"><div class="tag">26 Mar 2026</div><h4>Community Town Hall Meetings</h4><p>Supporting you and your community.</p></div>
@@ -326,6 +304,7 @@ window.addEventListener('error', function(){
       <img src="assets/colorful-attire.jpg" alt="We promote collaboration and partnership">
       <div class="story-body"><div class="tag">Partnership</div><h4>Collaboration &amp; Partnership</h4><p>Building lasting community ties.</p></div>
     </div>
+  </div>
   </div>
 </section>
 
@@ -349,7 +328,7 @@ window.addEventListener('error', function(){
         <input type="email" name="email" required placeholder="you@email.com">
         <button type="submit">Join</button>
       </form>
-      <div class="success-msg" style="margin-top:10px;">Subscribed  welcome to NABA.</div>
+      <div class="success-msg" style="margin-top:10px;">Subscribed — welcome to NABA.</div>
     </div>
     <div class="footer-top">
       <div>
@@ -358,11 +337,11 @@ window.addEventListener('error', function(){
           <b>National African &amp;<br>Black Association</b>
         </div>
         <p style="max-width:34ch;opacity:.85;font-size:.9rem;">Our community is our strength connecting African and Black communities across Scotland to trusted services, culture, and each other.</p>
-        <div class="social-row">
-          <a href="https://www.instagram.com/" aria-label="Instagram" target="_blank" rel="noreferrer">IG</a>
-          <a href="https://www.facebook.com/" aria-label="Facebook" target="_blank" rel="noreferrer">FB</a>
-          <a href="https://x.com/" aria-label="X" target="_blank" rel="noreferrer">X</a>
-          <a href="https://www.linkedin.com/" aria-label="LinkedIn" target="_blank" rel="noreferrer">IN</a>
+                <div class="social-row">
+          <a href="https://www.tiktok.com/@nabacommunity" aria-label="TikTok" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.74a4.85 4.85 0 0 1-1.01-.05Z"/></svg></a>
+          <a href="https://www.facebook.com/profile.php?id=61578371739909" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+          <a href="https://www.instagram.com/nabacommunity/" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg></a>
+          <a href="https://www.youtube.com/@nabacommunity" aria-label="YouTube" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
         </div>
       </div>
       <div class="footer-col">
@@ -372,13 +351,16 @@ window.addEventListener('error', function(){
           <li><a href="directory.html">Community</a></li>
           <li><a href="events.html">Events</a></li>
           <li><a href="news.html">News</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
           <li><a href="youth-hub.html">Youth Hub</a></li>
           <li><a href="impact.html">Impact Tree</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Offices</h4>
-        <address><b>Glasgow</b><br>Parkhead Schoolhouse, 135 Westmuir St<br>Glasgow, G31 5EX</address><address style="margin-top:14px;"><b>Edinburgh</b><br>Gyleview House, 3 Redheughs Rigg<br>Edinburgh, EH12 9DQ</address><address style="margin-top:14px;"><b>Glasgow Correspondence Office</b><br>Clyde Offices, 2nd Floor<br>48 West George Street, Glasgow, G2 1BP</address>
+        <address><b>Glasgow</b><br>Parkhead Schoolhouse, 135 Westmuir St<br>Glasgow, G31 5EX</address>
+        <address style="margin-top:14px;"><b>Edinburgh</b><br>Gyleview House, 3 Redheughs Rigg<br>Edinburgh, EH12 9DQ</address>
+        <address style="margin-top:14px;"><b>Glasgow Correspondence Office</b><br>Clyde Offices, 2nd Floor<br>48 West George Street, Glasgow, G2 1BP</address>
       </div>
       <div class="footer-col">
         <h4>Connect</h4>
@@ -387,7 +369,7 @@ window.addEventListener('error', function(){
           <li><a href="volunteer.html#careers">Careers &amp; Vacancies</a></li>
           <li><a href="cuisine.html">Cuisine</a></li>
           <li><a href="contact.html">Contact us</a></li>
-          <li><a href="tel:07990753498">07990 753498</a></li>
+          <li><a href="tel:07990753498">07990 753 498</a></li>
           <li><a href="mailto:admin@nabaorg.uk">admin@nabaorg.uk</a></li>
         </ul>
       </div>
