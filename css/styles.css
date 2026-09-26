@@ -91,8 +91,8 @@ h3{font-family:var(--f-display);font-weight:400;font-size:1.05rem;line-height:1.
 /* ---------- heritage crest divider (signature motif — replaces geometric pattern) ---------- */
 .heritage-divider{display:flex;align-items:center;gap:16px;max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter);}
 .heritage-divider .hd-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold-deep) 30%,var(--gold-deep) 70%,transparent);}
-.heritage-divider .hd-mark{width:38px;height:38px;border:1.5px solid var(--gold-deep);border-radius:50%;display:flex;align-items:center;justify-content:center;background:#fff7ea;flex-shrink:0;box-shadow:var(--card-shadow);}
-.heritage-divider .hd-mark img{width:20px;height:20px;object-fit:contain;opacity:.9;}
+.heritage-divider .hd-mark{width:44px;height:44px;border:1.5px solid var(--gold-deep);border-radius:50%;display:flex;align-items:center;justify-content:center;background:#fff7ea;flex-shrink:0;box-shadow:var(--card-shadow);}
+.heritage-divider .hd-mark img{width:36px;height:36px;object-fit:contain;opacity:.9;}
 
 /* ---------- glassmorphism ---------- */
 .glass{background:rgba(253,245,232,.55);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);
@@ -134,7 +134,8 @@ body.loaded .hero h1 .word i{animation:wordUp .6s var(--ease) forwards;animation
 .ticker span{color:var(--gold);font-weight:700;font-size:.68rem;letter-spacing:1.2px;text-transform:uppercase;padding:7px 24px;display:inline-flex;align-items:center;gap:10px;}
 .ticker span::after{content:"✦";opacity:.55;}
 @keyframes tickerScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
-.nav{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:78px;}
+.nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 14px;padding:6px 0;}
+.nav .header-pre-brand{width:100%;border-bottom:1px solid rgba(238,181,79,.18);padding-bottom:4px;margin-bottom:2px;}
 .header-pre-brand{display:flex;align-items:center;gap:10px;flex-shrink:0;}
 .header-socials{display:flex;align-items:center;gap:6px;}
 .header-social-link{width:28px;height:28px;border-radius:50%;background:#ffffff;border:1.5px solid var(--hairline);color:var(--espresso);display:inline-flex;align-items:center;justify-content:center;transition:all .2s ease;box-shadow:0 1px 3px rgba(46,31,5,.08);}
@@ -1488,41 +1489,7 @@ html[dir="rtl"] .brand {
 .search-form input::placeholder{color:rgba(253,245,232,.55);}
 .search-form button{background:none;border:0;color:var(--gold);cursor:pointer;padding:4px;}
 
-/* ================================================================
-   HEADER PRE-BRAND — social icons + hub tagline above brand
-   ============================================================== */
-.header-pre-brand{
-  display:flex;align-items:center;gap:14px;
-  width:100%;padding:6px 0 4px;
-  border-bottom:1px solid rgba(238,181,79,.18);
-  margin-bottom:4px;
-}
-.header-socials{display:flex;gap:10px;align-items:center;}
-.header-social-link{
-  display:flex;align-items:center;justify-content:center;
-  width:26px;height:26px;border-radius:50%;
-  transition:transform var(--dur) var(--ease),opacity var(--dur);opacity:.72;
-}
-.header-social-link:hover{opacity:1;transform:scale(1.15);}
-.header-social-link svg{width:16px;height:16px;fill:var(--espresso);}
-.header-social-link--tiktok svg,.header-social-link--facebook svg,
-.header-social-link--instagram svg,.header-social-link--youtube svg{fill:var(--espresso);}
-.header-hub-tag{
-  font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;
-  color:var(--muted);white-space:nowrap;opacity:.8;margin-left:auto;
-}
-
-/* brand badge — circular logo container */
-.brand__badge{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:68px;height:68px;border-radius:50%;
-  background:var(--espresso);
-  border:2px solid var(--gold);
-  overflow:hidden;flex-shrink:0;
-}
-.brand__badge img{
-  width:100%;height:100%;object-fit:cover;border-radius:50%;
-}
+/* duplicate header-pre-brand rules removed — originals at lines 138-144 */
 
 /* ================================================================
    YOUTUBE FLYER CARDS
