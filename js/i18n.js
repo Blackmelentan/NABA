@@ -17,7 +17,7 @@ window.NABA_I18N = (function () {
       'events': 'Events', 'nav.events': 'Events',
       'news': 'News', 'nav.news': 'News',
       'about': 'About Us', 'nav.about': 'About Us',
-      'volunteering': 'Volunteering & Partnerships', 'nav.volunteering': 'Volunteering & Partnerships',
+      'volunteering': 'Volunteering', 'nav.volunteering': 'Volunteering',
       'cuisine': 'Cuisine', 'nav.cuisine': 'Cuisine',
       'contact': 'Contact Us', 'nav.contact': 'Contact Us',
       'more': 'More', 'nav.more': 'More ▾',
