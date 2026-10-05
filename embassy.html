@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Embassy Directory — NABA</title>
+  <meta name="description"
+    content="African and Black embassy contacts across the UK — find your country's embassy, consulate, or high commission with NABA's verified directory.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#2E1F05">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Josefin+Sans:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* ---- Embassy page specific ---- */
+    .embassy-hero {
+      background: linear-gradient(135deg, var(--espresso) 0%, #1a1008 60%, #0d0804 100%);
+      color: var(--cream);
+      padding: clamp(80px, 12vw, 140px) 0 clamp(60px, 8vw, 100px);
+      position: relative;
+      overflow: hidden;
+    }
+    .embassy-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(238,181,79,.12) 0%, transparent 70%);
+    }
+    .embassy-hero .wrap { position: relative; z-index: 1; }
+    .embassy-hero h1 { color: var(--cream); margin: 0 0 .5em; }
+    .embassy-hero p { max-width: 56ch; opacity: .85; font-size: 1.1rem; margin: 0 0 2rem; }
+
+    /* search bar */
+    .embassy-search {
+      display: flex; gap: 12px; flex-wrap: wrap; margin-top: 2rem;
+    }
+    .embassy-search input {
+      flex: 1; min-width: 220px; padding: 14px 20px;
+      border-radius: 99px; border: 1.5px solid rgba(238,181,79,.4);
+      background: rgba(255,255,255,.08); color: var(--cream);
+      font-family: var(--f-ui); font-size: .95rem; outline: none;
+      backdrop-filter: blur(8px); transition: border-color .2s;
+    }
+    .embassy-search input::placeholder { color: rgba(253,245,232,.5); }
+    .embassy-search input:focus { border-color: var(--gold); }
+    .embassy-search select {
+      padding: 14px 18px; border-radius: 99px;
+      border: 1.5px solid rgba(238,181,79,.4);
+      background: rgba(255,255,255,.08); color: var(--cream);
+      font-family: var(--f-ui); font-size: .9rem; cursor: pointer;
+      backdrop-filter: blur(8px); outline: none;
+    }
+    .embassy-search select option { background: var(--espresso); }
+
+    /* results bar */
+    .embassy-results-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 0; border-bottom: 1px solid var(--hairline);
+      margin-bottom: 36px; flex-wrap: wrap; gap: 10px;
+    }
+    .embassy-results-bar .count { font-size: .88rem; color: var(--muted); font-weight: 600; }
+
+    /* embassy grid */
+    .embassy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .embassy-card {
+      background: #fff;
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      display: flex; flex-direction: column; gap: 12px;
+      box-shadow: var(--shadow-sm);
+      transition: transform .25s var(--ease), box-shadow .25s var(--ease);
+      position: relative; overflow: hidden;
+    }
+    .embassy-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 4px; background: linear-gradient(90deg, var(--gold), var(--gold-deep));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .3s var(--ease);
+    }
+    .embassy-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .embassy-card:hover::before { transform: scaleX(1); }
+
+    .embassy-card__flag {
+      width: 56px; height: 38px; border-radius: 6px;
+      object-fit: cover; border: 1px solid var(--hairline);
+      background: var(--tan);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; flex-shrink: 0;
+    }
+    .embassy-card__header {
+      display: flex; align-items: flex-start; gap: 14px;
+    }
+    .embassy-card__title { font-family: var(--f-display); font-size: 1.05rem; margin: 0; line-height: 1.2; }
+    .embassy-card__type {
+      font-size: .72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--gold-deep); margin-top: 2px;
+    }
+    .embassy-card__info { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .embassy-card__row {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: .88rem; color: var(--muted); line-height: 1.4;
+    }
+    .embassy-card__row svg { flex-shrink: 0; margin-top: 2px; opacity: .6; }
+    .embassy-card__actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+    .embassy-card__actions a {
+      font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+      padding: 8px 16px; border-radius: 99px; border: 1.5px solid var(--hairline);
+      color: var(--ink); transition: all .2s;
+    }
+    .embassy-card__actions a:hover { background: var(--gold); border-color: var(--gold); color: var(--espresso); }
+    .embassy-card__actions a.primary { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+    .embassy-card__actions a.primary:hover { background: var(--espresso); }
+
+    /* region tabs */
+    .region-tabs {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 0;
+    }
+    .region-tab {
+      padding: 8px 18px; border-radius: 99px; border: 1.5px solid var(--hairline);
+      font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+      cursor: pointer; transition: all .2s; background: transparent; color: var(--muted);
+      font-family: var(--f-ui);
+    }
+    .region-tab.active, .region-tab:hover {
+      background: var(--ink); color: var(--cream); border-color: var(--ink);
+    }
+
+    /* no results */
+    .embassy-empty {
+      grid-column: 1/-1; text-align: center;
+      padding: 80px 20px; color: var(--muted);
+    }
+    .embassy-empty svg { opacity: .3; margin: 0 auto 16px; display: block; }
+
+    @media (max-width: 640px) {
+      .embassy-search { flex-direction: column; }
+      .embassy-search input, .embassy-search select { width: 100%; }
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    document.documentElement.classList.add('js');
+    window.addEventListener('error', function () {
+      document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+    });
+  </script>
+
+  <div class="progress-bar" id="progressBar"></div>
+  <header class="site-header">
+    <div class="ticker-wrap">
+      <div class="ticker">
+        <span>Embassy Directory — find your country's representation in the UK</span>
+        <span>Youth Hub is now live · Mentorship applications open</span>
+        <span>70+ Community Businesses Listed</span>
+        <span>Embassy Directory — find your country's representation in the UK</span>
+        <span>Youth Hub is now live · Mentorship applications open</span>
+        <span>70+ Community Businesses Listed</span>
+      </div>
+    </div>
+    <div class="wrap">
+      <nav class="nav" aria-label="Primary">
+        <div class="header-pre-brand">
+          <div class="header-socials" aria-label="NABA social media">
+            <a href="https://www.tiktok.com/@nabacommunity" class="header-social-link header-social-link--tiktok" aria-label="TikTok" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.74a4.85 4.85 0 0 1-1.01-.05Z" /></svg></a>
+            <a href="https://www.facebook.com/profile.php?id=61578371739909" class="header-social-link header-social-link--facebook" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" /></svg></a>
+            <a href="https://www.instagram.com/nabacommunity/" class="header-social-link header-social-link--instagram" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" /></svg></a>
+            <a href="https://www.youtube.com/@nabacommunity" class="header-social-link header-social-link--youtube" aria-label="YouTube" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" /></svg></a>
+          </div>
+        </div>
+        <a class="brand" href="index.html" aria-label="NABA — home">
+          <span class="brand__badge"><img src="assets/logo-light.png" alt="NABA logo" width="56" height="66"></span>
+          <span class="brand__name"><b>National African &</b><span>Black Association</span></span>
+        </a>
+        <ul class="nav__links" id="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="directory.html">Community</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="activities.html">Activities</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="embassy.html" aria-current="page">Embassies</a></li>
+          <li><a href="useful-information.html">Useful Contacts</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li class="has-dropdown"><a href="youth-hub.html">More ▾</a>
+            <div class="dropdown">
+              <a href="youth-hub.html">Youth Hub (New)</a>
+              <a href="cuisine.html">African Cuisine</a>
+              <a href="volunteer.html">Volunteering</a>
+              <a href="impact.html">Impact Tree</a>
+              <a href="gallery.html">Photo Gallery</a>
+              <a href="legacy.html">Legacy of Sheku Bayoh</a>
+            </div>
+          </li>
+        </ul>
+        <div class="nav__actions">
+          <button class="icon-btn" id="searchBtn" aria-label="Search the site" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="5.5" fill="none" stroke="currentColor" stroke-width="1.9" /><path d="M16 16L21 21" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" /></svg></button>
+          <button class="icon-btn" id="langBtn" aria-label="Change language" data-lang="en" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M3 12h18M12 3c2.8 2.9 4.3 5.9 4.3 9S14.8 18.1 12 21c-2.8-2.9-4.3-5.9-4.3-9S9.2 5.9 12 3Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" /></svg></button>
+          <a class="icon-btn" href="login.html" id="accountBtn" aria-label="Account"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="3.6" fill="none" stroke="currentColor" stroke-width="1.9" /><path d="M5 19c1.6-3.1 4.1-4.7 7-4.7s5.4 1.6 7 4.7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" /></svg></a>
+          <button class="nav__toggle" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><span></span></button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <a class="help-now-btn" href="contact.html" aria-label="Get help now">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" /></svg>
+    Get Help Now
+  </a>
+
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="embassy-hero" aria-labelledby="embassy-h1">
+      <div class="wrap">
+        <p class="eyebrow onDark">In The Community</p>
+        <h1 id="embassy-h1" class="display">Embassy<br>Directory</h1>
+        <p>Find African, Caribbean, and Black country embassies, high commissions, and consulates in the UK. NABA has compiled verified contact details to help you access consular services, emergency support, and legal documentation.</p>
+        <div class="embassy-search">
+          <input type="search" id="embassySearch" placeholder="Search by country or city…" aria-label="Search embassies">
+          <select id="embassyRegion" aria-label="Filter by region">
+            <option value="">All Regions</option>
+            <option value="west-africa">West Africa</option>
+            <option value="east-africa">East Africa</option>
+            <option value="central-africa">Central Africa</option>
+            <option value="north-africa">North Africa</option>
+            <option value="southern-africa">Southern Africa</option>
+            <option value="caribbean">Caribbean</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <section class="section">
+      <div class="wrap">
+        <div class="embassy-results-bar">
+          <span class="count" id="embassyCount">Showing all embassies</span>
+          <div class="region-tabs" role="tablist" aria-label="Quick region filter">
+            <button class="region-tab active" data-region="" role="tab" aria-selected="true">All</button>
+            <button class="region-tab" data-region="west-africa" role="tab" aria-selected="false">West Africa</button>
+            <button class="region-tab" data-region="east-africa" role="tab" aria-selected="false">East Africa</button>
+            <button class="region-tab" data-region="southern-africa" role="tab" aria-selected="false">Southern Africa</button>
+            <button class="region-tab" data-region="caribbean" role="tab" aria-selected="false">Caribbean</button>
+          </div>
+        </div>
+
+        <div class="embassy-grid" id="embassyGrid" role="list">
+
+          <!-- Nigeria -->
+          <article class="embassy-card reveal" data-country="Nigeria" data-region="west-africa" role="listitem">
+            <div class="embassy-card__header">
+              <div class="embassy-card__flag" aria-hidden="true">🇳🇬</div>
+              <div>
+                <h2 class="embassy-card__title">Nigeria</h2>
+                <p class="embassy-card__type">High Commission · London</p>
+              </div>
+            </div>
+            <div class="embassy-card__info">
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>9 Northumberland Avenue, London WC2N 5BX</span>
+              </div>
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.64a16 16 0 006.29 6.29l1.42-1.41a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                <a href="tel:+442078399120">+44 (0)20 7839 9120</a>
+              </div>
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <a href="mailto:info@nigeriahc.org.uk">info@nigeriahc.org.uk</a>
+              </div>
+            </div>
+            <div class="embassy-card__actions">
+              <a href="https://nigeriahc.org.uk" target="_blank" rel="noopener noreferrer" class="primary">Visit Website</a>
+              <a href="https://www.google.com/maps/search/Nigeria+High+Commission+London" target="_blank" rel="noopener noreferrer">Get Directions</a>
+            </div>
+          </article>
+
+          <!-- Ghana -->
+          <article class="embassy-card reveal" data-country="Ghana" data-region="west-africa" role="listitem">
+            <div class="embassy-card__header">
+              <div class="embassy-card__flag" aria-hidden="true">🇬🇭</div>
+              <div>
+                <h2 class="embassy-card__title">Ghana</h2>
+                <p class="embassy-card__type">High Commission · London</p>
+              </div>
+            </div>
+            <div class="embassy-card__info">
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>13 Belgrave Square, London SW1X 8PN</span>
+              </div>
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.64a16 16 0 006.29 6.29l1.42-1.41a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                <a href="tel:+442072356021">+44 (0)20 7235 6021</a>
+              </div>
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <a href="mailto:info@ghana-com.co.uk">info@ghana-com.co.uk</a>
+              </div>
+            </div>
+            <div class="embassy-card__actions">
+              <a href="https://ghana-com.co.uk" target="_blank" rel="noopener noreferrer" class="primary">Visit Website</a>
+              <a href="https://www.google.com/maps/search/Ghana+High+Commission+London" target="_blank" rel="noopener noreferrer">Get Directions</a>
+            </div>
+          </article>
+
+          <!-- Kenya -->
+          <article class="embassy-card reveal" data-country="Kenya" data-region="east-africa" role="listitem">
+            <div class="embassy-card__header">
+              <div class="embassy-card__flag" aria-hidden="true">🇰🇪</div>
+              <div>
+                <h2 class="embassy-card__title">Kenya</h2>
+                <p class="embassy-card__type">High Commission · London</p>
+              </div>
+            </div>
+            <div class="embassy-card__info">
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>45 Portland Place, London W1B 1AS</span>
+              </div>
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.64a16 16 0 006.29 6.29l1.42-1.41a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                <a href="tel:+442073363371">+44 (0)20 7636 2371</a>
+              </div>
+            </div>
+            <div class="embassy-card__actions">
+              <a href="https://www.kenyahighcom.org.uk" target="_blank" rel="noopener noreferrer" class="primary">Visit Website</a>
+              <a href="https://www.google.com/maps/search/Kenya+High+Commission+London" target="_blank" rel="noopener noreferrer">Get Directions</a>
+            </div>
+          </article>
+
+          <!-- Ethiopia -->
+          <article class="embassy-card reveal" data-country="Ethiopia" data-region="east-africa" role="listitem">
+            <div class="embassy-card__header">
+              <div class="embassy-card__flag" aria-hidden="true">🇪🇹</div>
+              <div>
+                <h2 class="embassy-card__title">Ethiopia</h2>
+                <p class="embassy-card__type">Embassy · London</p>
+              </div>
+            </div>
+            <div class="embassy-card__info">
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>17 Princes Gate, London SW7 1PZ</span>
+              </div>
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.64a16 16 0 006.29 6.29l1.42-1.41a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                <a href="tel:+442015898665">+44 (0)20 7589 8665</a>
+              </div>
+            </div>
+            <div class="embassy-card__actions">
+              <a href="https://www.ethioembassy.org.uk" target="_blank" rel="noopener noreferrer" class="primary">Visit Website</a>
+              <a href="https://www.google.com/maps/search/Ethiopia+Embassy+London" target="_blank" rel="noopener noreferrer">Get Directions</a>
+            </div>
+          </article>
+
+          <!-- South Africa -->
+          <article class="embassy-card reveal" data-country="South Africa" data-region="southern-africa" role="listitem">
+            <div class="embassy-card__header">
+              <div class="embassy-card__flag" aria-hidden="true">🇿🇦</div>
+              <div>
+                <h2 class="embassy-card__title">South Africa</h2>
+                <p class="embassy-card__type">High Commission · London</p>
+              </div>
+            </div>
+            <div class="embassy-card__info">
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>South Africa House, Trafalgar Square, London WC2N 5DP</span>
+              </div>
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.64a16 16 0 006.29 6.29l1.42-1.41a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                <a href="tel:+442074516700">+44 (0)20 7451 7299</a>
+              </div>
+            </div>
+            <div class="embassy-card__actions">
+              <a href="https://www.southafricahouseuk.com" target="_blank" rel="noopener noreferrer" class="primary">Visit Website</a>
+              <a href="https://www.google.com/maps/search/South+Africa+House+Trafalgar+Square" target="_blank" rel="noopener noreferrer">Get Directions</a>
+            </div>
+          </article>
+
+          <!-- Jamaica -->
+          <article class="embassy-card reveal" data-country="Jamaica" data-region="caribbean" role="listitem">
+            <div class="embassy-card__header">
+              <div class="embassy-card__flag" aria-hidden="true">🇯🇲</div>
+              <div>
+                <h2 class="embassy-card__title">Jamaica</h2>
+                <p class="embassy-card__type">High Commission · London</p>
+              </div>
+            </div>
+            <div class="embassy-card__info">
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>1–2 Prince Consort Road, London SW7 2BZ</span>
+              </div>
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.64a16 16 0 006.29 6.29l1.42-1.41a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                <a href="tel:+442072236935">+44 (0)20 7823 9911</a>
+              </div>
+            </div>
+            <div class="embassy-card__actions">
+              <a href="https://www.jhcuk.org" target="_blank" rel="noopener noreferrer" class="primary">Visit Website</a>
+              <a href="https://www.google.com/maps/search/Jamaica+High+Commission+London" target="_blank" rel="noopener noreferrer">Get Directions</a>
+            </div>
+          </article>
+
+          <!-- Cameroon -->
+          <article class="embassy-card reveal" data-country="Cameroon" data-region="central-africa" role="listitem">
+            <div class="embassy-card__header">
+              <div class="embassy-card__flag" aria-hidden="true">🇨🇲</div>
+              <div>
+                <h2 class="embassy-card__title">Cameroon</h2>
+                <p class="embassy-card__type">High Commission · London</p>
+              </div>
+            </div>
+            <div class="embassy-card__info">
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>84 Holland Park, London W11 3SB</span>
+              </div>
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.64a16 16 0 006.29 6.29l1.42-1.41a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                <a href="tel:+442077279522">+44 (0)20 7727 0771</a>
+              </div>
+            </div>
+            <div class="embassy-card__actions">
+              <a href="https://www.cameroonhighcommission.co.uk" target="_blank" rel="noopener noreferrer" class="primary">Visit Website</a>
+              <a href="https://www.google.com/maps/search/Cameroon+High+Commission+London" target="_blank" rel="noopener noreferrer">Get Directions</a>
+            </div>
+          </article>
+
+          <!-- Tanzania -->
+          <article class="embassy-card reveal" data-country="Tanzania" data-region="east-africa" role="listitem">
+            <div class="embassy-card__header">
+              <div class="embassy-card__flag" aria-hidden="true">🇹🇿</div>
+              <div>
+                <h2 class="embassy-card__title">Tanzania</h2>
+                <p class="embassy-card__type">High Commission · London</p>
+              </div>
+            </div>
+            <div class="embassy-card__info">
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>3 Stratford Place, London W1C 1AS</span>
+              </div>
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.64a16 16 0 006.29 6.29l1.42-1.41a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                <a href="tel:+442074993004">+44 (0)20 7499 8951</a>
+              </div>
+            </div>
+            <div class="embassy-card__actions">
+              <a href="https://uktanzaniahighcommission.go.tz" target="_blank" rel="noopener noreferrer" class="primary">Visit Website</a>
+              <a href="https://www.google.com/maps/search/Tanzania+High+Commission+London" target="_blank" rel="noopener noreferrer">Get Directions</a>
+            </div>
+          </article>
+
+          <!-- Sierra Leone -->
+          <article class="embassy-card reveal" data-country="Sierra Leone" data-region="west-africa" role="listitem">
+            <div class="embassy-card__header">
+              <div class="embassy-card__flag" aria-hidden="true">🇸🇱</div>
+              <div>
+                <h2 class="embassy-card__title">Sierra Leone</h2>
+                <p class="embassy-card__type">High Commission · London</p>
+              </div>
+            </div>
+            <div class="embassy-card__info">
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>41 Eagle Street, London WC1R 4TL</span>
+              </div>
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.64a16 16 0 006.29 6.29l1.42-1.41a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                <a href="tel:+442074052781">+44 (0)20 7836 6483</a>
+              </div>
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <a href="mailto:info@slhc-uk.com">info@slhc-uk.com</a>
+              </div>
+              <div class="embassy-card__row" style="font-size:.8rem;padding:.4em .6em;background:#fff3d6;border-radius:6px;color:#7a5a00;font-weight:600;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <span>Note: Connected to the Sheku Bayoh legacy</span>
+              </div>
+            </div>
+            <div class="embassy-card__actions">
+              <a href="https://www.slhc-uk.com" target="_blank" rel="noopener noreferrer" class="primary">Visit Website</a>
+              <a href="https://www.google.com/maps/search/Sierra+Leone+High+Commission+London" target="_blank" rel="noopener noreferrer">Get Directions</a>
+            </div>
+          </article>
+
+          <!-- Zimbabwe -->
+          <article class="embassy-card reveal" data-country="Zimbabwe" data-region="southern-africa" role="listitem">
+            <div class="embassy-card__header">
+              <div class="embassy-card__flag" aria-hidden="true">🇿🇼</div>
+              <div>
+                <h2 class="embassy-card__title">Zimbabwe</h2>
+                <p class="embassy-card__type">Embassy · London</p>
+              </div>
+            </div>
+            <div class="embassy-card__info">
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>429 Strand, London WC2R 0JR</span>
+              </div>
+              <div class="embassy-card__row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.64a16 16 0 006.29 6.29l1.42-1.41a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                <a href="tel:+442075894686">+44 (0)20 7836 7755</a>
+              </div>
+            </div>
+            <div class="embassy-card__actions">
+              <a href="https://zimembassy.org.uk" target="_blank" rel="noopener noreferrer" class="primary">Visit Website</a>
+              <a href="https://www.google.com/maps/search/Zimbabwe+Embassy+London" target="_blank" rel="noopener noreferrer">Get Directions</a>
+            </div>
+          </article>
+
+          <!-- Suggest an embassy -->
+          <article class="embassy-card reveal" style="background:linear-gradient(135deg,var(--tan),#fdf0d5);border-style:dashed;border-color:var(--gold-deep);" role="listitem">
+            <div class="embassy-card__header">
+              <div class="embassy-card__flag" style="background:var(--gold);font-size:1.4rem;" aria-hidden="true">+</div>
+              <div>
+                <h2 class="embassy-card__title">Missing an Embassy?</h2>
+                <p class="embassy-card__type">Help us improve the directory</p>
+              </div>
+            </div>
+            <p style="font-size:.9rem;color:var(--muted);">If your country's embassy or consulate isn't listed, or if you spot outdated information, please let us know so we can keep this directory accurate for the whole community.</p>
+            <div class="embassy-card__actions">
+              <a href="contact.html" class="primary">Suggest an Entry</a>
+            </div>
+          </article>
+
+        </div><!-- /embassy-grid -->
+
+        <!-- empty state (hidden by default) -->
+        <div class="embassy-empty" id="embassyEmpty" hidden>
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <h3>No embassies found</h3>
+          <p>Try a different search term or region filter.</p>
+          <button class="btn btn--gold" id="clearFilters" style="margin-top:16px;">Clear Filters</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CTA STRIP -->
+    <section class="section--tight" style="background:var(--espresso);color:var(--cream);">
+      <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;">
+        <div>
+          <h2 class="display" style="color:var(--cream);font-size:clamp(1.6rem,4vw,2.4rem);margin:0 0 .4em;">Need immediate consular help?</h2>
+          <p style="opacity:.8;max-width:50ch;margin:0;">NABA can help connect you with the right embassy or support service. Our team knows the landscape and can guide you through the process.</p>
+        </div>
+        <a href="contact.html" class="btn btn--gold">Contact NABA</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="newsletter">
+        <h4>Stay in the loop</h4>
+        <p>Cultural weeks, town halls, and road trip updates — straight to your inbox.</p>
+        <form data-form data-collection="newsletterSignups">
+          <input type="email" name="email" required placeholder="you@email.com">
+          <button type="submit">Join</button>
+        </form>
+        <div class="success-msg" style="margin-top:10px;">Subscribed — welcome to NABA.</div>
+      </div>
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">
+            <img src="assets/logo-light.png" alt="NABA crest" width="68" height="68">
+            <b>National African &<br>Black Association</b>
+          </div>
+          <p style="max-width:34ch;opacity:.85;font-size:.9rem;">Our community is our strength — connecting African and Black communities across Scotland to trusted services, culture, and each other.</p>
+          <div class="social-row">
+            <a href="https://www.tiktok.com/@nabacommunity" aria-label="TikTok" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.74a4.85 4.85 0 0 1-1.01-.05Z" /></svg></a>
+            <a href="https://www.facebook.com/profile.php?id=61578371739909" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" /></svg></a>
+            <a href="https://www.instagram.com/nabacommunity/" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" /></svg></a>
+            <a href="https://www.youtube.com/@nabacommunity" aria-label="YouTube" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" /></svg></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="activities.html">Activities</a></li>
+            <li><a href="directory.html">Community</a></li>
+            <li><a href="embassy.html">Embassies</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="useful-information.html">Useful Contacts</a></li>
+            <li><a href="news.html">News</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="youth-hub.html">Youth Hub</a></li>
+            <li><a href="impact.html">Impact Tree</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Offices</h4>
+          <address><b>Glasgow</b><br>Parkhead Schoolhouse, 135 Westmuir St<br>Glasgow, G31 5EX</address>
+          <address style="margin-top:14px;"><b>Edinburgh</b><br>Gyleview House, 3 Redheughs Rigg<br>Edinburgh, EH12 9DQ</address>
+          <address style="margin-top:14px;"><b>Glasgow Correspondence</b><br>Clyde Offices, 2nd Floor<br>48 West George Street, Glasgow, G2 1BP</address>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="volunteer.html">Volunteering &amp; Partnerships</a></li>
+            <li><a href="contact.html">Contact us</a></li>
+            <li><a href="tel:07990753498">07990 753498</a></li>
+            <li><a href="mailto:admin@nabaorg.uk">admin@nabaorg.uk</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bar">
+        <span>&copy; <span id="year">2026</span> National African &amp; Black Association.</span>
+        <ul>
+          <li><a href="privacy.html">Privacy</a></li>
+          <li><a href="accessibility.html">Accessibility</a></li>
+          <li><a href="safeguarding.html">Safeguarding</a></li>
+          <li><a href="admin.html">Staff Login</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/auth.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/main.js"></script>
+  <script type="module" src="js/cms.js"></script>
+
+  <script>
+    /* ---- Embassy search & filter ---- */
+    const searchInput = document.getElementById('embassySearch');
+    const regionSelect = document.getElementById('embassyRegion');
+    const grid = document.getElementById('embassyGrid');
+    const countEl = document.getElementById('embassyCount');
+    const emptyEl = document.getElementById('embassyEmpty');
+    const tabs = document.querySelectorAll('.region-tab');
+    const clearBtn = document.getElementById('clearFilters');
+
+    let activeRegion = '';
+
+    function filter() {
+      const q = searchInput.value.toLowerCase().trim();
+      const reg = activeRegion;
+      const cards = grid.querySelectorAll('.embassy-card[data-country]');
+      let visible = 0;
+
+      cards.forEach(card => {
+        const country = (card.dataset.country || '').toLowerCase();
+        const region = card.dataset.region || '';
+        const matchQ = !q || country.includes(q);
+        const matchR = !reg || region === reg;
+        if (matchQ && matchR) {
+          card.hidden = false;
+          visible++;
+        } else {
+          card.hidden = true;
+        }
+      });
+
+      countEl.textContent = visible === 0 ? 'No results' :
+        visible === cards.length ? `Showing all ${cards.length} embassies` :
+        `Showing ${visible} of ${cards.length} embassies`;
+      emptyEl.hidden = visible > 0;
+    }
+
+    searchInput.addEventListener('input', filter);
+    regionSelect.addEventListener('change', () => {
+      activeRegion = regionSelect.value;
+      tabs.forEach(t => t.classList.toggle('active', t.dataset.region === activeRegion));
+      filter();
+    });
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        activeRegion = tab.dataset.region;
+        regionSelect.value = activeRegion;
+        tabs.forEach(t => {
+          t.classList.toggle('active', t === tab);
+          t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+        });
+        filter();
+      });
+    });
+
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        activeRegion = '';
+        regionSelect.value = '';
+        tabs.forEach(t => {
+          t.classList.toggle('active', t.dataset.region === '');
+          t.setAttribute('aria-selected', t.dataset.region === '' ? 'true' : 'false');
+        });
+        filter();
+      });
+    }
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>

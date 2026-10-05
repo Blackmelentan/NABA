@@ -1,2 +1,6 @@
 # Local Netlify folder
 .netlify
+
+# Migration raw dumps and scripts
+scratch_*.json
+scratch/

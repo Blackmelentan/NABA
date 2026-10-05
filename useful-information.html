@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Useful Contact Information — NABA</title>
+  <meta name="description"
+    content="Essential emergency numbers, NHS health lines, mental wellbeing, domestic abuse support, utility emergencies, and civic contacts across Scotland.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#2E1F05">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Josefin+Sans:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .contact-hero {
+      background: linear-gradient(135deg, var(--espresso) 0%, #1a1008 60%, #0d0804 100%);
+      color: var(--cream);
+      padding: clamp(70px, 10vw, 120px) 0 clamp(50px, 7vw, 90px);
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 50% at 75% 45%, rgba(238, 181, 79, .15) 0%, transparent 70%);
+    }
+    .contact-hero .wrap { position: relative; z-index: 1; }
+    .contact-hero h1 { color: var(--cream); margin: 0 0 .4em; }
+    .contact-hero p { max-width: 58ch; opacity: .88; font-size: 1.1rem; margin: 0 0 2rem; }
+
+    /* Quick Emergency Banner */
+    .emergency-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 2rem;
+    }
+    .emergency-badge-card {
+      background: rgba(255, 255, 255, .08);
+      border: 1.5px solid rgba(238, 181, 79, .4);
+      border-radius: var(--radius-sm);
+      padding: 18px 20px;
+      backdrop-filter: blur(10px);
+      transition: all .25s var(--ease);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--cream);
+    }
+    .emergency-badge-card:hover {
+      background: rgba(238, 181, 79, .15);
+      border-color: var(--gold);
+      transform: translateY(-2px);
+    }
+    .eb-num {
+      font-family: var(--f-display);
+      font-size: 1.9rem;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .eb-label {
+      font-size: .82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      opacity: .9;
+    }
+    .eb-call {
+      background: var(--gold);
+      color: var(--espresso);
+      font-weight: 700;
+      font-size: .78rem;
+      padding: 8px 14px;
+      border-radius: 99px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    /* Filter & Search Bar */
+    .directory-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .contact-search-box {
+      position: relative;
+      max-width: 520px;
+    }
+    .contact-search-box input {
+      width: 100%;
+      padding: 14px 20px 14px 44px;
+      border-radius: 99px;
+      border: 1.5px solid var(--hairline);
+      background: #fff;
+      font-family: var(--f-ui);
+      font-size: .95rem;
+      outline: none;
+      box-shadow: var(--shadow-sm);
+      transition: border-color .2s;
+    }
+    .contact-search-box input:focus {
+      border-color: var(--gold-deep);
+    }
+    .contact-search-box svg {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      stroke: var(--muted);
+      pointer-events: none;
+    }
+
+    /* Contact Card Grid */
+    .contacts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 22px;
+    }
+    .contact-card {
+      background: #fff;
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      transition: transform .25s var(--ease), box-shadow .25s var(--ease);
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+    .contact-card.critical {
+      border-left: 5px solid #d9382e;
+    }
+    .contact-card.health {
+      border-left: 5px solid #2e8bd9;
+    }
+    .contact-card.wellbeing {
+      border-left: 5px solid #36a66b;
+    }
+    .contact-card.domestic {
+      border-left: 5px solid #9c42c7;
+    }
+    .contact-card.utility {
+      border-left: 5px solid var(--gold-deep);
+    }
+    .contact-card.civic {
+      border-left: 5px solid #6c757d;
+    }
+
+    .cc-badge {
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      padding: 3px 10px;
+      border-radius: 99px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+    .critical .cc-badge { background: #ffebeb; color: #b71c1c; }
+    .health .cc-badge { background: #e3f2fd; color: #0d47a1; }
+    .wellbeing .cc-badge { background: #e8f5e9; color: #1b5e20; }
+    .domestic .cc-badge { background: #f3e5f5; color: #4a148c; }
+    .utility .cc-badge { background: #fff8e1; color: #e65100; }
+    .civic .cc-badge { background: #f5f5f5; color: #37474f; }
+
+    .cc-title {
+      font-family: var(--f-display);
+      font-size: 1.12rem;
+      margin: 0 0 6px;
+      color: var(--ink);
+    }
+    .cc-desc {
+      font-size: .88rem;
+      color: var(--muted);
+      margin: 0 0 16px;
+      line-height: 1.5;
+    }
+    .cc-phone {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--cream);
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      font-family: var(--f-display);
+      font-size: 1.15rem;
+      color: var(--espresso);
+    }
+    .cc-phone a {
+      color: inherit;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      justify-content: space-between;
+    }
+    .cc-phone svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--gold-deep);
+    }
+    .cc-hours {
+      font-size: .78rem;
+      font-weight: 600;
+      color: #666;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .cc-hours svg {
+      width: 14px;
+      height: 14px;
+      stroke: #888;
+    }
+
+    /* Census Monitoring Section */
+    .census-box {
+      background: #ffffff;
+      border: 2px solid var(--hairline);
+      border-radius: var(--radius-md);
+      padding: clamp(24px, 4vw, 40px);
+      box-shadow: var(--shadow-sm);
+      margin-top: 50px;
+    }
+    .census-box h2 {
+      margin-top: 0;
+    }
+    .census-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .census-tag {
+      background: #fff7ea;
+      border: 1px solid var(--hairline);
+      padding: 8px 16px;
+      border-radius: 99px;
+      font-weight: 700;
+      font-size: .85rem;
+      color: var(--espresso);
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    document.documentElement.classList.add('js');
+    window.addEventListener('error', function () {
+      document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+    });
+  </script>
+
+  <div class="progress-bar" id="progressBar"></div>
+  <header class="site-header">
+    <div class="ticker-wrap">
+      <div class="ticker">
+        <span>Emergency Services · Dial 999 or 112 for urgent help</span>
+        <span>NHS 24 · Dial 111 for non-emergency medical care</span>
+        <span>Mental Wellbeing Helpline · 0800 111 4191 (Free 24/7)</span>
+        <span>Emergency Services · Dial 999 or 112 for urgent help</span>
+        <span>NHS 24 · Dial 111 for non-emergency medical care</span>
+        <span>Mental Wellbeing Helpline · 0800 111 4191 (Free 24/7)</span>
+      </div>
+    </div>
+    <div class="wrap">
+      <nav class="nav" aria-label="Primary">
+        <a class="brand" href="index.html" aria-label="NABA — home">
+          <span class="brand__badge"><img src="assets/logo-light.png" alt="" width="68" height="68"></span>
+          <span class="brand__name"><b>National African &amp;</b><span>Black Association</span></span>
+        </a>
+        <ul class="nav__links" id="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="directory.html">Community</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="activities.html">Activities</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="embassy.html">Embassies</a></li>
+          <li><a href="useful-information.html" aria-current="page">Useful Contacts</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li class="has-dropdown"><a href="youth-hub.html">More ▾</a>
+            <div class="dropdown">
+              <a href="youth-hub.html">Youth Hub (New)</a>
+              <a href="cuisine.html">African Cuisine</a>
+              <a href="volunteer.html">Volunteering</a>
+              <a href="impact.html">Impact Tree</a>
+              <a href="gallery.html">Photo Gallery</a>
+              <a href="legacy.html">Legacy of Sheku Bayoh</a>
+            </div>
+          </li>
+        </ul>
+        <div class="nav__actions">
+          <button class="icon-btn" id="searchBtn" aria-label="Search the site" type="button"><svg viewBox="0 0 24 24"
+              aria-hidden="true" focusable="false">
+              <circle cx="11" cy="11" r="5.5" fill="none" stroke="currentColor" stroke-width="1.9" />
+              <path d="M16 16L21 21" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" />
+            </svg></button>
+          <button class="icon-btn" id="langBtn" aria-label="Change language" type="button"><svg viewBox="0 0 24 24"
+              aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8" />
+              <path d="M3 12h18M12 3c2.8 2.9 4.3 5.9 4.3 9S14.8 18.1 12 21c-2.8-2.9-4.3-5.9-4.3-9S9.2 5.9 12 3Z"
+                fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+            </svg></button>
+          <button class="nav__toggle" id="menuBtn" aria-label="Open menu" aria-expanded="false"
+            aria-controls="nav-links"><span></span></button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <a class="help-now-btn" href="contact.html" aria-label="Get help now">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+      <path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+    </svg>
+    Get Help Now
+  </a>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="contact-hero">
+      <div class="wrap">
+        <div class="breadcrumb" style="color:var(--tan);"><a href="index.html" style="color:var(--cream);">Home</a> / Useful Contact Information</div>
+        <p class="eyebrow onDark">Community Protection &amp; Support</p>
+        <h1 class="display outline-fill cream">Useful Contact Information</h1>
+        <p>Essential emergency contacts, NHS lines, mental wellbeing resources, domestic abuse support, and civic directories across Scotland. Verified and maintained for the community.</p>
+
+        <!-- Quick 3 Cards -->
+        <div class="emergency-strip">
+          <div class="emergency-badge-card">
+            <div>
+              <div class="eb-num">999 / 112</div>
+              <div class="eb-label">Primary Emergency</div>
+            </div>
+            <a class="eb-call" href="tel:999">Call 999</a>
+          </div>
+          <div class="emergency-badge-card">
+            <div>
+              <div class="eb-num">111</div>
+              <div class="eb-label">NHS 24 Urgent Care</div>
+            </div>
+            <a class="eb-call" href="tel:111">Call 111</a>
+          </div>
+          <div class="emergency-badge-card">
+            <div>
+              <div class="eb-num">116 123</div>
+              <div class="eb-label">Samaritans (Free 24/7)</div>
+            </div>
+            <a class="eb-call" href="tel:116123">Call 116 123</a>
+          </div>
+          <div class="emergency-badge-card">
+            <div>
+              <div class="eb-num">0800 027 1234</div>
+              <div class="eb-label">Domestic Abuse Helpline</div>
+            </div>
+            <a class="eb-call" href="tel:08000271234">Call Help</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Directory -->
+    <section class="section">
+      <div class="wrap">
+        <div class="directory-controls">
+          <div class="contact-search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+              <circle cx="11" cy="11" r="7" />
+              <path d="M21 21l-4.3-4.3" />
+            </svg>
+            <input type="text" id="contactSearch" placeholder="Search service, keyword, or phone number…">
+          </div>
+          <div class="chips" id="contactFilterRow">
+            <button class="chip" aria-pressed="true" data-filter="all">All Services</button>
+            <button class="chip" aria-pressed="false" data-filter="critical">Emergency &amp; Police</button>
+            <button class="chip" aria-pressed="false" data-filter="health">NHS &amp; Healthcare</button>
+            <button class="chip" aria-pressed="false" data-filter="wellbeing">Mental Health &amp; Crisis</button>
+            <button class="chip" aria-pressed="false" data-filter="domestic">Abuse &amp; Women's Safety</button>
+            <button class="chip" aria-pressed="false" data-filter="utility">Utilities &amp; Incident</button>
+            <button class="chip" aria-pressed="false" data-filter="civic">Councils &amp; Parliament</button>
+          </div>
+        </div>
+
+        <div class="contacts-grid" id="contactsGrid">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- Census Monitoring Section -->
+        <div class="census-box reveal">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+            <span class="brand__badge" style="background:#fff7ea;border-color:var(--gold);"><img src="assets/crest.png" alt="" width="32" height="32"></span>
+            <div>
+              <p class="eyebrow" style="margin:0;">Official Census Standards</p>
+              <h2 class="display" style="font-size:1.6rem;margin:0;">NABA Black Monitoring Categories</h2>
+            </div>
+          </div>
+          <p class="muted" style="margin-top:14px;max-width:70ch;">
+            NABA asks all public and third-sector organizations across Scotland to use the following Black ethnicity categories in their monitoring forms, strictly aligned with official Scottish Census standards:
+          </p>
+          <div class="census-tags">
+            <span class="census-tag">Black</span>
+            <span class="census-tag">Black Scottish</span>
+            <span class="census-tag">Black British</span>
+            <span class="census-tag">African</span>
+            <span class="census-tag">African Scottish</span>
+            <span class="census-tag">African British</span>
+            <span class="census-tag">Caribbean</span>
+            <span class="census-tag">Caribbean Scottish</span>
+            <span class="census-tag">Caribbean British</span>
+            <span class="census-tag">Other Caribbean Background</span>
+            <span class="census-tag">Other African Background</span>
+          </div>
+          <p style="font-size:.85rem;color:var(--muted);margin-bottom:0;">
+            ✦ For context, this data ensures proper representation, accurate resource allocation, and civic transparency for African and Black communities across Scottish local authorities and public bodies.
+          </p>
+        </div>
+
+        <!-- Advice & Emergency Guidelines -->
+        <div class="reveal" style="margin-top:40px;background:#fff;border:1px solid var(--hairline);border-radius:var(--radius-md);padding:30px;">
+          <h3 style="font-size:1.2rem;margin-top:0;">What To Do When Calling 999 or 112</h3>
+          <ul style="padding-left:20px;color:var(--muted);line-height:1.8;margin:0;">
+            <li><strong>Speak clearly and remain calm:</strong> The operator will immediately ask which emergency service you require (Police, Ambulance, Fire, or Coastguard).</li>
+            <li><strong>State your exact location:</strong> Give your city, street name, building number, or notable landmark (or use the what3words app).</li>
+            <li><strong>Describe the emergency:</strong> Clarify if anyone is injured, if an offence is actively taking place, or if anyone is in imminent danger.</li>
+            <li><strong>Stay on the line:</strong> Do not hang up until instructed by the operator. Follow all first aid or safety instructions given.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="newsletter">
+        <h4>Stay Connected</h4>
+        <p>Updates on community services, events, and vital resources.</p>
+        <form data-form data-collection="newsletterSignups">
+          <input type="email" name="email" required placeholder="you@email.com">
+          <button type="submit">Join</button>
+        </form>
+        <div class="success-msg" style="margin-top:10px;">Subscribed — welcome to NABA.</div>
+      </div>
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">
+            <img src="assets/logo-light.png" alt="NABA crest" width="68" height="68">
+            <b>National African &amp;<br>Black Association</b>
+          </div>
+          <p style="max-width:34ch;opacity:.85;font-size:.9rem;">Our community is our strength — connecting African and Black communities across Scotland to trusted services, culture, and each other.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Directory &amp; Support</h5>
+          <ul>
+            <li><a href="useful-information.html">Useful Contacts</a></li>
+            <li><a href="embassy.html">Embassy Directory</a></li>
+            <li><a href="directory.html">Community Directory</a></li>
+            <li><a href="activities.html">Our Activities</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>About NABA</h5>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="news.html">News &amp; Media</a></li>
+            <li><a href="events.html">Events Calendar</a></li>
+            <li><a href="volunteer.html">Volunteering</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 National African &amp; Black Association (NABA). SCIO Registered Charity in Scotland.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    var contactData = [
+      {
+        title: "Primary Emergency Service",
+        category: "critical",
+        badge: "Life-Threatening Emergency",
+        desc: "Main emergency line for immediate assistance from Police, Fire & Rescue, Ambulance, or Coastguard. For crimes in progress, severe injury, fire, or immediate risk to life.",
+        phone: "999 or 112",
+        dial: "999",
+        hours: "24 hours a day, 7 days a week, 365 days a year"
+      },
+      {
+        title: "NHS 24 Urgent Medical Care",
+        category: "health",
+        badge: "Urgent Medical",
+        desc: "Out-of-hours non-life-threatening medical care and clinical triage across Scotland when your GP surgery is closed.",
+        phone: "111",
+        dial: "111",
+        hours: "Available 24 hours daily"
+      },
+      {
+        title: "NHS Inform Health Info Line",
+        category: "health",
+        badge: "Health Advice",
+        desc: "Comprehensive health guidance, self-help guides, vaccination info, and local health service directories across Scotland.",
+        phone: "0800 22 44 88",
+        dial: "0800224488",
+        hours: "Mon to Fri 8am - 10pm, Sat & Sun 9am - 5pm"
+      },
+      {
+        title: "NHS 24 Mental Wellbeing Support",
+        category: "wellbeing",
+        badge: "Mental Health",
+        desc: "Compassionate, confidential listening service for anyone experiencing distress, anxiety, depression, or working in health and social care.",
+        phone: "0800 111 4191",
+        dial: "08001114191",
+        hours: "24 hours a day, 7 days a week"
+      },
+      {
+        title: "Samaritans Free Listening Service",
+        category: "wellbeing",
+        badge: "Confidential Listening",
+        desc: "Whatever you're going through, a Samaritan will face it with you. 100% free and confidential crisis and emotional support line.",
+        phone: "116 123",
+        dial: "116123",
+        hours: "Free 24/7, every day"
+      },
+      {
+        title: "Breathing Space Scotland",
+        category: "wellbeing",
+        badge: "Emotional Support",
+        desc: "A free, confidential phone service for anyone in Scotland over the age of 16 experiencing low mood, depression, or anxiety.",
+        phone: "0800 83 85 87",
+        dial: "0800838587",
+        hours: "Weekdays 6pm - 2am, Weekends 24 hours"
+      },
+      {
+        title: "CALM (Campaign Against Living Miserably)",
+        category: "wellbeing",
+        badge: "Crisis Support",
+        desc: "Helpline and webchat for anyone in the UK who is struggling, down, or in crisis, offering practical support and life-saving intervention.",
+        phone: "0800 58 58 58",
+        dial: "0800585858",
+        hours: "5pm to midnight every day"
+      },
+      {
+        title: "Chris's House",
+        category: "wellbeing",
+        badge: "Suicide Crisis Centre",
+        desc: "Centre of Help, Response and Intervention Surrounding Suicide — direct crisis support in Lanarkshire and West Central Scotland.",
+        phone: "01236 766755",
+        dial: "01236766755",
+        hours: "24/7 Telephone Response"
+      },
+      {
+        title: "Support in Mind Scotland",
+        category: "wellbeing",
+        badge: "Mental Health Advocacy",
+        desc: "Support for people living with mental illness, their families, and carers across Edinburgh and Scotland.",
+        phone: "0131 662 4359",
+        dial: "01316624359",
+        hours: "Office hours: Mon - Fri 9am - 5pm"
+      },
+      {
+        title: "National Domestic Abuse Helpline",
+        category: "domestic",
+        badge: "Domestic Abuse & Safety",
+        desc: "Free, confidential telephone and online service for anyone experiencing domestic abuse or forced marriage in Scotland.",
+        phone: "0800 027 1234",
+        dial: "08000271234",
+        hours: "24 hours a day, 7 days a week"
+      },
+      {
+        title: "Scottish Women's Aid",
+        category: "domestic",
+        badge: "Women & Children Protection",
+        desc: "Leading organisation in Scotland working to prevent domestic abuse and support women, children, and young people.",
+        phone: "0800 027 1234",
+        dial: "08000271234",
+        hours: "24 hours a day, 7 days a week"
+      },
+      {
+        title: "Shakti Women's Aid",
+        category: "domestic",
+        badge: "BME Specialist Support",
+        desc: "Specialist support, refuge, advocacy, and guidance for Black, Minority Ethnic women, children, and young people experiencing domestic abuse in Edinburgh and Scotland.",
+        phone: "0131 475 2399",
+        dial: "01314752399",
+        hours: "Mon - Fri 9am - 5pm"
+      },
+      {
+        title: "Rape Crisis Scotland",
+        category: "domestic",
+        badge: "Sexual Violence Helpline",
+        desc: "National helpline offering free, confidential support to survivors of sexual violence, abuse, their partners, friends, and family.",
+        phone: "0808 801 0302",
+        dial: "08088010302",
+        hours: "Daily 5pm - midnight"
+      },
+      {
+        title: "Lanarkshire Rape Crisis",
+        category: "domestic",
+        badge: "Regional Advocacy",
+        desc: "Specialist advocacy, counseling, and crisis response for survivors across North and South Lanarkshire.",
+        phone: "01698 527003",
+        dial: "01698527003",
+        hours: "Mon - Fri 9:30am - 4:30pm"
+      },
+      {
+        title: "Abused Men in Scotland (AMIS)",
+        category: "domestic",
+        badge: "Men's Domestic Abuse",
+        desc: "Dedicated national organisation supporting men in Scotland experiencing domestic abuse from a partner or ex-partner.",
+        phone: "0808 800 0024",
+        dial: "08088000024",
+        hours: "Mon - Fri 9am - 4pm"
+      },
+      {
+        title: "ManKind Initiative",
+        category: "domestic",
+        badge: "Male Victims of Abuse",
+        desc: "Confidential helpline for male victims of domestic abuse and domestic violence across the UK.",
+        phone: "01823 334244",
+        dial: "01823334244",
+        hours: "Weekdays 10am - 4pm"
+      },
+      {
+        title: "Childline Free Helpline",
+        category: "domestic",
+        badge: "Children & Youth",
+        desc: "Comfort, advice, and confidential protection for any child or young person up to age 19 in the UK.",
+        phone: "0800 1111",
+        dial: "08001111",
+        hours: "24/7 Free Helpline"
+      },
+      {
+        title: "Switchboard LGBT+ Helpline",
+        category: "wellbeing",
+        badge: "LGBTQ+ Helpline",
+        desc: "Safe, non-judgmental space for anyone to discuss sexuality, gender identity, mental health, and community wellbeing.",
+        phone: "0300 330 0630",
+        dial: "03003300630",
+        hours: "Daily 10am - 10pm"
+      },
+      {
+        title: "The Silver Line (Age UK)",
+        category: "wellbeing",
+        badge: "Older Adults Support",
+        desc: "Free, confidential telephone service providing friendship, conversation, and support for older people.",
+        phone: "0800 4 70 80 90",
+        dial: "08004708090",
+        hours: "Available 24 hours a day, every day"
+      },
+      {
+        title: "Narcotics Anonymous National Helpline",
+        category: "wellbeing",
+        badge: "Addiction & Recovery",
+        desc: "Help and support for individuals seeking recovery from narcotics and substance dependency across Scotland.",
+        phone: "0300 999 1212",
+        dial: "03009991212",
+        hours: "Daily 10am - midnight"
+      },
+      {
+        title: "Alcoholics Anonymous (AA)",
+        category: "wellbeing",
+        badge: "Recovery & Support",
+        desc: "Confidential helpline and meeting directory for anyone concerned about their drinking.",
+        phone: "0845 769 7555",
+        dial: "08457697555",
+        hours: "National helpline: 24/7"
+      },
+      {
+        title: "Gas Leaks & Carbon Monoxide Emergency",
+        category: "utility",
+        badge: "Gas Emergency",
+        desc: "If you smell gas, suspect a leak, or carbon monoxide, call immediately. Free emergency gas network service.",
+        phone: "0800 111 999",
+        dial: "0800111999",
+        hours: "Free 24-hour National Gas Emergency"
+      },
+      {
+        title: "National Power Cut Emergency",
+        category: "utility",
+        badge: "Electricity Network",
+        desc: "Direct national phone line to report power cuts and damage to power lines or electrical substations in Scotland.",
+        phone: "105",
+        dial: "105",
+        hours: "Free 24/7 National Emergency Line"
+      },
+      {
+        title: "Scottish Water Emergency Customer Helpline",
+        category: "utility",
+        badge: "Water & Flooding",
+        desc: "Report loss of water supply, burst water mains, sewer blockages, or water quality emergencies in Scotland.",
+        phone: "0800 0778 778",
+        dial: "08000778778",
+        hours: "Available 24 hours daily"
+      },
+      {
+        title: "SEPA Floodline Scotland",
+        category: "utility",
+        badge: "Flood Warning",
+        desc: "Live flood warnings, advice on rising river levels, and storm protection across Scottish waterways.",
+        phone: "0345 988 1188",
+        dial: "03459881188",
+        hours: "24-hour automated service & operators"
+      },
+      {
+        title: "Crimestoppers Anonymous",
+        category: "critical",
+        badge: "Anonymous Crime Report",
+        desc: "Report crime or suspicious activity 100% anonymously. You do not have to give your name or testify in court.",
+        phone: "0800 555 111",
+        dial: "0800555111",
+        hours: "Free 24/7 Helpline"
+      },
+      {
+        title: "Traveline Scotland",
+        category: "utility",
+        badge: "Public Transport",
+        desc: "Impartial, up-to-date public transport information for buses, trains, and ferries across Scotland.",
+        phone: "0800 200 2233",
+        dial: "08002002233",
+        hours: "24 hours a day"
+      },
+      {
+        title: "Traffic Scotland Helpline",
+        category: "utility",
+        badge: "Motorway & Trunk Roads",
+        desc: "Real-time road conditions, motorway incidents, closures, and weather updates for Scottish drivers.",
+        phone: "0800 028 1414",
+        dial: "08000281414",
+        hours: "24-hour service"
+      },
+      {
+        title: "South Lanarkshire Emergency Social Work",
+        category: "civic",
+        badge: "Social Care Emergency",
+        desc: "Out-of-hours social work emergency service providing urgent social care intervention across South Lanarkshire.",
+        phone: "0303 123 1008",
+        dial: "03031231008",
+        hours: "Out of hours: 4:30pm to 8:45am, weekends 24/7"
+      },
+      {
+        title: "Find Your MSP — Scottish Parliament",
+        category: "civic",
+        badge: "Democratic Representation",
+        desc: "Locate your constituency and regional Members of the Scottish Parliament (MSPs) for parliamentary advocacy and constituency inquiries.",
+        phone: "Visit parliament.scot",
+        dial: "",
+        web: "https://www.parliament.scot/msps/current-and-previous-msps",
+        hours: "Scottish Parliament Parliamentary Registry"
+      }
+    ];
+
+    var grid = document.getElementById('contactsGrid');
+    var searchInput = document.getElementById('contactSearch');
+    var activeFilter = 'all';
+
+    function renderContacts(filter, query) {
+      var q = (query || '').toLowerCase().trim();
+      var filtered = contactData.filter(function(item) {
+        var matchFilter = (filter === 'all' || item.category === filter);
+        var matchQuery = !q ||
+          item.title.toLowerCase().indexOf(q) !== -1 ||
+          item.desc.toLowerCase().indexOf(q) !== -1 ||
+          item.phone.toLowerCase().indexOf(q) !== -1 ||
+          item.badge.toLowerCase().indexOf(q) !== -1;
+        return matchFilter && matchQuery;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted);font-size:1.1rem;">No contacts match your search query. Please try another keyword.</div>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(function(item) {
+        var callHtml = item.dial ? 
+          '<div class="cc-phone"><a href="tel:' + item.dial + '"><span>' + item.phone + '</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a></div>' :
+          '<div class="cc-phone"><a href="' + item.web + '" target="_blank" rel="noopener"><span>' + item.phone + '</span><span class="link-arrow">&rarr;</span></a></div>';
+
+        return '<div class="contact-card ' + item.category + '">' +
+          '<div>' +
+            '<span class="cc-badge">' + item.badge + '</span>' +
+            '<h3 class="cc-title">' + item.title + '</h3>' +
+            '<p class="cc-desc">' + item.desc + '</p>' +
+          '</div>' +
+          '<div>' +
+            callHtml +
+            '<div class="cc-hours">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>' +
+              '<span>' + item.hours + '</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    renderContacts(activeFilter, '');
+
+    document.getElementById('contactFilterRow').addEventListener('click', function(e) {
+      var chip = e.target.closest('.chip');
+      if (!chip) return;
+      document.querySelectorAll('#contactFilterRow .chip').forEach(function(c) { c.setAttribute('aria-pressed', 'false'); });
+      chip.setAttribute('aria-pressed', 'true');
+      activeFilter = chip.dataset.filter;
+      renderContacts(activeFilter, searchInput.value);
+    });
+
+    searchInput.addEventListener('input', function(e) {
+      renderContacts(activeFilter, e.target.value);
+    });
+  </script>
+</body>
+</html>
