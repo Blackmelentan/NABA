@@ -1005,6 +1005,95 @@
   <script src="js/main.js"></script>
 
   <script type="module" src="js/public-render.js"></script>
+  <script>
+    (function () {
+      var today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      function effectiveDate(event) {
+        return new Date(event.endDate || event.startDate || event.date + 'T00:00:00');
+      }
+
+      function displayDate(event) {
+        var raw = event.startDate || event.date;
+        if (!raw) return 'Date to be confirmed';
+        var date = new Date(String(raw).slice(0, 10) + 'T12:00:00');
+        return isNaN(date) ? String(raw) : date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+      }
+
+      function escapeHtml(value) {
+        return String(value == null ? '' : value).replace(/[&<>"']/g, function (character) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character];
+        });
+      }
+
+      fetch('assets/events_data.json')
+        .then(function (response) { return response.ok ? response.json() : []; })
+        .then(function (events) {
+          var current = events.filter(function (event) {
+            var date = effectiveDate(event);
+            return isNaN(date) ? true : date >= today;
+          }).sort(function (a, b) { return effectiveDate(a) - effectiveDate(b); });
+
+          var grid = document.getElementById('eventList');
+          if (!grid || !current.length) return;
+
+          grid.innerHTML = current.map(function (event) {
+            var image = event.image || 'assets/culturalweek.jpg';
+            var source = event.wpLink || '#';
+            var location = event.location || 'Scotland';
+            var description = event.description || 'Details available from NABA.';
+            return '<article class="event-card">' +
+              '<div class="event-card__media"><img src="' + escapeHtml(image) + '" alt="' + escapeHtml(event.title) + '" loading="lazy" onerror="this.src=\'assets/culturalweek.jpg\'"></div>' +
+              '<div class="event-card__body">' +
+                '<div class="event-card__meta"><span>' + escapeHtml(displayDate(event)) + '</span><span>' + escapeHtml(location) + '</span></div>' +
+                '<h3>' + escapeHtml(event.title) + '</h3>' +
+                '<p>' + escapeHtml(description) + '</p>' +
+                '<div class="event-card__actions"><a class="mini-btn" href="' + escapeHtml(source) + '" target="_blank" rel="noopener">View source</a><span class="link-arrow">Details →</span></div>' +
+              '</div>' +
+            '</article>';
+          }).join('');
+        })
+        .catch(function () {});
+
+      var calendar = document.createElement('section');
+      calendar.className = 'section';
+      calendar.innerHTML = '<div class="wrap"><p class="eyebrow">Event Calendar</p><div class="sec-head"><h2 class="display">Plan ahead</h2></div><div id="nabaCalendar" style="overflow-x:auto"></div></div>'; 
+      var gridSection = document.querySelector('[aria-labelledby="ev-h"]');
+      if (gridSection) gridSection.parentNode.insertBefore(calendar, gridSection);
+
+      function buildCalendar(events) {
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = now.getMonth();
+        var monthName = now.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+        var first = new Date(year, month, 1);
+        var startOffset = (first.getDay() + 6) % 7;
+        var days = new Date(year, month + 1, 0).getDate();
+        var labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        var html = '<h3 style="margin-bottom:16px">' + monthName + '</h3><table style="width:100%;min-width:700px;border-collapse:collapse;text-align:left"><thead><tr>';
+        labels.forEach(function (label) { html += '<th style="padding:10px;border-bottom:1px solid #ddd">' + label + '</th>'; });
+        html += '</tr></thead><tbody><tr>';
+        for (var i = 0; i < startOffset; i++) html += '<td style="height:88px;padding:8px;border:1px solid #eee"></td>';
+        for (var day = 1; day <= days; day++) {
+          var key = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+          var matches = events.filter(function (event) { return (event.startDate || event.date || '').slice(0, 10) === key; });
+          html += '<td style="height:88px;padding:8px;vertical-align:top;border:1px solid #eee"><strong>' + day + '</strong>';
+          matches.forEach(function (event) { html += '<br><a href="#ev-h" style="font-size:.78rem">' + escapeHtml(event.title) + '</a>'; });
+          html += '</td>';
+          if ((startOffset + day) % 7 === 0 && day !== days) html += '</tr><tr>';
+        }
+        html += '</tr></tbody></table>';
+        var target = document.getElementById('nabaCalendar');
+        if (target) target.innerHTML = html;
+      }
+
+      fetch('assets/events_data.json')
+        .then(function (response) { return response.ok ? response.json() : []; })
+        .then(function (events) { buildCalendar(events.filter(function (event) { return effectiveDate(event) >= today; })); })
+        .catch(function () {});
+    }());
+  </script>
 </body>
 
 </html>

@@ -299,9 +299,9 @@
     <section class="dir-hero">
       <div class="wrap">
         <div class="breadcrumb" style="color:var(--tan);"><a href="index.html" style="color:var(--cream);">Home</a> / Community Directory</div>
-        <p class="eyebrow onDark">Support Black Enterprise in Scotland</p>
+        <p class="eyebrow onDark">Support Black Enterprise</p>
         <h1 class="display outline-fill cream">Community Directory</h1>
-        <p>Connecting you to 67 verified African and Caribbean restaurants, halal butchers, clothing markets, grocery stores, charities, and community associations across Scotland.</p>
+        <p>Connecting you to 67 verified African and Caribbean restaurants, halal butchers, clothing markets, grocery stores, charities, and community associations across the country.</p>
         <div style="display:flex;gap:12px;flex-wrap:wrap;">
           <a class="btn btn--gold" href="contact.html">List Your Business &rarr;</a>
           <a class="btn btn--onDark" href="embassy.html">View Embassies</a>
@@ -342,22 +342,22 @@
           <!-- Populated by JavaScript -->
         </div>
 
-        <!-- Find Legal Aid / Solicitor Section -->
-        <div class="reveal" style="margin-top:60px;background:#fff7ea;border:1px solid var(--hairline);border-radius:var(--radius-md);padding:clamp(24px, 4vw, 36px);">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-            <p class="eyebrow" style="margin:0;">Legal Guidance</p>
-          </div>
-          <h2 class="display" style="font-size:1.6rem;margin-bottom:.4em;">Solicitors &amp; Scottish Legal Aid</h2>
-          <p class="muted" style="max-width:70ch;margin-bottom:20px;">If you require professional legal advice or representation in Scotland, use the official Scottish Legal Aid Board (SLAB) Solicitor Finder to locate registered solicitors who handle legal aid cases in your local authority.</p>
-          <a class="btn btn--solid" href="https://www.slab.org.uk/new-to-legal-aid/find-a-solicitor/" target="_blank" rel="noopener">Find a Registered Solicitor (SLAB) &rarr;</a>
-        </div>
-
         <!-- Call to Action Banner -->
         <div class="reveal" style="margin-top:40px;background:#ffffff;border:2px dashed var(--hairline);border-radius:var(--radius-md);padding:clamp(30px, 4vw, 44px);text-align:center;">
           <p class="eyebrow" style="justify-content:center;">Own an African or Black-Led Business?</p>
           <h2 class="display" style="font-size:1.7rem;margin-bottom:.3em;">Join the Official NABA Network</h2>
           <p class="muted" style="max-width:54ch;margin:0 auto 20px;">Listing your organisation in the NABA Community Directory is free. Connect directly with thousands of members across Scotland.</p>
           <a class="btn btn--gold" href="contact.html">Submit Your Business Details &rarr;</a>
+        </div>
+
+        <!-- Browse by Section -->
+        <div class="reveal" style="margin:40px 0 0;background:#fff7ea;border:1px solid var(--hairline);border-radius:var(--radius-md);padding:clamp(24px,4vw,36px)">
+          <p class="eyebrow" style="margin-bottom:8px">Browse by section</p>
+          <h2 class="display" style="font-size:1.6rem">Community Groups &amp; Businesses</h2>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+            <button class="chip" type="button" data-directory-jump="community">Community Groups</button>
+            <button class="chip" type="button" data-directory-jump="eating">Businesses &amp; Services</button>
+          </div>
         </div>
       </div>
     </section>
@@ -484,6 +484,15 @@
 
     searchInput.addEventListener('input', function(e) {
       renderBiz(activeFilter, e.target.value);
+    });
+
+    document.querySelectorAll('[data-directory-jump]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var filter = button.dataset.directoryJump;
+        var chip = document.querySelector('#dirFilterRow [data-filter="' + filter + '"]');
+        if (chip) chip.click();
+        document.getElementById('bizGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
     });
   </script>
 </body>

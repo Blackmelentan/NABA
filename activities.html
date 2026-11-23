@@ -474,16 +474,43 @@
           </div>
         </div>
 
-        <!-- Call to Action Banner -->
-        <div class="reveal" style="margin-top:60px;background:var(--espresso);border-radius:var(--radius-md);padding:clamp(32px, 5vw, 56px);color:var(--cream);text-align:center;">
-          <p class="eyebrow onDark" style="justify-content:center;">Get Involved Today</p>
-          <h2 class="display outline-fill cream" style="font-size:clamp(1.8rem, 4vw, 2.6rem);margin-bottom:.4em;">Join Hands With NABA</h2>
-          <p style="max-width:56ch;margin:0 auto 24px;opacity:.9;font-size:1.05rem;">Whether you are a student, professional, business owner, or community organizer, your voice and energy strengthen our movement.</p>
-          <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
-            <a class="btn btn--gold" href="contact.html">Contact the Team &rarr;</a>
-            <a class="btn btn--onDark" href="volunteer.html">Volunteer with NABA</a>
+        <!-- Past Events: sourced from the former website and ordered newest first -->
+        <section class="section" id="past-events" style="padding-inline:0;margin-top:20px">
+          <div class="wrap" style="max-width:none">
+            <p class="eyebrow">Past Events</p>
+            <div class="sec-head"><h2 class="display">What we have delivered</h2></div>
+            <div class="activity-grid" id="pastEventsGrid" aria-live="polite">
+              <p class="muted">Loading past events…</p>
+            </div>
           </div>
-        </div>
+        </section>
+
+        <script>
+          (function () {
+            var today = new Date(); today.setHours(0, 0, 0, 0);
+            fetch('assets/events_data.json').then(function (r) { return r.ok ? r.json() : []; }).then(function (events) {
+              var past = events.filter(function (event) {
+                var raw = event.endDate || event.startDate || event.date;
+                var date = new Date(String(raw || '').slice(0, 10) + 'T00:00:00');
+                return !isNaN(date) && date < today;
+              }).sort(function (a, b) {
+                return new Date(String(b.endDate || b.startDate || b.date).slice(0, 10)) - new Date(String(a.endDate || a.startDate || a.date).slice(0, 10));
+              });
+              var grid = document.getElementById('pastEventsGrid');
+              if (!grid) return;
+              if (!past.length) { grid.innerHTML = '<p class="muted">No past events are currently listed.</p>'; return; }
+              grid.innerHTML = past.slice(0, 12).map(function (event) {
+                var raw = event.endDate || event.startDate || event.date;
+                var date = new Date(String(raw || '').slice(0, 10) + 'T12:00:00');
+                var dateText = isNaN(date) ? 'Past event' : date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                var image = event.image || 'assets/culturalweek.jpg';
+                var title = String(event.title || 'NABA event').replace(/[&<>"']/g, function (c) { return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]; });
+                var source = event.wpLink || '#';
+                return '<article class="act-card"><div class="act-card__img"><img src="' + image + '" alt="' + title + '" loading="lazy" onerror="this.src=\'assets/culturalweek.jpg\'"></div><div class="act-card__body"><div><div class="act-card__tag">' + dateText + ' · ' + (event.location || 'Scotland') + '</div><h3 class="act-card__title">' + title + '</h3><p class="act-card__desc">' + String(event.description || 'NABA community activity and past gathering.').replace(/<[^>]*>/g, '').slice(0, 220) + '</p></div><a class="textlink" href="' + source + '" target="_blank" rel="noopener">Source &amp; details →</a></div></article>';
+              }).join('');
+            }).catch(function () { var grid = document.getElementById('pastEventsGrid'); if (grid) grid.innerHTML = '<p class="muted">Past event records are unavailable.</p>'; });
+          }());
+        </script>
       </div>
     </section>
   </main>
