@@ -617,6 +617,35 @@
   });
 
   /* ================================================================
+     EXPANDABLE EVENT / ARTICLE CARDS
+     ============================================================== */
+  document.querySelectorAll('[data-expand]').forEach(function (card) {
+    card.querySelectorAll('.link-arrow, .mini-btn, .textlink').forEach(function (trigger) {
+      if (trigger.tagName === 'A' && trigger.textContent.toLowerCase().includes('details') === false) return;
+      trigger.style.cursor = 'pointer';
+      trigger.addEventListener('click', function (e) {
+        if (trigger.tagName === 'A' && trigger.getAttribute('href') && trigger.getAttribute('href') !== '#') return;
+        e.preventDefault();
+        var title = card.dataset.expandTitle || card.querySelector('h3')?.textContent || 'NABA';
+        var tag = card.dataset.expandTag || '';
+        var desc = card.dataset.expandDesc || card.querySelector('.event-card__body p, p')?.textContent || '';
+        var image = card.dataset.expandImg || card.querySelector('img')?.getAttribute('src') || '';
+        var href = card.dataset.expandHref || '';
+        var cta = card.dataset.expandCta || 'Learn more';
+        var modal = document.createElement('div');
+        modal.className = 'expand-modal-backdrop open';
+        modal.setAttribute('role', 'dialog'); modal.setAttribute('aria-modal', 'true');
+        modal.innerHTML = '<div class="expand-modal"><button type="button" class="expand-modal__close" aria-label="Close details">&times;</button>' + (image ? '<img src="' + image + '" alt="" style="width:100%;max-height:280px;object-fit:cover;border-radius:8px">' : '') + '<p class="eyebrow">' + tag + '</p><h2 class="display" style="font-size:clamp(1.4rem,4vw,2.2rem)">' + title + '</h2><p>' + desc + '</p>' + (href ? '<a class="btn btn--solid" href="' + href + '" style="margin-top:14px">' + cta + '</a>' : '') + '</div>';
+        document.body.appendChild(modal); document.body.style.overflow = 'hidden';
+        var close = function () { modal.remove(); document.body.style.overflow = ''; };
+        modal.querySelector('.expand-modal__close').addEventListener('click', close);
+        modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+        modal.querySelector('.expand-modal__close').focus();
+      });
+    });
+  });
+
+  /* ================================================================
      FAQ ACCORDION
      ============================================================== */
   document.querySelectorAll('.faq-q').forEach(function (btn) {
@@ -734,9 +763,19 @@
     });
     vb.addEventListener('click', function () {
       if (localVideo && localVideo.indexOf('assets/') === 0) {
-        var a = document.createElement('a');
-        a.href = localVideo; a.target = '_blank'; a.rel = 'noopener';
-        a.click();
+        var modal = document.createElement('div');
+        modal.className = 'expand-modal-backdrop open';
+        modal.setAttribute('role', 'dialog');
+        modal.setAttribute('aria-modal', 'true');
+        modal.setAttribute('aria-label', 'NABA introduction video');
+        modal.innerHTML = '<div class="expand-modal" style="max-width:900px;width:min(900px,calc(100vw - 32px))"><button type="button" class="expand-modal__close" aria-label="Close video">&times;</button><video controls autoplay playsinline style="display:block;width:100%;max-height:78vh;background:#000"><source src="' + localVideo + '" type="video/mp4"></video></div>';
+        document.body.appendChild(modal);
+        document.body.style.overflow = 'hidden';
+        var close = function () { var video = modal.querySelector('video'); if (video) video.pause(); modal.remove(); document.body.style.overflow = ''; vb.focus(); };
+        modal.querySelector('.expand-modal__close').addEventListener('click', close);
+        modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+        window.addEventListener('keydown', function escapeVideo(e) { if (e.key === 'Escape') { close(); window.removeEventListener('keydown', escapeVideo); } });
+        modal.querySelector('.expand-modal__close').focus();
         return;
       }
       vb.classList.toggle('is-highlighted');

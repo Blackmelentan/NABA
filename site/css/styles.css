@@ -147,6 +147,15 @@ body.loaded .hero h1 .word i{animation:wordUp .6s var(--ease) forwards;animation
 @media(max-width:860px){.header-pre-brand{gap:4px;}}
 @media(max-width:540px){.header-pre-brand{display:none;}}
 
+/* Stable shared header */
+.site-header .ticker-wrap{height:30px;min-height:30px;display:flex;align-items:center;box-sizing:border-box;}
+.site-header .ticker{height:30px;align-items:center;}
+.site-header .ticker span{height:30px;padding:0 22px;line-height:30px;box-sizing:border-box;font-size:.62rem;}
+.site-header .nav{height:76px;min-height:76px;box-sizing:border-box;gap:12px;}
+.site-header .nav__links{flex-wrap:nowrap;}
+@media(max-width:1180px){.site-header .header-pre-brand{display:none!important}.site-header .nav{gap:8px}.site-header .nav__links{gap:7px}}
+@media(max-width:860px){.site-header .ticker-wrap,.site-header .ticker,.site-header .ticker span{height:28px;min-height:28px;line-height:28px}.site-header .nav{height:68px;min-height:68px}}
+
 /* Brand: enlarged logo mark (transparent, no circle) + bold text name */
 .brand{display:flex;align-items:center;gap:12px;min-width:0;flex-shrink:0;text-decoration:none;}
 .brand__badge{width:56px;height:66px;background:transparent !important;border:none !important;border-radius:0 !important;box-shadow:none !important;display:flex;align-items:center;justify-content:center;overflow:visible;flex-shrink:0;padding:0;transition:transform .25s ease;}

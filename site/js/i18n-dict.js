@@ -2,7 +2,7 @@
 window.NABA_I18N = {
   en: {
     home: 'Home', community: 'Community', events: 'Events', news: 'News', about: 'About Us',
-    volunteering: 'Volunteering & Partnerships', cuisine: 'Cuisine', contact: 'Contact Us', more: 'More',
+    volunteering: 'Volunteering', cuisine: 'Cuisine', contact: 'Contact Us', more: 'More',
     search: 'Search', account: 'Account', help: 'Get Help Now', service: 'Find a Service', event: 'Find an Event',
     watch: 'Watch', learnMore: 'Learn More About NABA', youthHub: 'The Youth Hub is live', exploreYouth: 'Explore the Youth Hub',
     searchPlaceholder: 'Search NABA — directory, events, pages…', selectLanguage: 'Select Language',
@@ -20,7 +20,7 @@ window.NABA_I18N = {
     missionQuote: '"Our community is our strength."',
     missionP1: 'The National African & Black Association (NABA) is a UK non-profit dedicated to the legacy of Sheku Bayoh. NABA is a Scottish-based, not-for-profit organisation dedicated to promoting equity, inclusion, and improved access to public services for African and Black individuals across Scotland.',
     missionP2: 'We work in partnership with institutions to assess the impact of policies and practices, deliver cultural awareness and anti-racism training, and foster meaningful engagement between public services and the communities they serve.',
-    videoCap: 'A minute with NABA — watch our story',
+    videoCap: 'A minute with NABA watch our story',
     youtubeEyebrow: 'YouTube', youtubeTitle: 'Own the Topic & community conversations',
     youtubeSub: 'Short talks, interviews and updates from NABA — new episodes added by the team.',
     youtubeWatch: 'Watch on YouTube',
