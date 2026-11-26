@@ -271,15 +271,10 @@
 
   /* ---- Inject on DOMContentLoaded or immediately if ready ---- */
   function initLayout() {
-    /* Check if page has its own static header (skip inject if so) */
-    if (document.querySelector('.site-header')) {
-      /* Page has static header — just patch logos and add social bar */
-      patchExistingHeader();
-    } else {
-      /* Inject full header */
-      var headerHtml = buildHeader();
-      document.body.insertAdjacentHTML('afterbegin', headerHtml);
-    }
+    /* Use one generated header on every public and admin page. */
+    var oldHeader = document.querySelector('.site-header');
+    if (oldHeader) oldHeader.remove();
+    document.body.insertAdjacentHTML('afterbegin', buildHeader());
 
     /* Check if page has its own static footer */
     if (!document.querySelector('.site-footer')) {

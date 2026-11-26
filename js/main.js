@@ -734,9 +734,19 @@
     });
     vb.addEventListener('click', function () {
       if (localVideo && localVideo.indexOf('assets/') === 0) {
-        var a = document.createElement('a');
-        a.href = localVideo; a.target = '_blank'; a.rel = 'noopener';
-        a.click();
+        var modal = document.createElement('div');
+        modal.className = 'expand-modal-backdrop open';
+        modal.setAttribute('role', 'dialog');
+        modal.setAttribute('aria-modal', 'true');
+        modal.setAttribute('aria-label', 'NABA introduction video');
+        modal.innerHTML = '<div class="expand-modal" style="max-width:900px;width:min(900px,calc(100vw - 32px))"><button type="button" class="expand-modal__close" aria-label="Close video">&times;</button><video controls autoplay playsinline style="display:block;width:100%;max-height:78vh;background:#000"><source src="' + localVideo + '" type="video/mp4"></video></div>';
+        document.body.appendChild(modal);
+        document.body.style.overflow = 'hidden';
+        var close = function () { var video = modal.querySelector('video'); if (video) video.pause(); modal.remove(); document.body.style.overflow = ''; vb.focus(); };
+        modal.querySelector('.expand-modal__close').addEventListener('click', close);
+        modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+        window.addEventListener('keydown', function escapeVideo(e) { if (e.key === 'Escape') { close(); window.removeEventListener('keydown', escapeVideo); } });
+        modal.querySelector('.expand-modal__close').focus();
         return;
       }
       vb.classList.toggle('is-highlighted');
