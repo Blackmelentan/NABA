@@ -8,7 +8,7 @@
 var LOCAL_DATA_KEY    = 'naba_local_admin_data';
 var LOCAL_SESSION_KEY = 'naba_local_admin_email';
 var LOCAL_ADMIN_EMAIL = 'admin@nabaorg.uk';
-var LOCAL_ADMIN_PASS  = 'naba-admin-2026';
+var LOCAL_ADMIN_PASS  = 'naba1234';
 
 /* ---- Supabase SDK (lazy-loaded) ---- */
 var supabaseClient = null;
