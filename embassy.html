@@ -643,6 +643,20 @@
   <script type="module" src="js/cms.js"></script>
 
   <script>
+    (function () {
+      var grid=document.getElementById('embassyGrid');
+      var existing={};
+      grid.querySelectorAll('[data-country]').forEach(function(c){existing[c.dataset.country]=true});
+      (window.NABA_AMENDMENT_DATA&&window.NABA_AMENDMENT_DATA.embassies||[]).forEach(function(e){
+        var country=e[0],type=e[1],phone=e[2],email=e[3],region=e[4],flag=e[5];
+        if(existing[country])return;
+        var card=document.createElement('article'); card.className='embassy-card reveal'; card.dataset.country=country; card.dataset.region=region; card.setAttribute('role','listitem');
+        card.innerHTML='<div class="embassy-card__header"><div class="embassy-card__flag" aria-hidden="true">'+flag+'</div><div><h2 class="embassy-card__title">'+country+'</h2><p class="embassy-card__type">'+type+' · United Kingdom</p></div></div><div class="embassy-card__info">'+(phone?' <div class="embassy-card__row"><span>Telephone:</span> <a href="tel:'+phone.replace(/[^0-9+]/g,'')+'">'+phone+'</a></div>':'<div class="embassy-card__row"><span>Telephone:</span> <span>Not confirmed</span></div>')+(email?' <div class="embassy-card__row"><span>Email:</span> <a href="mailto:'+email.toLowerCase()+'">'+email.toLowerCase()+'</a></div>':'<div class="embassy-card__row"><span>Email:</span> <span>Not confirmed</span></div>')+'</div><div class="embassy-card__actions"><a href="https://www.google.com/maps/search/'+encodeURIComponent(country+' '+type+' London')+'" target="_blank" rel="noopener noreferrer" class="primary">Find in London</a></div>';
+        grid.insertBefore(card,grid.querySelector('.embassy-card:not([data-country])')||null); existing[country]=true;
+      });
+      var count=grid.querySelectorAll('[data-country]').length;
+      var countEl=document.getElementById('embassyCount'); if(countEl)countEl.textContent='Showing all '+count+' embassies';
+    }());
     /* ---- Embassy search & filter ---- */
     const searchInput = document.getElementById('embassySearch');
     const regionSelect = document.getElementById('embassyRegion');
