@@ -7,12 +7,13 @@
    ===================================================================== */
 
 window.NABA_FIREBASE_CONFIG = {
-  apiKey: "",
-  authDomain: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: ""
+  apiKey: "AIzaSyBoG2qe4yGT8cvr9Zl4p7EifpplEdaT8Bc",
+  authDomain: "naba-d3299.firebaseapp.com",
+  projectId: "naba-d3299",
+  storageBucket: "naba-d3299.firebasestorage.app",
+  messagingSenderId: "34953666087",
+  appId: "1:34953666087:web:693c614ea230f445a57802",
+  measurementId: "G-BLR7KF34D6"
 };
 
 window.NABA_FIREBASE_ENABLED = !!(window.NABA_FIREBASE_CONFIG.apiKey && window.NABA_FIREBASE_CONFIG.projectId);

@@ -12,6 +12,44 @@ var LOCAL_ADMIN_PASS  = 'naba1234';
 
 /* ---- Supabase SDK (lazy-loaded) ---- */
 var supabaseClient = null;
+var firebaseState = null;
+
+async function ensureFirebaseConfig() {
+  if (window.NABA_FIREBASE_CONFIG) return;
+  await new Promise(function (resolve) {
+    var script = document.createElement('script');
+    script.src = 'js/firebase-config.js';
+    script.onload = resolve;
+    script.onerror = resolve;
+    document.head.appendChild(script);
+  });
+}
+
+async function loadFirebase() {
+  await ensureFirebaseConfig();
+  if (firebaseState) return firebaseState;
+  if (!window.NABA_FIREBASE_ENABLED) return null;
+  try {
+    var appModule = await import('https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js');
+    var authModule = await import('https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js');
+    var firestoreModule = await import('https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js');
+    var storageModule = await import('https://www.gstatic.com/firebasejs/13.4.0/firebase-storage.js');
+    var app = appModule.initializeApp(window.NABA_FIREBASE_CONFIG);
+    firebaseState = {
+      app: app,
+      auth: authModule.getAuth(app),
+      authModule: authModule,
+      firestore: firestoreModule.getFirestore(app),
+      firestoreModule: firestoreModule,
+      storage: storageModule.getStorage(app),
+      storageModule: storageModule
+    };
+    return firebaseState;
+  } catch (err) {
+    console.error('[NABA CMS] Firebase initialization failed: - cms.js:37', err);
+    return null;
+  }
+}
 
 async function loadSupabase() {
   if (supabaseClient) return supabaseClient;
@@ -34,7 +72,7 @@ async function loadSupabase() {
     );
     return supabaseClient;
   } catch (err) {
-    console.error('[NABA CMS] Failed to load Supabase:', err);
+    console.error('[NABA CMS] Failed to load Supabase: - cms.js:63', err);
     return null;
   }
 }
@@ -66,6 +104,15 @@ function localUser() {
    ===================================================================== */
 
 async function login(email, password) {
+  var fb = await loadFirebase();
+  if (fb) {
+    try {
+      var credential = await fb.authModule.signInWithEmailAndPassword(fb.auth, email.trim(), password);
+      return { ok: true, user: credential.user };
+    } catch (err) {
+      return { ok: false, message: friendlyAuthError(err) };
+    }
+  }
   var sb = await loadSupabase();
   if (!sb) {
     // Local-mode login
@@ -82,11 +129,18 @@ async function login(email, password) {
 
 async function logout() {
   localStorage.removeItem(LOCAL_SESSION_KEY);
+  var fb = await loadFirebase();
+  if (fb) await fb.authModule.signOut(fb.auth);
   var sb = await loadSupabase();
   if (sb) await sb.auth.signOut();
 }
 
 async function onAuthChange(cb) {
+  var fb = await loadFirebase();
+  if (fb) {
+    fb.authModule.onAuthStateChanged(fb.auth, function (user) { cb(user); });
+    return;
+  }
   var sb = await loadSupabase();
   if (!sb) {
     cb(localUser());
@@ -140,6 +194,15 @@ function tableName(col) {
  * @returns {function}   - unsubscribe function
  */
 async function listItems(collectionName, cb) {
+  var fb = await loadFirebase();
+  if (fb) {
+    var fm = fb.firestoreModule;
+    var col = fm.collection(fb.firestore, collectionName);
+    var q = fm.query(col, fm.orderBy('created_at', 'desc'));
+    return fm.onSnapshot(q, function (snapshot) {
+      cb(snapshot.docs.map(function (doc) { return Object.assign({ id: doc.id }, doc.data()); }));
+    }, function (err) { console.error('[NABA CMS] Firestore list: - cms.js:192', err); cb([]); });
+  }
   var sb = await loadSupabase();
   if (!sb) {
     cb(getLocalCollection(collectionName));
@@ -154,7 +217,7 @@ async function listItems(collectionName, cb) {
     .select('*')
     .order('created_at', { ascending: false });
 
-  if (error) { console.error('[NABA CMS] listItems:', error); cb([]); return function () {}; }
+  if (error) { console.error('[NABA CMS] listItems: - cms.js:208', error); cb([]); return function () {}; }
   cb(data || []);
 
   // Real-time subscription
@@ -174,6 +237,14 @@ async function listItems(collectionName, cb) {
  * @returns {string|null} public URL
  */
 async function uploadImage(file, folder) {
+  var fb = await loadFirebase();
+  if (fb && file) {
+    var fm = fb.storageModule;
+    var path = folder + '/' + Date.now() + '-' + Math.random().toString(36).slice(2) + '-' + file.name;
+    var ref = fm.ref(fb.storage, path);
+    await fm.uploadBytes(ref, file);
+    return await fm.getDownloadURL(ref);
+  }
   var sb = await loadSupabase();
   if (!sb || !file) return null;
 
@@ -186,7 +257,7 @@ async function uploadImage(file, folder) {
     upsert: false
   });
 
-  if (error) { console.error('[NABA CMS] uploadImage:', error); return null; }
+  if (error) { console.error('[NABA CMS] uploadImage: - cms.js:248', error); return null; }
 
   var { data } = sb.storage.from(bucket).getPublicUrl(path);
   return data.publicUrl;
@@ -196,6 +267,15 @@ async function uploadImage(file, folder) {
  * Add item to a collection.
  */
 async function addItem(collectionName, data, imageFile) {
+  var fb = await loadFirebase();
+  if (fb) {
+    try {
+      var imageUrl = imageFile ? await uploadImage(imageFile, collectionName) : (data.image_url || null);
+      var payload = Object.assign({}, data, { image_url: imageUrl, created_at: new Date().toISOString(), status: data.status || 'published' });
+      await fb.firestoreModule.addDoc(fb.firestoreModule.collection(fb.firestore, collectionName), payload);
+      return { ok: true };
+    } catch (err) { return { ok: false, message: err.message }; }
+  }
   var sb = await loadSupabase();
   if (!sb) {
     // Local mode
@@ -233,6 +313,15 @@ async function addItem(collectionName, data, imageFile) {
  * Update an item.
  */
 async function updateItem(collectionName, id, data, imageFile) {
+  var fb = await loadFirebase();
+  if (fb) {
+    try {
+      var patch = Object.assign({}, data);
+      if (imageFile) patch.image_url = await uploadImage(imageFile, collectionName);
+      await fb.firestoreModule.updateDoc(fb.firestoreModule.doc(fb.firestore, collectionName, id), patch);
+      return { ok: true };
+    } catch (err) { return { ok: false, message: err.message }; }
+  }
   var sb = await loadSupabase();
   if (!sb) {
     var all = readLocalData();
@@ -261,6 +350,13 @@ async function updateItem(collectionName, id, data, imageFile) {
  * Delete an item.
  */
 async function deleteItem(collectionName, id) {
+  var fb = await loadFirebase();
+  if (fb) {
+    try {
+      await fb.firestoreModule.deleteDoc(fb.firestoreModule.doc(fb.firestore, collectionName, id));
+      return { ok: true };
+    } catch (err) { return { ok: false, message: err.message }; }
+  }
   var sb = await loadSupabase();
   if (!sb) {
     var all = readLocalData();
@@ -334,10 +430,10 @@ async function fetchPublic(collectionName, options) {
     }
 
     var { data, error } = await q;
-    if (error) { console.error('[NABA CMS] fetchPublic:', error); return []; }
+    if (error) { console.error('[NABA CMS] fetchPublic: - cms.js:405', error); return []; }
     return data || [];
   } catch (err) {
-    console.error('[NABA CMS] fetchPublic:', err);
+    console.error('[NABA CMS] fetchPublic: - cms.js:408', err);
     return [];
   }
 }
