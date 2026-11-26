@@ -398,6 +398,9 @@
             <button class="chip" aria-pressed="false" data-filter="domestic">Abuse &amp; Women's Safety</button>
             <button class="chip" aria-pressed="false" data-filter="utility">Utilities &amp; Incident</button>
             <button class="chip" aria-pressed="false" data-filter="civic">Councils &amp; Parliament</button>
+            <button class="chip" aria-pressed="false" data-filter="public">Public Sector</button>
+            <button class="chip" aria-pressed="false" data-filter="third">Third Sector</button>
+            <button class="chip" aria-pressed="false" data-filter="legal">Legal &amp; Solicitors</button>
           </div>
         </div>
 
@@ -496,6 +499,16 @@
 
   <script>
     var contactData = [
+      {
+        title: "Scottish Legal Aid Board — Find a Solicitor",
+        category: "legal",
+        badge: "Legal & Solicitors",
+        desc: "Search for a solicitor or legal aid provider for free or funded advice and representation.",
+        phone: "Search solicitor finder",
+        dial: "",
+        web: "https://www.slab.org.uk/new-to-legal-aid/find-a-solicitor/",
+        hours: "Online solicitor search"
+      },
       {
         title: "Primary Emergency Service",
         category: "critical",
@@ -776,7 +789,11 @@
     function renderContacts(filter, query) {
       var q = (query || '').toLowerCase().trim();
       var filtered = contactData.filter(function(item) {
-        var matchFilter = (filter === 'all' || item.category === filter);
+        var publicCategories = ['critical','health','utility','civic'];
+        var thirdCategories = ['wellbeing','domestic'];
+        var matchFilter = (filter === 'all' || item.category === filter ||
+          (filter === 'public' && publicCategories.indexOf(item.category) !== -1) ||
+          (filter === 'third' && thirdCategories.indexOf(item.category) !== -1));
         var matchQuery = !q ||
           item.title.toLowerCase().indexOf(q) !== -1 ||
           item.desc.toLowerCase().indexOf(q) !== -1 ||
