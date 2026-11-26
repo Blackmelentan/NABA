@@ -1063,15 +1063,16 @@
       if (gridSection) gridSection.parentNode.insertBefore(calendar, gridSection);
 
       function buildCalendar(events) {
-        var now = new Date();
-        var year = now.getFullYear();
-        var month = now.getMonth();
-        var monthName = now.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+        var viewDate = buildCalendar.viewDate || new Date();
+        buildCalendar.viewDate = viewDate;
+        var year = viewDate.getFullYear();
+        var month = viewDate.getMonth();
+        var monthName = viewDate.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
         var first = new Date(year, month, 1);
         var startOffset = (first.getDay() + 6) % 7;
         var days = new Date(year, month + 1, 0).getDate();
         var labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-        var html = '<h3 style="margin-bottom:16px">' + monthName + '</h3><table style="width:100%;min-width:700px;border-collapse:collapse;text-align:left"><thead><tr>';
+        var html = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><button type="button" id="calendarPrev" class="btn btn--gold" aria-label="Previous month">← Previous</button><h3 style="margin:0">' + monthName + '</h3><button type="button" id="calendarNext" class="btn btn--gold" aria-label="Next month">Next →</button></div><table style="width:100%;min-width:700px;border-collapse:collapse;text-align:left"><thead><tr>';
         labels.forEach(function (label) { html += '<th style="padding:10px;border-bottom:1px solid #ddd">' + label + '</th>'; });
         html += '</tr></thead><tbody><tr>';
         for (var i = 0; i < startOffset; i++) html += '<td style="height:88px;padding:8px;border:1px solid #eee"></td>';
@@ -1079,13 +1080,22 @@
           var key = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(day).padStart(2, '0');
           var matches = events.filter(function (event) { return (event.startDate || event.date || '').slice(0, 10) === key; });
           html += '<td style="height:88px;padding:8px;vertical-align:top;border:1px solid #eee"><strong>' + day + '</strong>';
-          matches.forEach(function (event) { html += '<br><a href="#ev-h" style="font-size:.78rem">' + escapeHtml(event.title) + '</a>'; });
+          matches.forEach(function (event) { html += '<br><button type="button" class="calendar-event" data-event-title="' + escapeHtml(event.title) + '" style="border:0;background:none;color:var(--ink);font-size:.78rem;text-align:left;padding:2px 0;text-decoration:underline">' + escapeHtml(event.title) + '</button>'; });
           html += '</td>';
           if ((startOffset + day) % 7 === 0 && day !== days) html += '</tr><tr>';
         }
         html += '</tr></tbody></table>';
         var target = document.getElementById('nabaCalendar');
-        if (target) target.innerHTML = html;
+        if (!target) return;
+        target.innerHTML = html;
+        document.getElementById('calendarPrev').addEventListener('click', function () { buildCalendar.viewDate = new Date(year, month - 1, 1); buildCalendar(events); });
+        document.getElementById('calendarNext').addEventListener('click', function () { buildCalendar.viewDate = new Date(year, month + 1, 1); buildCalendar(events); });
+        target.querySelectorAll('.calendar-event').forEach(function (button) {
+          button.addEventListener('click', function () {
+            var card = Array.prototype.find.call(document.querySelectorAll('.event-card'), function (item) { return item.textContent.indexOf(button.dataset.eventTitle) !== -1; });
+            if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          });
+        });
       }
 
       fetch('assets/events_data.json')

@@ -98,7 +98,7 @@
             navLink('events.html', 'Events', 'nav.events') +
             navLink('news.html', 'News', 'nav.news') +
             navLink('about.html', 'About Us', 'nav.about') +
-            navLink('volunteer.html', 'Volunteering &amp; Partnerships', 'nav.volunteering') +
+            navLink('volunteer.html', 'Get Involved', 'nav.involved') +
             navLink('cuisine.html', 'Cuisine', 'nav.cuisine') +
             navLink('contact.html', 'Contact Us', 'nav.contact') +
             '<li class="has-dropdown">' +
@@ -244,7 +244,7 @@
           '<div class="footer-col">' +
             '<h4 data-i18n="footer.connect">Connect</h4>' +
             '<ul>' +
-              '<li><a href="volunteer.html">Volunteering &amp; Partnerships</a></li>' +
+              '<li><a href="volunteer.html">Get Involved</a></li>' +
               '<li><a href="volunteer.html#careers">Careers &amp; Vacancies</a></li>' +
               '<li><a href="cuisine.html">Cuisine</a></li>' +
               '<li><a href="contact.html">Contact us</a></li>' +
@@ -413,6 +413,13 @@
   }
 
   function patchExistingFooter() {
+    /* Keep one concise involvement label across every static footer */
+    document.querySelectorAll('.footer-col a').forEach(function (link) {
+      if (link.getAttribute('href') === 'volunteer.html' && /Volunteering|Partnership/i.test(link.textContent)) {
+        link.textContent = 'Get Involved';
+      }
+    });
+
     /* Replace old logo in footer */
     document.querySelectorAll('.footer-brand img, .site-footer img[src*="new-naba-logo"]').forEach(function (img) {
       img.src = 'assets/logo-dark.png';

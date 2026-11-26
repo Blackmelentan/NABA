@@ -68,6 +68,7 @@ function buildEventForm(fd){
     data: {
       title: fd.get('title'),
       date: fd.get('date'),
+      endDate: fd.get('endDate'),
       location: fd.get('location'),
       category: fd.get('category'),
       description: fd.get('description'),
