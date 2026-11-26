@@ -102,7 +102,7 @@
             navLink('cuisine.html', 'Cuisine', 'nav.cuisine') +
             navLink('contact.html', 'Contact Us', 'nav.contact') +
             '<li class="has-dropdown">' +
-              '<a href="youth-hub.html" aria-expanded="false" data-i18n="nav.more">More &#x25BE;</a>' +
+              '<a href="#" aria-expanded="false" data-i18n="nav.more">More &#x25BE;</a>' +
               '<div class="dropdown" role="menu">' +
                 '<a href="youth-hub.html" role="menuitem" data-i18n="nav.youth">Youth Hub</a>' +
                 '<a href="impact.html" role="menuitem" data-i18n="nav.impact">Impact Tree</a>' +

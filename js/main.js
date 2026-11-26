@@ -192,8 +192,7 @@
     if (!trigger) return;
     trigger.setAttribute('aria-expanded', 'false');
     trigger.addEventListener('click', function (e) {
-      var isSmall = window.innerWidth <= 1180;
-      if (isSmall || trigger.getAttribute('href') === '#') e.preventDefault();
+      e.preventDefault();
       var wasOpen = drop.classList.contains('open');
       closeAllDropdowns();
       if (!wasOpen) {
